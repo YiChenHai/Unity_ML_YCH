@@ -1,0 +1,29 @@
+{
+    "CarAgentCS": {
+        "checkpoints": [
+            {
+                "steps": 59978,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\CarTEST1120\\CarAgentCS\\CarAgentCS-59978.onnx",
+                "reward": 59.03289604187012,
+                "creation_time": 1763621663.2349107,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\CarTEST1120\\CarAgentCS\\CarAgentCS-59978.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 59978,
+            "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\CarTEST1120\\CarAgentCS.onnx",
+            "reward": 59.03289604187012,
+            "creation_time": 1763621663.2349107,
+            "auxillary_file_paths": [
+                "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\CarTEST1120\\CarAgentCS\\CarAgentCS-59978.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

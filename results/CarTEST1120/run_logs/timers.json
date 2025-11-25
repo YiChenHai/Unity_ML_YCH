@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1763621049",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\IFR_25\\.conda\\envs\\IFR_mlagents\\Scripts\\mlagents-learn ML-Agents/Config/CarTest.yaml --run-id=CarTEST1120 --force",
+        "mlagents_version": "1.1.0",
+        "mlagents_envs_version": "1.1.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.1+cpu",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1763621053"
+    },
+    "total": 4.059451600012835,
+    "count": 1,
+    "self": 0.016011100029572845,
+    "children": {
+        "run_training.setup": {
+            "total": 0.21398000000044703,
+            "count": 1,
+            "self": 0.21398000000044703
+        },
+        "TrainerController.start_learning": {
+            "total": 3.8294604999828152,
+            "count": 1,
+            "self": 0.0011854999756906182,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 3.8282450000115205,
+                    "count": 1,
+                    "self": 3.8282450000115205
+                },
+                "trainer_threads": {
+                    "total": 3.3999967854470015e-06,
+                    "count": 1,
+                    "self": 3.3999967854470015e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 2.6599998818710446e-05,
+                    "count": 1,
+                    "self": 2.6599998818710446e-05
+                }
+            }
+        }
+    }
+}
