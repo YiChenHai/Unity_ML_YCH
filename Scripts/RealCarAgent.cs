@@ -8,38 +8,37 @@ using Unity.MLAgents.Actuators;
 public class RealCarAgent : Agent
 {
     [Header("Refs")]
-    public MagneticTape tape;
-    public Transform[] sensors = new Transform[6];
-    public Rigidbody rb;
-    public Transform[] wheels = new Transform[4];  // 四个轮子的Transform
+    public MagneticTape tape;             // 磁条引用
+    public Transform[] sensors = new Transform[6]; // 磁场传感器
+    public Rigidbody rb;                  // 车体刚体
+    public Transform[] wheels = new Transform[4];  // 轮子的Transform（用来显示）
 
     [Header("Control")]
-    public float maxSpeed = 0.5f;        // 最大前进速度
-    public float maxSteerSpeed = 30f;    // 最大转向角速度（度/秒）
-    public float maxWheelSpeed = 4.0f;   // 最大电机速度
+    public float maxSpeed = 0.5f;           // 最大速度
+    public float maxSteerSpeed = 30f;       // 最大转向角速度
+    public float maxWheelSpeed = 4.0f;      // 最大电机速度
 
     [Header("Normalization")]
-    public float maxField = 0.02f;       // 磁场归一化最大值
+    public float maxField = 0.02f;          // 最大磁场强度
 
     [Header("Reward Weights")]
-    public float w_track = 1.0f;         // 磁条追踪奖励权重
-    public float w_forward = 0.4f;       // 前进奖励权重
-    public float w_heading = 0.2f;       // 车头朝向奖励权重
+    public float w_track = 1.0f;            // 磁条追踪奖励
+    public float w_forward = 0.4f;          // 前进奖励
+    public float w_heading = 0.2f;          // 朝向奖励
 
     [Header("Episode Limits")]
-    public float maxEpisodeTime = 20f;
-    private float episodeTimer;
+    public float maxEpisodeTime = 20f;      // 每回合最大时间
+    private float episodeTimer;             // 回合计时器
 
     [Header("Start Position")]
-    public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
-    public Quaternion startRot = Quaternion.Euler(0f, 0f, 0f);
+    public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);  // 起始位置
+    public Quaternion startRot = Quaternion.Euler(0f, 0f, 0f);   // 起始旋转
 
     private Vector3 lastForward;
 
     // 车辆参数
-    private float L = 0.76f;     // 轴距
-    private float W = 0.47f;     // 轮距
-    private float MAX_MOTOR_SPEED = 4.0f;  // 最大电机速度
+    private float L = 0.76f;  // 轴距
+    private float W = 0.47f;  // 轮距
 
     public override void Initialize()
     {
@@ -51,20 +50,21 @@ public class RealCarAgent : Agent
 
     public override void OnEpisodeBegin()
     {
+        // 重置车辆状态
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        // 固定起始位置
+        // 设置起始位置和旋转
         transform.position = startPos;
         transform.rotation = startRot;
 
         lastForward = transform.forward;
         episodeTimer = 0f;
 
-        // 设置四个轮子的z轴为90°，确保初始化时的旋转正确
+        // 确保轮子初始化时角度正确
         for (int i = 0; i < 4; i++)
         {
-            wheels[i].localRotation = Quaternion.Euler(0f, 90f, 0f);  // 设置轮子的z轴为90°
+            wheels[i].localRotation = Quaternion.Euler(0f, 90f, 0f);  // 设置轮子z轴为90°
         }
     }
 
@@ -100,24 +100,21 @@ public class RealCarAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        // 连续动作： 
+        // 连续动作：
         // actions[0] = 前向速度比例 (0~1)
         // actions[1] = 横向速度比例 (-1~1)
         // actions[2] = 角速度比例 (-1~1)
 
+        // 根据动作计算速度
         float vx = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f) * maxSpeed;  // 前向速度
         float vy = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f) * maxSpeed;  // 横向速度
         float omega = Mathf.Clamp(actions.ContinuousActions[2], -1f, 1f) * maxSteerSpeed;  // 角速度
 
-        // 死区处理
-        float DEADZONE = 0.1f;
-        if (Mathf.Abs(vx) < DEADZONE && Mathf.Abs(vy) < DEADZONE && Mathf.Abs(omega) < DEADZONE)
+        // 死区处理：如果速度太小，就不进行任何控制
+        if (Mathf.Abs(vx) < 0.1f && Mathf.Abs(vy) < 0.1f && Mathf.Abs(omega) < 0.1f)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                wheels[i].localRotation = Quaternion.Euler(0f, 90f, 0f);  // 所有轮子角度设为90°
-            }
-            rb.linearVelocity = Vector3.zero;  // 所有轮子速度设为0
+            rb.linearVelocity = Vector3.zero;  // 重置车体速度
+            rb.angularVelocity = Vector3.zero;  // 重置角速度
             return;
         }
 
@@ -157,19 +154,19 @@ public class RealCarAgent : Agent
             }
 
             // 归一化速度
-            if (wheelSpeed[i] > MAX_MOTOR_SPEED)
+            if (wheelSpeed[i] > maxWheelSpeed)
             {
-                wheelSpeed[i] = MAX_MOTOR_SPEED;
+                wheelSpeed[i] = maxWheelSpeed;
             }
 
             // 设置轮子的速度和转向角度
             wheels[i].localRotation = Quaternion.Euler(0f, 90f + Mathf.Rad2Deg * steerAngle[i], 0f);  // 控制y轴转向
         }
 
-        // 奖励函数和其他控制逻辑
+        // 计算奖励
         AddReward(CalculateReward());
 
-        // 检查是否达到了超时条件
+        // 超时条件
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {
@@ -182,16 +179,34 @@ public class RealCarAgent : Agent
 
     private float CalculateReward()
     {
-        // 计算奖励函数的逻辑，保持原有方式
+        // 计算奖励函数的逻辑
         float reward = 0f;
+
+        // 奖励根据车辆前进情况
+        reward += w_forward * rb.linearVelocity.magnitude * 0.01f;
+
+        // 追踪磁条奖励
+        float frontAvg = 0f;  // 前传感器平均磁场强度
+        float rearAvg = 0f;   // 后传感器平均磁场强度
+        for (int i = 0; i < 3; i++) frontAvg += tape.GetMagneticField(sensors[i].position).magnitude;
+        for (int i = 3; i < 6; i++) rearAvg += tape.GetMagneticField(sensors[i].position).magnitude;
+        frontAvg /= 3f;
+        rearAvg /= 3f;
+        reward += w_track * (frontAvg - rearAvg);
+
+        // 朝向奖励
+        float headingChange = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up) / 180f;
+        reward += w_heading * Mathf.Abs(headingChange);
+
         return reward;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        var cont = actionsOut.ContinuousActions;
-        cont[0] = Input.GetAxis("Vertical"); // 前向速度
-        cont[1] = Input.GetAxis("Horizontal"); // 横向速度
-        cont[2] = Input.GetAxis("Mouse X"); // 角速度
+        // 手动输入的控制
+        //var cont = actionsOut.ContinuousActions;
+        //cont[0] = Input.GetAxis("Vertical"); // 前向速度
+        //cont[1] = Input.GetAxis("Horizontal"); // 横向速度
+        //cont[2] = Input.GetAxis("Mouse X"); // 角速度
     }
 }
