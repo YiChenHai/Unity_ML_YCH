@@ -129,8 +129,7 @@ public class CarController : MonoBehaviour
         wheelFR.motorTorque = speed_motor[1]; 
         wheelRL.motorTorque = speed_motor[2]; 
         wheelRR.motorTorque = speed_motor[3]; 
-  
-//
+
         // 打印车体的速度
         Debug.Log($"车体速度: {rb.linearVelocity}");
 

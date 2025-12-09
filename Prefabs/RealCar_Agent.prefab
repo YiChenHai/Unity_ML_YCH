@@ -83,7 +83,6 @@ GameObject:
   - component: {fileID: 4756540829594658354}
   - component: {fileID: 1597600637269406751}
   - component: {fileID: 8841048537719840671}
-  - component: {fileID: 6102091651906910976}
   - component: {fileID: 376468703843623061}
   m_Layer: 0
   m_Name: Rear_Right
@@ -160,29 +159,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6102091651906910976
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2583876012660205132}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!146 &376468703843623061
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -233,7 +209,6 @@ GameObject:
   - component: {fileID: 1990472194043178725}
   - component: {fileID: 7559675598218058755}
   - component: {fileID: 4584123691816394341}
-  - component: {fileID: 7135791721338154340}
   - component: {fileID: 4213153031505172800}
   m_Layer: 0
   m_Name: Front_Left
@@ -310,29 +285,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7135791721338154340
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335050217344339284}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!146 &4213153031505172800
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -791,7 +743,6 @@ GameObject:
   - component: {fileID: 7469621841003078790}
   - component: {fileID: 2821443156634227731}
   - component: {fileID: 2111508518441126452}
-  - component: {fileID: 8387684950791150294}
   - component: {fileID: 3087727225901470792}
   m_Layer: 0
   m_Name: Rear_Left
@@ -868,29 +819,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &8387684950791150294
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6987900217739531768}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!146 &3087727225901470792
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -1316,7 +1244,6 @@ GameObject:
   - component: {fileID: 3481875145995069036}
   - component: {fileID: 2338952731554275307}
   - component: {fileID: 6205298526182606280}
-  - component: {fileID: 7435070077866176606}
   - component: {fileID: 7804430544147595454}
   m_Layer: 0
   m_Name: Front_Right
@@ -1393,29 +1320,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &7435070077866176606
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8899333387896207625}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!146 &7804430544147595454
 WheelCollider:
   m_ObjectHideFlags: 0
