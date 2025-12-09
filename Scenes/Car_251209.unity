@@ -759,9 +759,23 @@ MonoBehaviour:
   deadzone: 0.1
   maxWheelLinearSpeed: 4
   maxMotorTorque: 200
-  torqueGain: 400
   brakeTorqueHigh: 1500
   brakeGain: 800
+  speed_Kp: 400
+  speed_Ki: 10
+  speed_Kd: 5
+  speed_integratorLimit: 50
+  speed_outputMin: -200
+  speed_outputMax: 200
+  speedDeadband: 0.02
+  steer_Kp: 30
+  steer_Ki: 0
+  steer_Kd: 1
+  steer_integratorLimit: 30
+  maxSteerRateDeg: 180
+  steerOutputMinDeg: -180
+  steerOutputMaxDeg: 180
+  steerDeadbandDeg: 0.5
   forceWheelZto90: 1
   steerAngles:
   - 0
@@ -822,7 +836,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 100
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -1019,7 +1033,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 100
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -1216,7 +1230,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 100
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -2246,7 +2260,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 20
+  m_Mass: 100
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
