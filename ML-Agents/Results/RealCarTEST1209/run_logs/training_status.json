@@ -2,22 +2,22 @@
     "RealCarTest": {
         "checkpoints": [
             {
-                "steps": 6000,
-                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-6000.onnx",
-                "reward": 4.425677536986768,
-                "creation_time": 1765270113.7649863,
+                "steps": 8233,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-8233.onnx",
+                "reward": null,
+                "creation_time": 1765274853.026291,
                 "auxillary_file_paths": [
-                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-6000.pt"
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-8233.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 6000,
+            "steps": 8233,
             "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest.onnx",
-            "reward": 4.425677536986768,
-            "creation_time": 1765270113.7649863,
+            "reward": null,
+            "creation_time": 1765274853.026291,
             "auxillary_file_paths": [
-                "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-6000.pt"
+                "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209\\RealCarTest\\RealCarTest-8233.pt"
             ]
         }
     },

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class TestCar : MonoBehaviour
+public class MyCar_Motion : MonoBehaviour
 {
     public enum ControlSource { Agent = 0, Manual = 1 }
 
@@ -135,13 +135,15 @@ public class TestCar : MonoBehaviour
         {
             vx = vx_input * inputScaleVx;
             vy = vy_input * inputScaleVy;
-            omega = omega_input * inputScaleOmega;
+            // 把正的 omega 取反，使正值表示顺时针（车头向右）旋转
+            omega = -omega_input * inputScaleOmega;
         }
         else // Manual: 从 Inspector 手动输入，manualOmega 单位为 rad/s
         {
             vx = manualVx * inputScaleVx;
             vy = manualVy * inputScaleVy;
-            omega = manualOmega * inputScaleOmega;
+            // Manual 模式也统一取反
+            omega = -manualOmega * inputScaleOmega;
         }
 
         ComputeKinematics(vx, vy, omega);

@@ -1,3 +1,4 @@
+// ...existing code...
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,13 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-public class CarAgent : Agent
+public class MyCarAgent : Agent
 {
     [Header("Refs")]
     public MagneticTape tape;
     public Transform[] sensors = new Transform[6];
     public Rigidbody rb;
-    public TestCar testCar; // 目标驱动脚本（test_car.cs）
+    public MyCar_Motion myCarMotion; // 改为新的类名并在 Inspector 里绑定 MyCar_Motion 组件
 
     [Header("Control limits (body frame)")]
     public float maxForwardSpeed = 0.6f;     // vx m/s
@@ -53,8 +54,8 @@ public class CarAgent : Agent
         transform.position = startPos;
         transform.rotation = startRot;
 
-        // 清除 testCar 的输入（test_car 内部会在 FixedUpdate 运行驱动）
-        if (testCar != null) testCar.SetControl(0f, 0f, 0f);
+        // 清除 myCarMotion 的输入（MyCar_Motion 内部会在 FixedUpdate 运行驱动）
+        if (myCarMotion != null) myCarMotion.SetControl(0f, 0f, 0f);
 
         episodeTimer = 0f;
         lastForward = transform.forward;
@@ -95,8 +96,8 @@ public class CarAgent : Agent
         float vy = a_vy * maxLateralSpeed;
         float omega = a_w * maxOmegaDeg * Mathf.Deg2Rad; // rad/s
 
-        // 下发给 test_car 去控制车辆运动
-        if (testCar != null) testCar.SetControl(vx, vy, omega);
+        // 下发给 MyCar_Motion 去控制车辆运动
+        if (myCarMotion != null) myCarMotion.SetControl(vx, vy, omega);
 
         // 计算奖励并加入
         float reward = CalculateReward();
@@ -115,12 +116,17 @@ public class CarAgent : Agent
         if (frontMax < 0.005f || rearMax < 0.005f)
         {
             AddReward(-1f);
+            Debug.Log($"Episode Ended: magnetic signal lost. frontMax={frontMax:F4}, rearMax={rearMax:F4}");
             EndEpisode();
             return;
         }
 
         episodeTimer += Time.fixedDeltaTime;
-        if (episodeTimer >= maxEpisodeTime) EndEpisode();
+        if (episodeTimer >= maxEpisodeTime)
+        {
+            Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s, maxEpisodeTime={maxEpisodeTime:F2}s");
+            EndEpisode();
+        }
 
         lastForward = transform.forward;
     }
@@ -157,3 +163,4 @@ public class CarAgent : Agent
         if (Input.GetKey(KeyCode.E)) cont[2] = 1f;
     }
 }
+// ...existing code...
