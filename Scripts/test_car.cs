@@ -6,6 +6,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TestCar : MonoBehaviour
 {
+    public enum ControlSource { Agent = 0, Manual = 1 }
+
+    [Header("Control source")]
+    public ControlSource controlSource = ControlSource.Agent;
+
     [Header("Wheel order: FL, RL, RR, FR")]
     public WheelCollider[] wheelColliders = new WheelCollider[4]; // 按顺序赋值：FL, RL, RR, FR
     public Transform[] wheelMeshes = new Transform[4];            // 可视化轮子（可选）
@@ -16,9 +21,18 @@ public class TestCar : MonoBehaviour
 
     [Header("Control inputs (body frame)")]
     // 在车身坐标系中输入：vx 沿 transform.forward 正向（m/s），vy 右为正（m/s），omega 绕 up (rad/s)
+    // 当 controlSource==Agent 时，这些由外部 SetControl() 设置；Manual 时使用下面的 manualXXX
     public float vx_input = 0f;
     public float vy_input = 0f;
     public float omega_input = 0f;
+
+    [Header("Manual inputs (Inspector)")]
+    [Tooltip("前进速度，单位 m/s")]
+    public float manualVx = 0f;
+    [Tooltip("横向速度（右为正），单位 m/s")]
+    public float manualVy = 0f;
+    [Tooltip("自转角速度，单位 rad/s（Inspector 直接输入弧度/秒）")]
+    public float manualOmega = 0f;
 
     [Header("Kinematic scaling & deadzone")]
     public float inputScaleVx = 1f;      // 输入缩放
@@ -115,9 +129,20 @@ public class TestCar : MonoBehaviour
 
     void FixedUpdate()
     {
-        float vx = vx_input * inputScaleVx;
-        float vy = vy_input * inputScaleVy;
-        float omega = omega_input * inputScaleOmega;
+        // 依据控制源选择三速度
+        float vx, vy, omega;
+        if (controlSource == ControlSource.Agent)
+        {
+            vx = vx_input * inputScaleVx;
+            vy = vy_input * inputScaleVy;
+            omega = omega_input * inputScaleOmega;
+        }
+        else // Manual: 从 Inspector 手动输入，manualOmega 单位为 rad/s
+        {
+            vx = manualVx * inputScaleVx;
+            vy = manualVy * inputScaleVy;
+            omega = manualOmega * inputScaleOmega;
+        }
 
         ComputeKinematics(vx, vy, omega);
         MapAndNormalize();
@@ -125,7 +150,7 @@ public class TestCar : MonoBehaviour
         UpdateVisualWheels();
     }
 
-    // 外部接口
+    // 外部接口：设置控制量（body frame），Agent 使用此函数下发控制
     public void SetControl(float vx, float vy, float omega)
     {
         vx_input = vx;
