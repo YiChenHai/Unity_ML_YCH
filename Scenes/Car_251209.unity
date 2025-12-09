@@ -691,7 +691,7 @@ Transform:
   m_GameObject: {fileID: 714007401}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.464, y: 0.5, z: 1.4773128}
+  m_LocalPosition: {x: 0, y: 0.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -750,16 +750,29 @@ MonoBehaviour:
   - {fileID: 2022725750}
   wheelBase: 0.5999999
   trackWidth: 0.5
-  widget_vx: 0
-  widget_vy: 0
-  widget_omega: 0
-  maxWheelSpeed: 8
+  vx_input: 0
+  vy_input: 0
+  omega_input: 0
+  inputScaleVx: 1
+  inputScaleVy: 1
+  inputScaleOmega: 1
+  deadzone: 0.1
+  maxWheelLinearSpeed: 4
   maxMotorTorque: 200
   torqueGain: 400
   brakeTorqueHigh: 1500
   brakeGain: 800
-  rearWheelSteer: 0
-  autoComputeGeometry: 1
+  forceWheelZto90: 1
+  steerAngles:
+  - 0
+  - 0
+  - 0
+  - 0
+  wheelSpeeds:
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,7 +2148,7 @@ Transform:
   m_GameObject: {fileID: 1869546804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.139, y: 0.15, z: 0}
+  m_LocalPosition: {x: 1.717, y: 0.15, z: 0}
   m_LocalScale: {x: 0.5, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
