@@ -1,4 +1,3 @@
-// ...existing code...
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,16 +11,14 @@ public class MyCar_Motion : MonoBehaviour
     public ControlSource controlSource = ControlSource.Agent;
 
     [Header("Wheel order: FL, RL, RR, FR")]
-    public WheelCollider[] wheelColliders = new WheelCollider[4]; // 按顺序赋值：FL, RL, RR, FR
-    public Transform[] wheelMeshes = new Transform[4];            // 可视化轮子（可选）
+    public WheelCollider[] wheelColliders = new WheelCollider[4];
+    public Transform[] wheelMeshes = new Transform[4];
 
     [Header("Vehicle geometry (m)")]
     public float wheelBase = 0.76f;   // 轴距 L
     public float trackWidth = 0.47f;  // 轮距 W
 
     [Header("Control inputs (body frame)")]
-    // 在车身坐标系中输入：vx 沿 transform.forward 正向（m/s），vy 右为正（m/s），omega 绕 up (rad/s)
-    // 当 controlSource==Agent 时，这些由外部 SetControl() 设置；Manual 时使用下面的 manualXXX
     public float vx_input = 0f;
     public float vy_input = 0f;
     public float omega_input = 0f;
@@ -31,68 +28,70 @@ public class MyCar_Motion : MonoBehaviour
     public float manualVx = 0f;
     [Tooltip("横向速度（右为正），单位 m/s")]
     public float manualVy = 0f;
-    [Tooltip("自转角速度，单位 rad/s（Inspector 直接输入弧度/秒）")]
+    [Tooltip("自转角速度，单位 rad/s")]
     public float manualOmega = 0f;
 
     [Header("Kinematic scaling & deadzone")]
-    public float inputScaleVx = 1f;      // 输入缩放
+    public float inputScaleVx = 1f;
     public float inputScaleVy = 1f;
     public float inputScaleOmega = 1f;
-    public float deadzone = 0.01f;       // 死区
+    public float deadzone = 0.01f;
 
     [Header("Wheel / Drive")]
-    public float maxWheelLinearSpeed = 4.0f;  // MAX_MOTOR_SPEED (m/s)
-    public float maxMotorTorque = 200f;       // 电机扭矩极限 (N·m)
+    public float maxWheelLinearSpeed = 4.0f;
+    public float maxMotorTorque = 200f;
     public float brakeTorqueHigh = 1500f;
-    public float brakeGain = 800f;            // 自动制动力与当前轮速成比例
+    public float brakeGain = 800f;
 
     [Header("Speed PID (per wheel)")]
     public float speed_Kp = 120f;
     public float speed_Ki = 6f;
     public float speed_Kd = 20f;
-    public float speed_integratorLimit = 20f; // anti-windup
+    public float speed_integratorLimit = 20f;
     public float speed_outputMin = -200f;
     public float speed_outputMax = 200f;
-    public float speedDeadband = 0.02f; // 小误差不触发PID，减少抖动
+    public float speedDeadband = 0.02f;
 
     [Header("Steer PID (per wheel)")]
     public float steer_Kp = 12f;
     public float steer_Ki = 0.5f;
     public float steer_Kd = 2f;
     public float steer_integratorLimit = 10f;
-    public float maxSteerRateDeg = 90f; // 限制舵机角速以避免振荡
+    public float maxSteerRateDeg = 90f;
     public float steerOutputMinDeg = -90f;
     public float steerOutputMaxDeg = 90f;
-    public float steerDeadbandDeg = 0.5f; // 小角度误差不触发PID，减少抖动
+    public float steerDeadbandDeg = 0.5f;
 
     [Header("Visual options")]
-    public bool forceWheelZto90 = true;       // 保证可视轮子的世界Z角为90°
+    public bool forceWheelZto90 = true;
+
+    [Header("Debug")]
+    public bool enableDebugLog = true;
 
     Rigidbody rb;
 
-    // 解析计算出的量（顺序：解析索引 0=FL,1=RL,2=RR,3=FR）
     private float[] kinSteer = new float[4]; // rad
     private float[] kinSpeed = new float[4]; // m/s
 
-    // 应用到 wheelColliders 的映射后命令（按 wheelColliders 顺序）
-    private float[] appliedSteerDeg = new float[4]; // deg target
-    private float[] appliedSpeed = new float[4];    // m/s target
+    private float[] appliedSteerDeg = new float[4];
+    private float[] appliedSpeed = new float[4];
 
-    // PID 控制器数组
     private PIDController[] speedPIDs = new PIDController[4];
     private PIDController[] steerPIDs = new PIDController[4];
 
-    // 当前舵机角度命令（deg）和当前速度命令缓存（m/s）
     private float[] steerCmdDeg = new float[4];
     private float[] wheelSpeedCmd = new float[4];
+    private float[] prevWheelSpeedCmd = new float[4]; // 记录前一帧的速度命令
 
-    // 输出公开（按 wheelColliders 顺序）
-    [HideInInspector] public float[] steerAngles = new float[4]; // rad
-    [HideInInspector] public float[] wheelSpeeds = new float[4]; // m/s (当前实际轮线速)
+    [HideInInspector] public float[] steerAngles = new float[4];
+    [HideInInspector] public float[] wheelSpeeds = new float[4];
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        
+        // 启用插值以平滑渲染
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
 
         for (int i = 0; i < 4; i++)
         {
@@ -104,12 +103,12 @@ public class MyCar_Motion : MonoBehaviour
 
             steerCmdDeg[i] = 0f;
             wheelSpeedCmd[i] = 0f;
+            prevWheelSpeedCmd[i] = 0f;
         }
     }
 
     void OnValidate()
     {
-        // 当在 Editor 修改 PID 参数时更新控制器参数
         for (int i = 0; i < 4; i++)
         {
             if (speedPIDs[i] != null)
@@ -129,30 +128,30 @@ public class MyCar_Motion : MonoBehaviour
 
     void FixedUpdate()
     {
-        // 依据控制源选择三速度
         float vx, vy, omega;
         if (controlSource == ControlSource.Agent)
         {
             vx = vx_input * inputScaleVx;
             vy = vy_input * inputScaleVy;
-            // 把正的 omega 取反，使正值表示顺时针（车头向右）旋转
             omega = -omega_input * inputScaleOmega;
         }
-        else // Manual: 从 Inspector 手动输入，manualOmega 单位为 rad/s
+        else
         {
             vx = manualVx * inputScaleVx;
             vy = manualVy * inputScaleVy;
-            // Manual 模式也统一取反
             omega = -manualOmega * inputScaleOmega;
         }
 
         ComputeKinematics(vx, vy, omega);
         MapAndNormalize();
         ApplyPIDControl();
+    }
+
+    void LateUpdate()
+    {
         UpdateVisualWheels();
     }
 
-    // 外部接口：设置控制量（body frame），Agent 使用此函数下发控制
     public void SetControl(float vx, float vy, float omega)
     {
         vx_input = vx;
@@ -160,10 +159,8 @@ public class MyCar_Motion : MonoBehaviour
         omega_input = omega;
     }
 
-    // 1. 运动学计算（按 txt）
     void ComputeKinematics(float vx, float vy, float omega)
     {
-        // 如果都在死区，清零解析输出并返回
         if (Mathf.Abs(vx) < deadzone && Mathf.Abs(vy) < deadzone && Mathf.Abs(omega) < deadzone)
         {
             for (int i = 0; i < 4; i++)
@@ -175,25 +172,24 @@ public class MyCar_Motion : MonoBehaviour
         }
 
         Vector2[] wheelPos = new Vector2[4] {
-            new Vector2( wheelBase/2f,  trackWidth/2f),  // FL
-            new Vector2(-wheelBase/2f,  trackWidth/2f),  // RL
-            new Vector2(-wheelBase/2f, -trackWidth/2f),  // RR
-            new Vector2( wheelBase/2f, -trackWidth/2f)   // FR
+            new Vector2( wheelBase/2f,  trackWidth/2f),  // FL (0)
+            new Vector2(-wheelBase/2f,  trackWidth/2f),  // RL (1)
+            new Vector2(-wheelBase/2f, -trackWidth/2f),  // RR (2)
+            new Vector2( wheelBase/2f, -trackWidth/2f)   // FR (3)
         };
 
         for (int i = 0; i < 4; i++)
         {
-            float vx_rot = -omega * wheelPos[i].y;  // -ω * y
-            float vy_rot =  omega * wheelPos[i].x;  //  ω * x
+            float vx_rot = -omega * wheelPos[i].y;
+            float vy_rot =  omega * wheelPos[i].x;
 
             float vx_total = vx + vx_rot;
             float vy_total = vy + vy_rot;
 
-            kinSteer[i] = Mathf.Atan2(vy_total, vx_total); // rad
-            kinSpeed[i] = Mathf.Sqrt(vx_total * vx_total + vy_total * vy_total); // m/s
+            kinSteer[i] = Mathf.Atan2(vy_total, vx_total);
+            kinSpeed[i] = Mathf.Sqrt(vx_total * vx_total + vy_total * vy_total);
         }
 
-        // 将 steer 限制到 [-pi/2, pi/2]，并在需要时翻转速度符号
         for (int i = 0; i < 4; i++)
         {
             if (kinSteer[i] > Mathf.PI / 2f)
@@ -206,13 +202,26 @@ public class MyCar_Motion : MonoBehaviour
                 kinSteer[i] += Mathf.PI;
                 kinSpeed[i] = -kinSpeed[i];
             }
+            kinSteer[i] = -kinSteer[i];
+        }
+
+        // 强制左右轮对称性校正 
+        //kinSpeed[3] = kinSpeed[0];
+        //kinSteer[3] = -kinSteer[0];
+        //kinSpeed[2] = kinSpeed[1];
+       // kinSteer[2] = -kinSteer[1];
+
+        // 调试打印：每 30 帧打印一次运动学解析结果
+        if (enableDebugLog && Time.frameCount % 30 == 0)
+        {
+        //    Debug.Log($"[ComputeKinematics] Input: vx={vx:F3}, vy={vy:F3}, omega={omega:F3}");
+        //    Debug.Log($"[kinSpeed] FL={kinSpeed[0]:F3}, RL={kinSpeed[1]:F3}, RR={kinSpeed[2]:F3}, FR={kinSpeed[3]:F3}");
+        //    Debug.Log($"[kinSteer] FL={kinSteer[0]*Mathf.Rad2Deg:F1}°, RL={kinSteer[1]*Mathf.Rad2Deg:F1}°, RR={kinSteer[2]*Mathf.Rad2Deg:F1}°, FR={kinSteer[3]*Mathf.Rad2Deg:F1}°");
         }
     }
 
-    // 2. 归一化并映射到实际 wheelCollider 索引（执行你之前要求的前后互换）
     void MapAndNormalize()
     {
-        // 速度归一化（若某轮超过最大速度则按比例缩放）
         float max_speed_abs = 0f;
         for (int i = 0; i < 4; i++) max_speed_abs = Mathf.Max(max_speed_abs, Mathf.Abs(kinSpeed[i]));
         if (max_speed_abs > maxWheelLinearSpeed && max_speed_abs > 0f)
@@ -221,27 +230,55 @@ public class MyCar_Motion : MonoBehaviour
             for (int i = 0; i < 4; i++) kinSpeed[i] *= scale;
         }
 
-        // 解析索引 -> wheelColliders 索引 映射：把前左与后左互換，右侧同理
-        // kin idx: 0=FL,1=RL,2=RR,3=FR
-        int[] map = new int[4] { 1, 0, 3, 2 }; // kin0->1, kin1->0, kin2->3, kin3->2
-
+        // 直接映射：kinIdx 顺序与 wheelColliders 顺序一致
+        // kinIdx: FL(0), RL(1), RR(2), FR(3)
+        // wheelColliders: FL(0), RL(1), RR(2), FR(3)
         for (int i = 0; i < 4; i++)
         {
-            appliedSteerDeg[i] = 0f;
-            appliedSpeed[i] = 0f;
+            appliedSteerDeg[i] = kinSteer[i] * Mathf.Rad2Deg;
+            appliedSpeed[i] = kinSpeed[i];
         }
-        for (int kinIdx = 0; kinIdx < 4; kinIdx++)
+
+        // 调试打印：映射后的结果
+        if (enableDebugLog && Time.frameCount % 30 == 0)
         {
-            int tgt = map[kinIdx];
-            appliedSteerDeg[tgt] = kinSteer[kinIdx] * Mathf.Rad2Deg;
-            appliedSpeed[tgt] = kinSpeed[kinIdx];
+            Debug.Log($"[appliedSpeed] FL={appliedSpeed[0]:F3}, RL={appliedSpeed[1]:F3}, RR={appliedSpeed[2]:F3}, FR={appliedSpeed[3]:F3}");
+            Debug.Log($"[appliedSteerDeg] FL={appliedSteerDeg[0]:F1}°, RL={appliedSteerDeg[1]:F1}°, RR={appliedSteerDeg[2]:F1}°, FR={appliedSteerDeg[3]:F1}°");
         }
     }
 
-    // 3. 应用 PID：速度 PID 输出 motorTorque，转向 PID 输出舵机角速并积分到 steerCmdDeg
     void ApplyPIDControl()
     {
         float dt = Time.fixedDeltaTime;
+
+        // 检测速度目标是否发生方向反转（从正变负或从负变正）
+        bool directionChanged = false;
+        for (int j = 0; j < 4; j++)
+        {
+            float prevSign = Mathf.Sign(prevWheelSpeedCmd[j]);
+            float currSign = Mathf.Sign(appliedSpeed[j]);
+            
+            // 如果前一帧命令和当前目标的符号不同，且都不为零，说明发生了反转
+            if (prevSign != 0f && currSign != 0f && prevSign != currSign)
+            {
+                directionChanged = true;
+                break;
+            }
+        }
+
+        // 方向反转时重置所有轮的 PID 积分器
+        if (directionChanged)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                speedPIDs[j].ResetIntegrator();
+                steerPIDs[j].ResetIntegrator();
+            }
+            if (enableDebugLog)
+            {
+                Debug.Log("[ApplyPIDControl] Direction reversed! Reset all PID integrators.");
+            }
+        }
 
         for (int j = 0; j < 4; j++)
         {
@@ -253,12 +290,12 @@ public class MyCar_Motion : MonoBehaviour
             float desired_v = appliedSpeed[j];
             float desiredSteerDeg = appliedSteerDeg[j];
 
-            // --- 速度 PID -> 输出扭矩 (N·m)
             float speedError = desired_v - current_v;
 
-            if (Mathf.Abs(desired_v) < speedDeadband || Mathf.Abs(speedError) < speedDeadband)
+            // 修复逻辑：分离"停止目标"和"死区控制"
+            if (Mathf.Abs(desired_v) < speedDeadband)
             {
-                // 认为目标为 0 或误差极小：施加制动并重置积分
+                // 目标速度本身接近零 → 完全停止
                 speedPIDs[j].ResetIntegrator();
                 if (wc != null)
                 {
@@ -268,9 +305,20 @@ public class MyCar_Motion : MonoBehaviour
                 }
                 wheelSpeedCmd[j] = 0f;
             }
+            else if (Mathf.Abs(speedError) < speedDeadband)
+            {
+                // 误差在死区内 → 停止加扭矩，但不加制动（让自然摩擦维持）
+                speedPIDs[j].ResetIntegrator();
+                if (wc != null)
+                {
+                    wc.motorTorque = 0f;      // 停止加扭矩
+                    wc.brakeTorque = 0f;      // 不加制动，避免顿挫！
+                }
+                wheelSpeedCmd[j] = desired_v;
+            }
             else
             {
-                // PID 控制输出直接作为 motorTorque（或作为前馈+PID）
+                // 误差超出死区 → 正常 PID 控制
                 float torqueCmd = speedPIDs[j].Update(speedError, dt);
                 torqueCmd = Mathf.Clamp(torqueCmd, -maxMotorTorque, maxMotorTorque);
                 if (wc != null)
@@ -281,14 +329,11 @@ public class MyCar_Motion : MonoBehaviour
                 wheelSpeedCmd[j] = desired_v;
             }
 
-            // --- 转向 PID -> 输出角速度 deg/s，积分到 steerCmdDeg（模拟舵机）
-            // 计算最短角误差（deg）
             float steerErrorDeg = Mathf.DeltaAngle(steerCmdDeg[j], desiredSteerDeg);
 
             float steerRateCmdDeg = 0f;
             if (Mathf.Abs(steerErrorDeg) < steerDeadbandDeg)
             {
-                // 误差极小，不触发 PID，清积分
                 steerPIDs[j].ResetIntegrator();
                 steerRateCmdDeg = 0f;
             }
@@ -298,8 +343,6 @@ public class MyCar_Motion : MonoBehaviour
             }
 
             steerRateCmdDeg = Mathf.Clamp(steerRateCmdDeg, -maxSteerRateDeg, maxSteerRateDeg);
-
-            // 集成成当前舵机角度，使用 MoveTowardsAngle 保持数值稳定
             steerCmdDeg[j] = Mathf.MoveTowardsAngle(steerCmdDeg[j], steerCmdDeg[j] + steerRateCmdDeg * dt, Mathf.Abs(steerRateCmdDeg) * dt);
 
             if (wc != null)
@@ -307,9 +350,20 @@ public class MyCar_Motion : MonoBehaviour
                 wc.steerAngle = steerCmdDeg[j];
             }
 
-            // 供外部读取：实际应用到物理轮子的角度/速度
             steerAngles[j] = steerCmdDeg[j] * Mathf.Deg2Rad;
             wheelSpeeds[j] = current_v;
+        }
+
+        // 保存当前速度命令用于下一帧比较
+        for (int j = 0; j < 4; j++)
+        {
+            prevWheelSpeedCmd[j] = appliedSpeed[j];
+        }
+
+        // 调试打印：实际轮速
+        if (enableDebugLog && Time.frameCount % 30 == 0)
+        {
+            Debug.Log($"[wheelSpeeds] FL={wheelSpeeds[0]:F3}, RL={wheelSpeeds[1]:F3}, RR={wheelSpeeds[2]:F3}, FR={wheelSpeeds[3]:F3}");
         }
     }
 
@@ -321,6 +375,7 @@ public class MyCar_Motion : MonoBehaviour
             var wc = wheelColliders[i];
             var mesh = wheelMeshes[i];
             if (wc == null || mesh == null) continue;
+            
             Vector3 pos; Quaternion rot;
             wc.GetWorldPose(out pos, out rot);
             mesh.position = pos;
@@ -338,7 +393,6 @@ public class MyCar_Motion : MonoBehaviour
         }
     }
 
-    // 简单 PID 控制器实现（带输出限幅和积分限幅）
     class PIDController
     {
         public float Kp, Ki, Kd;
@@ -359,7 +413,6 @@ public class MyCar_Motion : MonoBehaviour
         public void SetOutputLimits(float lo, float hi) { outMin = lo; outMax = hi; }
         public void ResetIntegrator() { integrator = 0f; lastError = 0f; }
 
-        // error: 系统误差 (setpoint - measurement)
         public float Update(float error, float dt)
         {
             if (dt <= 0f) return 0f;
@@ -372,4 +425,3 @@ public class MyCar_Motion : MonoBehaviour
         }
     }
 }
-// ...existing code...

@@ -1,0 +1,56 @@
+{
+    "RealCarTest": {
+        "checkpoints": [
+            {
+                "steps": 499883,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-499883.onnx",
+                "reward": 416.7859691977501,
+                "creation_time": 1765279024.2581203,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-499883.pt"
+                ]
+            },
+            {
+                "steps": 999976,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-999976.onnx",
+                "reward": 424.22679752111435,
+                "creation_time": 1765282897.6635113,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-999976.pt"
+                ]
+            },
+            {
+                "steps": 1499996,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-1499996.onnx",
+                "reward": 433.87976747751236,
+                "creation_time": 1765287042.7602532,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-1499996.pt"
+                ]
+            },
+            {
+                "steps": 1916809,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-1916809.onnx",
+                "reward": null,
+                "creation_time": 1765290510.5989923,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-1916809.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1916809,
+            "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest.onnx",
+            "reward": null,
+            "creation_time": 1765290510.5989923,
+            "auxillary_file_paths": [
+                "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\RealCarTEST1209_r\\RealCarTest\\RealCarTest-1916809.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.1+cpu"
+    }
+}
