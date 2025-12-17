@@ -1,0 +1,22 @@
+behaviors:
+  MyCarAgent_251217:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 8192
+      learning_rate: 2.5e-4
+      beta: 5.0e-3
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 5
+    network_settings:
+      normalize: true
+      hidden_units: 128
+      num_layers: 2
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    max_steps: 5.0e6
+    time_horizon: 256
+    summary_freq: 10000

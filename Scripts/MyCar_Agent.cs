@@ -21,15 +21,14 @@ public class MyCarAgent : Agent
     [Header("Normalization")]
     public float maxField = 0.02f;
 
-    [Header("Reward")]
-    public float w_track = 1.0f;
-    public float w_forward = 0.4f;
-    public float w_heading = 0.2f;
-
-    [Header("Reward tuning")]
-    public float w_align = 1.2f;         // 对齐磁场方向权重
-    public float w_forwardField = 0.8f;  // 沿磁场方向前进权重
+    [Header("Reward Weights")]
+    public float w_align = 0.5f;         // 对齐磁场方向权重（降低，避免原地对齐）
+    public float w_forwardField = 2.0f;  // 沿磁场方向前进权重（提高，强制前进）
+    public float w_track = 1.0f;         // 磁强差奖励权重（前后传感器）
     public float w_stability = 0.5f;     // 抑制角速度/抖动权重
+    public float w_bodyAlign = 0.6f;     // 车身姿态对齐权重（前后磁场一致性）
+    public float w_heading = 0.2f;       // 朝向变化惩罚权重
+    public float minSpeedReward = 0.2f;  // 最低速度要求（m/s），低于此速度会被惩罚
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
@@ -139,25 +138,35 @@ public class MyCarAgent : Agent
     {
         if (tape == null || sensors == null || sensors.Length < 6 || rb == null) return 0f;
 
-        // 1) 计算平均磁场方向（XZ 平面）
-        Vector3 avgField = Vector3.zero;
-        for (int i = 0; i < sensors.Length; i++)
+        // 1) 用前3个传感器计算磁场方向（导航用）
+        Vector3 frontField = Vector3.zero;
+        for (int i = 0; i < 3; i++)
         {
             Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            avgField += mag;
+            frontField += mag;
         }
-        avgField /= sensors.Length;
-        Vector3 fieldDir = new Vector3(avgField.x, 0f, avgField.z);
+        frontField /= 3f;
+        Vector3 fieldDir = new Vector3(frontField.x, 0f, frontField.z);
         if (fieldDir.sqrMagnitude < 1e-8f) return 0f;
         fieldDir.Normalize();
 
-        // 2) 车头与磁场方向对齐奖励（只奖励正向对齐）
+        // 2) 车头与磁场方向对齐奖励（只有在移动时才给对齐奖励）
         float align = Vector3.Dot(transform.forward, fieldDir); // [-1,1]
-        float r_align = Mathf.Max(0f, align); // [0,1]
+        float currentSpeed = rb.linearVelocity.magnitude;
+        // 对齐奖励乘以速度系数，静止时不给对齐奖励
+        float speedFactor = Mathf.Clamp01(currentSpeed / Mathf.Max(0.001f, minSpeedReward));
+        float r_align = Mathf.Max(0f, align) * speedFactor; // [0,1]
 
-        // 3) 沿磁场方向的前向速度奖励
+        // 3) 沿磁场方向的前向速度奖励（允许负值，反向移动会被惩罚）
         float velAlong = Vector3.Dot(rb.linearVelocity, fieldDir); // m/s
-        float r_forwardField = Mathf.Clamp01(velAlong / Mathf.Max(0.001f, maxForwardSpeed));
+        float r_forwardField = velAlong / Mathf.Max(0.001f, maxForwardSpeed); // 可为负值 [-1,1]
+        
+        // 额外：速度过低惩罚（鼓励保持一定速度）
+        float r_minSpeed = 0f;
+        if (currentSpeed < minSpeedReward)
+        {
+            r_minSpeed = -0.5f * (1f - currentSpeed / minSpeedReward); // [-0.5, 0]
+        }
 
         // 4) 磁强差（前后）归一化，鼓励车头靠近磁源
         float frontAvg = 0f, rearAvg = 0f;
@@ -180,13 +189,35 @@ public class MyCarAgent : Agent
 
         float r_stability = Mathf.Clamp01((r_stability_rate + r_stability_heading) * 0.5f);
 
-        // 6) 最终组合
+        // 6) 车身姿态对齐（用后3个传感器校验）
+        Vector3 rearField = Vector3.zero;
+        for (int i = 3; i < 6; i++)
+        {
+            Vector3 mag = tape.GetMagneticField(sensors[i].position);
+            rearField += mag;
+        }
+        rearField /= 3f;
+        Vector3 rearFieldDir = new Vector3(rearField.x, 0f, rearField.z);
+        
+        // 车身方向应与前后磁场方向一致（如果后传感器也能检测到有效磁场）
+        float r_bodyAlign = 0f;
+        if (rearFieldDir.sqrMagnitude > 1e-8f)
+        {
+            rearFieldDir.Normalize();
+            // 前后磁场方向应该一致，说明车身沿磁带
+            float frontRearConsistency = Vector3.Dot(fieldDir, rearFieldDir); // [-1,1]
+            r_bodyAlign = Mathf.Clamp01(frontRearConsistency); // [0,1]
+        }
+
+        // 7) 最终组合
         float reward = 
             w_align * r_align +
             w_forwardField * r_forwardField +
             w_track * r_track_norm +
             w_stability * r_stability +
-            w_heading * (1f - Mathf.Clamp01(headingChangeDeg / 180f));
+            w_bodyAlign * r_bodyAlign +
+            w_heading * (1f - Mathf.Clamp01(headingChangeDeg / 180f)) +
+            r_minSpeed; // 低速惩罚
 
         return reward;
     }
