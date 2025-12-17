@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c667595f282c2d84c9483eace042e852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlSource: 1
+  controlSource: 0
   wheelColliders:
   - {fileID: 751401904}
   - {fileID: 897324996}
@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: RealCarTest
+  m_BehaviorName: MyCarAgent_251217
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -485,12 +485,13 @@ MonoBehaviour:
   maxLateralSpeed: 1
   maxOmegaDeg: 90
   maxField: 8
-  w_track: 1
-  w_forward: 0.4
-  w_heading: 0.2
   w_align: 1.2
   w_forwardField: 0.8
+  w_track: 1
   w_stability: 0.5
+  w_bodyAlign: 0.6
+  w_heading: 0.2
+  minSpeedReward: 0.2
   maxEpisodeTime: 100
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
@@ -543,7 +544,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 200
+  m_Mass: 500
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -615,7 +616,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 200
+  m_Mass: 500
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -687,7 +688,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 200
+  m_Mass: 500
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -1919,7 +1920,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.1
   m_ForceAppPointDistance: 0
-  m_Mass: 200
+  m_Mass: 500
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
