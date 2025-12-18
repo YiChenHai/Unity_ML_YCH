@@ -48,7 +48,7 @@ env_settings:
   env_path: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/XYF_Car_Test.exe
   env_args: null
   base_port: 5005
-  num_envs: 4
+  num_envs: 9
   num_areas: 1
   timeout_wait: 60
   seed: -1
