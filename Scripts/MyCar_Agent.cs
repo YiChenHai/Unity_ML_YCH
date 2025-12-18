@@ -9,6 +9,7 @@ public class MyCarAgent : Agent
 {
     [Header("Refs")]
     public MagneticTape tape;
+    [Tooltip("传感器顺序: [0]=前左, [1]=前中, [2]=前右, [3]=后左, [4]=后中, [5]=后右")]
     public Transform[] sensors = new Transform[6];
     public Rigidbody rb;
     public MyCar_Motion myCarMotion;
@@ -21,15 +22,20 @@ public class MyCarAgent : Agent
     [Header("Normalization")]
     public float maxField = 8f;
 
-    [Header("Reward Weights")]
-    public float w_align = 0.5f;         // 对齐磁场方向权重（降低，避免原地对齐）
-    public float w_forwardField = 2.0f;  // 沿磁场方向前进权重（提高，强制前进）
-    public float w_track = 1.0f;         // 磁强差奖励权重（前后传感器）
-    public float w_stability = 0.2f;     // 抑制角速度/抖动权重（降低，允许转向）
-    public float w_bodyAlign = 0.6f;     // 车身姿态对齐权重（前后磁场一致性）
-    public float w_heading = 0.2f;       // 朝向变化惩罚权重
-    public float w_turning = 0.8f;       // 转向引导权重（新增）
-    public float minSpeedReward = 0.2f;  // 最低速度要求（m/s），低于此速度会被惩罚
+    [Header("Reward Weights - 基于精确需求")]
+    public float w_centerStrength = 5.0f;   // 中心传感器强度（核心目标）
+    public float w_symmetry = 3.0f;         // 左右对称性（差值接近0）
+    public float w_forward = 2.0f;          // 前进速度
+    public float w_stability = 0.5f;        // 姿态稳定（降低权重以减少对转弯的抑制）
+    
+    [Header("Stability Thresholds")]
+    public float symmetryThreshold = 0.3f;  // 判断左右对称的阈值（归一化，放宽以识别直角弯）
+    public float centerMinThreshold = 0.3f; // 判断是否在磁条上的最低中心强度（归一化）
+    
+    [Header("Penalty Settings")]
+    public float backwardPenaltyMultiplier = 10.0f;  // 后退惩罚倍数（完全禁止后退）
+    public float minSpeedThreshold = 0.08f;          // 最低速度阈值（降低以允许转弯降速）
+    public float curveSpeedBonus = 1.5f;            // 弯道时的速度奖励倍数
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
@@ -39,16 +45,10 @@ public class MyCarAgent : Agent
     public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
     public Quaternion startRot = Quaternion.Euler(0f, 0f, 0f);
 
-    private Vector3 lastForward;
-    private float lastTotalStrength = 0f;
-    private float cumulativeForwardDistance = 0f;
-    private Vector3 lastPosition;
-
     public override void Initialize()
     {
         base.Initialize();
         if (rb == null) rb = GetComponent<Rigidbody>();
-        lastForward = transform.forward;
     }
 
     public override void OnEpisodeBegin()
@@ -65,15 +65,11 @@ public class MyCarAgent : Agent
         if (myCarMotion != null) myCarMotion.SetControl(0f, 0f, 0f);
 
         episodeTimer = 0f;
-        lastForward = transform.forward;
-        lastTotalStrength = 0f;
-        cumulativeForwardDistance = 0f;
-        lastPosition = transform.position;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // 每个传感器：使用归一化强度
+        // 1-6: 六个传感器的归一化强度（环境感知）
         for (int i = 0; i < sensors.Length; i++)
         {
             if (sensors[i] != null && tape != null)
@@ -84,14 +80,15 @@ public class MyCarAgent : Agent
             else sensor.AddObservation(0f);
         }
 
-        // 局部速度
+        // 7-9: 当前运动状态（车身坐标系）- 这是AI做决策的关键反馈
         Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
-        sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));
-        sensor.AddObservation(localVel.z / Mathf.Max(0.001f, maxForwardSpeed));
-
-        // heading change
-        float headingChange = Vector3.SignedAngle(lastForward, transform.forward, Vector3.up) / 180f;
-        sensor.AddObservation(Mathf.Clamp(headingChange, -1f, 1f));
+        float angularVel = rb != null ? rb.angularVelocity.y : 0f;
+        
+        sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));   // 7: 横向速度 vx
+        sensor.AddObservation(localVel.z / Mathf.Max(0.001f, maxForwardSpeed));   // 8: 前进速度 vz
+        
+        float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
+        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));    // 9: 角速度 omega
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -109,27 +106,33 @@ public class MyCarAgent : Agent
         // 下发给 MyCar_Motion 去控制车辆运动
         if (myCarMotion != null) myCarMotion.SetControl(vx, vy, omega);
 
-        // 计算奖励并加入
-        float reward = CalculateReward();
-        AddReward(reward * Time.fixedDeltaTime);
-
-        // 终止条件：检查前后磁场是否丢失
+        // 读取传感器数据（只读取一次）
+        float[] sensorValues = new float[6];
         float frontMax = 0f, rearMax = 0f;
         for (int i = 0; i < sensors.Length; i++)
         {
-            if (sensors[i] == null || tape == null) continue;
-            Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            float s = mag.magnitude;
-            if (i < 3) frontMax = Mathf.Max(frontMax, s);
-            else rearMax = Mathf.Max(rearMax, s);
+            if (sensors[i] != null && tape != null)
+            {
+                Vector3 mag = tape.GetMagneticField(sensors[i].position);
+                sensorValues[i] = mag.magnitude;
+                if (i < 3) frontMax = Mathf.Max(frontMax, sensorValues[i]);
+                else rearMax = Mathf.Max(rearMax, sensorValues[i]);
+            }
         }
-        if (frontMax < 0.005f || rearMax < 0.005f)
+        
+        // 终止条件：检查前后磁场是否丢失
+        float lostThreshold = maxField * 0.05f;
+        if (frontMax < lostThreshold || rearMax < lostThreshold)
         {
             AddReward(-1f);
-            Debug.Log($"Episode Ended: magnetic signal lost. frontMax={frontMax:F4}, rearMax={rearMax:F4}");
+            Debug.Log($"Episode Ended: magnetic signal lost. frontMax={frontMax:F4}, rearMax={rearMax:F4}, threshold={lostThreshold:F4}");
             EndEpisode();
             return;
         }
+
+        // 计算奖励并加入（使用已读取的传感器数据）
+        float reward = CalculateReward(sensorValues);
+        AddReward(reward * Time.fixedDeltaTime);
 
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
@@ -137,111 +140,97 @@ public class MyCarAgent : Agent
             Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s, maxEpisodeTime={maxEpisodeTime:F2}s");
             EndEpisode();
         }
-
-        lastForward = transform.forward;
     }
 
-    float CalculateReward()
+    float CalculateReward(float[] s)
     {
-        if (tape == null || sensors == null || sensors.Length < 6 || rb == null) return 0f;
+        if (rb == null || s == null || s.Length < 6) return 0f;
 
-        // 获取6个传感器的标量强度
-        // 0:前左 1:前中 2:前右 3:后左 4:后中 5:后右
-        float[] strength = new float[6];
-        for (int i = 0; i < 6; i++)
-        {
-            Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            strength[i] = mag.magnitude;
-        }
+        // ========== 1. 中心传感器强度（核心目标） ==========
+        // 前中和后中传感器应该最强，这是完美跟踪的直接体现
+        float centerAvg = (s[1] + s[4]) / 2f;  // 前中 + 后中
+        float r_center = Mathf.Clamp01(centerAvg / maxField);
 
-        // 计算各区域平均强度
-        float frontAvg = (strength[0] + strength[1] + strength[2]) / 3f;
-        float rearAvg = (strength[3] + strength[4] + strength[5]) / 3f;
-        float leftAvg = (strength[0] + strength[3]) / 2f;
-        float rightAvg = (strength[2] + strength[5]) / 2f;
-        float centerAvg = (strength[1] + strength[4]) / 2f;
-        float totalStrength = (frontAvg + rearAvg) / 2f;
-
-        // ============ 奖励分量 ============
-
-        // 1) 前后强度差 - 鼓励车头指向磁带方向
-        float r_frontRear = Mathf.Clamp((frontAvg - rearAvg) / Mathf.Max(1e-6f, maxField), -1f, 1f);
-
-        // 2) 左右对称性 - 鼓励车身居中
-        float lateralImbalance = Mathf.Abs(leftAvg - rightAvg) / Mathf.Max(1e-6f, maxField);
-        float r_centered = 1f - Mathf.Clamp01(lateralImbalance);
-
-        // 3) 整体强度 - 保持在磁带上
-        float r_onTrack = Mathf.Clamp01(totalStrength / Mathf.Max(1e-6f, maxField));
-
-        // 4) 强度增长率 - 奖励接近磁带
-        float strengthChange = totalStrength - lastTotalStrength;
-        float r_approaching = Mathf.Clamp(strengthChange / Mathf.Max(1e-6f, maxField * Time.fixedDeltaTime), -1f, 1f);
-        lastTotalStrength = totalStrength;
-
-        // 5) 前向速度 - 鼓励沿车头方向移动
-        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float r_forwardSpeed = Mathf.Clamp(forwardSpeed / Mathf.Max(0.001f, maxForwardSpeed), -2f, 1f);
-        // 倒退惩罚加倍
-
-        // 6) 总速度 - 基础移动鼓励
-        float currentSpeed = rb.linearVelocity.magnitude;
-        float r_speed = Mathf.Clamp01(currentSpeed / Mathf.Max(0.001f, maxForwardSpeed));
-
-        // 7) 累计前进距离（沿车头方向）
-        Vector3 displacement = transform.position - lastPosition;
-        float forwardDisplacement = Vector3.Dot(displacement, transform.forward);
-        cumulativeForwardDistance += forwardDisplacement;
-        lastPosition = transform.position;
-        float r_progress = forwardDisplacement / Mathf.Max(0.001f, maxForwardSpeed * Time.fixedDeltaTime);
-
-        // 8) 稳定性 - 抑制过度抖动
-        float yawRate = Mathf.Abs(rb.angularVelocity.y);
-        float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
-        float r_stability = 1f - Mathf.Clamp01(yawRate / Mathf.Max(1e-6f, maxOmegaRad));
-
-        // 9) 转向引导 - 根据左右传感器差异指示转向
-        // 左侧强度 > 右侧 → 应该右转（正角速度）
-        // 右侧强度 > 左侧 → 应该左转（负角速度）
-        float lateralGradient = (rightAvg - leftAvg) / Mathf.Max(1e-6f, maxField); // [-1,1]
-        float desiredOmegaSign = Mathf.Sign(lateralGradient); // 期望的旋转方向
-        float actualOmegaSign = Mathf.Sign(rb.angularVelocity.y);
+        // ========== 2. 左右对称性（差值接近0） ==========
+        // 完美跟踪时，左右传感器值应该几乎相同
+        // 整体对称性（用于奖励）：前后平均
+        float leftAvg = (s[0] + s[3]) / 2f;   // 前左 + 后左
+        float rightAvg = (s[2] + s[5]) / 2f;  // 前右 + 后右
+        float symmetryDiff = Mathf.Abs(leftAvg - rightAvg) / maxField; // 归一化差值
+        float r_symmetry = Mathf.Clamp01(1f - symmetryDiff);
         
-        float r_turning = 0f;
-        if (Mathf.Abs(lateralGradient) > 0.1f) // 只在明显偏离时引导转向
+        // 弯道判断（用于策略切换）：只看前面传感器
+        // 考虑前中传感器，确保在磁条上才判断左右差异
+        float frontLeftRight = Mathf.Abs(s[0] - s[2]) / maxField; // 前左 vs 前右
+        bool hasFrontCenter = s[1] > maxField * 0.2f; // 前中传感器有足够信号
+        // symmetryDiff = 0 → r_symmetry = 1.0（完美对称）
+        // symmetryDiff = maxField → r_symmetry = 0（完全不对称）
+
+        // ========== 3. 姿态稳定性（直线时应该稳定，转弯时允许调整） ==========
+        // 区分三种状态：直线、弯道、脱轨
+        // - 直线：左右对称 且 中心强度高
+        // - 弯道：左右不对称 且 中心强度高（重要：避免误判脱轨为弯道）
+        // - 脱轨：中心强度低（无论对称性如何）
+        Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
+        float lateralSpeed = Mathf.Abs(localVel.x);
+        float angularSpeed = Mathf.Abs(rb.angularVelocity.y);
+        
+        bool isFrontSymmetric = frontLeftRight < symmetryThreshold; // 前传感器是否对称
+        bool isOnTrack = r_center > centerMinThreshold; // 中心强度足够 → 在磁条上
+        bool isCurve = !isFrontSymmetric && isOnTrack && hasFrontCenter;  // 前面不对称 且 前中有信号 且 在磁条上 → 弯道
+        
+        float r_stability;
+        if (isCurve)
         {
-            // 如果转向方向正确，给奖励
-            if (desiredOmegaSign == actualOmegaSign)
-            {
-                r_turning = Mathf.Abs(lateralGradient) * Mathf.Clamp01(Mathf.Abs(yawRate) / maxOmegaRad);
-            }
-            else
-            {
-                // 转向方向错误，轻微惩罚
-                r_turning = -0.3f * Mathf.Abs(lateralGradient);
-            }
+            // 弯道（左右不对称 且 在磁条上）：允许调整，不惩罚
+            r_stability = 1f;
+        }
+        else if (isOnTrack)
+        {
+            // 直线（在磁条上 且 左右对称）：应该保持姿态稳定
+            float lateralPenalty = Mathf.Clamp01(lateralSpeed / maxLateralSpeed);
+            float angularPenalty = Mathf.Clamp01(angularSpeed / (maxOmegaDeg * Mathf.Deg2Rad));
+            r_stability = 1f - 0.5f * (lateralPenalty + angularPenalty);
+        }
+        else
+        {
+            // 脱轨（中心强度低）：严重惩罚
+            float lateralPenalty = Mathf.Clamp01(lateralSpeed / maxLateralSpeed);
+            float angularPenalty = Mathf.Clamp01(angularSpeed / (maxOmegaDeg * Mathf.Deg2Rad));
+            r_stability = 0.2f - 0.8f * (lateralPenalty + angularPenalty); // 最多0.2，最少-0.6
         }
 
-        // 10) 低速惩罚
-        float r_minSpeed = 0f;
-        if (currentSpeed < minSpeedReward)
+        // ========== 4. 前进速度：只奖励前进，严厉惩罚后退，弯道时鼓励前进 ==========
+        float forwardSpeed = localVel.z;
+        
+        float r_forward;
+        if (forwardSpeed < -0.05f)
         {
-            r_minSpeed = -1.0f * (1f - currentSpeed / Mathf.Max(0.001f, minSpeedReward));
+            // 后退：严厉惩罚（完全禁止后退）
+            r_forward = (forwardSpeed / maxForwardSpeed) * backwardPenaltyMultiplier;
+        }
+        else if (forwardSpeed > minSpeedThreshold)
+        {
+            // 正常前进：给予奖励
+            float baseReward = Mathf.Clamp01(forwardSpeed / maxForwardSpeed);
+            // 弯道时给予额外奖励，鼓励转弯
+            r_forward = isCurve ? baseReward * curveSpeedBonus : baseReward;
+        }
+        else
+        {
+            // 速度过低：在弯道时不惩罚（转弯需要降速），其他情况轻微惩罚
+            r_forward = isCurve ? 0f : -0.15f;
         }
 
-        // ============ 权重组合 ============
+        // ========== 组合奖励 ==========
         float reward = 
-            w_forwardField * r_forwardSpeed +     // 2.0 前向速度最重要
-            w_track * r_frontRear +                // 1.0 前后梯度
-            w_turning * r_turning +                // 0.8 转向引导（新增）
-            w_bodyAlign * r_centered +             // 0.6 左右居中
-            w_align * r_onTrack +                  // 0.5 保持在磁带上
-            0.3f * r_progress +                    // 0.3 累计前进
-            w_stability * r_stability +            // 0.2 稳定性（降权）
-            0.2f * r_approaching +                 // 0.2 接近磁带
-            r_minSpeed;                            // 低速惩罚
+            w_centerStrength * r_center +    // 5.0 - 中心传感器强度（核心）
+            w_symmetry * r_symmetry +        // 3.0 - 左右对称性（差值≈0）
+            w_forward * r_forward +          // 2.0 - 前进速度（弯道时×1.5）
+            w_stability * r_stability;       // 0.5 - 姿态稳定（降低以允许转弯）
 
-        return reward;
+        // 总权重为10.5，归一化并限制范围（后退惩罚可能导致超出范围）
+        return Mathf.Clamp(reward / 10.5f, -2f, 1f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -254,6 +243,8 @@ public class MyCarAgent : Agent
         if (Input.GetKey(KeyCode.E)) cont[2] = 1f;
     }
 
+    private static Texture2D _bgTexture; // 静态背景纹理，避免每帧创建
+
     void OnGUI()
     {
         // 调试：检查 myCarMotion 是否为空
@@ -264,11 +255,14 @@ public class MyCarAgent : Agent
             return;
         }
 
-        // 绘制半透明灰度背景遮罩
-        Texture2D backgroundTexture = new Texture2D(1, 1);
-        backgroundTexture.SetPixel(0, 0, new Color(0.2f, 0.2f, 0.2f, 0.5f));
-        backgroundTexture.Apply();
-        GUI.DrawTexture(new Rect(10, 10, 700, 550), backgroundTexture);
+        // 绘制半透明灰度背景遮罩（只创建一次）
+        if (_bgTexture == null)
+        {
+            _bgTexture = new Texture2D(1, 1);
+            _bgTexture.SetPixel(0, 0, new Color(0.2f, 0.2f, 0.2f, 0.5f));
+            _bgTexture.Apply();
+        }
+        GUI.DrawTexture(new Rect(10, 10, 700, 550), _bgTexture);
 
         GUILayout.BeginArea(new Rect(10, 10, 700, 550));
         GUILayout.Box("Vehicle & Wheel Info", GUILayout.Width(680));
@@ -328,5 +322,15 @@ public class MyCarAgent : Agent
         GUILayout.Label($"Vx: {myCarMotion.vx_input:F3} m/s | Vy: {myCarMotion.vy_input:F3} m/s | Omega: {myCarMotion.omega_input:F3} rad/s", GUILayout.Width(680));
 
         GUILayout.EndArea();
+    }
+
+    private void OnDestroy()
+    {
+        // 清理静态资源
+        if (_bgTexture != null)
+        {
+            Destroy(_bgTexture);
+            _bgTexture = null;
+        }
     }
 }

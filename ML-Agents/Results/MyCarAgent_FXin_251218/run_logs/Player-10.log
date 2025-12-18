@@ -1,0 +1,1478 @@
+Mono path[0] = 'D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/FXin_251218/XYF_Car_Test_Data/Managed'
+Mono config path = 'D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/FXin_251218/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.62f1 (f99f05b3e950)
+[Subsystems] Discovering subsystems at path D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/FXin_251218/XYF_Car_Test_Data/UnitySubsystems
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  8.449 seconds
+- Finished resetting the current domain, in  0.005 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Microsoft Media Foundation video decoding to texture disabled: graphics device is Null, only Direct3D 11 and Direct3D 12 (only on desktop) are supported for hardware-accelerated video decoding.
+UnloadTime: 6.210000 ms
+Registered Communicator in Agent.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[appliedSpeed] FL=-0.465, RL=-0.098, RR=0.269, FR=0.529
+[appliedSteerDeg] FL=82.1°, RL=49.3°, RR=-16.0°, FR=-60.7°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.078, RL=-0.020, RR=0.056, FR=-0.078
+[appliedSpeed] FL=0.528, RL=0.404, RR=0.685, FR=0.765
+[appliedSteerDeg] FL=-40.0°, RL=-0.4°, RR=-0.3°, FR=-26.4°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.189, RL=-0.084, RR=-0.088, FR=-0.129
+[appliedSpeed] FL=-0.412, RL=-0.558, RR=-0.530, FR=-0.373
+[appliedSteerDeg] FL=-63.8°, RL=-71.0°, RR=-84.6°, FR=-82.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.030, RL=0.019, RR=0.128, FR=-0.050
+[appliedSpeed] FL=0.488, RL=0.457, RR=0.435, FR=0.468
+[appliedSteerDeg] FL=50.8°, RL=47.6°, RR=50.9°, FR=54.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.123, RL=-0.109, RR=0.046, FR=-0.090
+[appliedSpeed] FL=0.775, RL=0.546, RR=0.657, FR=0.856
+[appliedSteerDeg] FL=-73.0°, RL=-65.5°, RR=-49.2°, FR=-59.9°
+[wheelSpeeds] FL=0.059, RL=0.023, RR=-0.087, FR=-0.084
+[appliedSpeed] FL=0.256, RL=0.450, RR=-0.400, FR=-0.150
+[appliedSteerDeg] FL=-36.0°, RL=-62.7°, RR=89.8°, FR=89.5°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.083, RL=-0.077, RR=-0.063, FR=-0.057
+[appliedSpeed] FL=-0.892, RL=-0.189, RR=0.613, FR=1.065
+[appliedSteerDeg] FL=89.8°, RL=89.2°, RR=-17.9°, FR=-56.8°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.022, RL=0.213, RR=0.033, FR=0.002
+[appliedSpeed] FL=0.419, RL=0.427, RR=0.740, FR=0.735
+[appliedSteerDeg] FL=-27.5°, RL=29.7°, RR=16.6°, FR=-15.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.047, RL=-0.015, RR=0.053, FR=0.211
+[appliedSpeed] FL=-0.982, RL=-0.905, RR=-0.467, FR=-0.602
+[appliedSteerDeg] FL=24.3°, RL=-8.5°, RR=-16.7°, FR=42.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.109, RL=0.073, RR=-0.011, FR=-0.002
+[appliedSpeed] FL=0.347, RL=0.258, RR=0.280, FR=0.364
+[appliedSteerDeg] FL=-83.1°, RL=-80.7°, RR=-65.4°, FR=-71.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.098, RL=0.072, RR=-0.140, FR=-0.107
+[appliedSpeed] FL=0.405, RL=0.333, RR=0.304, FR=0.382
+[appliedSteerDeg] FL=65.1°, RL=59.2°, RR=70.3°, FR=74.4°
+[wheelSpeeds] FL=0.221, RL=-0.008, RR=0.005, FR=-0.016
+[appliedSpeed] FL=0.713, RL=0.710, RR=0.723, FR=0.726
+[appliedSteerDeg] FL=-11.5°, RL=-10.2°, RR=-10.1°, FR=-11.3°
+[wheelSpeeds] FL=-0.019, RL=0.054, RR=-0.005, FR=-0.017
+[appliedSpeed] FL=0.210, RL=0.211, RR=0.208, FR=0.207
+[appliedSteerDeg] FL=-16.5°, RL=-17.5°, RR=-17.8°, FR=-16.8°
+[wheelSpeeds] FL=0.158, RL=0.090, RR=0.055, FR=0.218
+[appliedSpeed] FL=-0.434, RL=-0.133, RR=0.194, FR=0.456
+[appliedSteerDeg] FL=72.5°, RL=11.6°, RR=-8.0°, FR=-65.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.032, RL=0.096, RR=0.098, FR=0.106
+[appliedSpeed] FL=-0.980, RL=-0.840, RR=-0.279, FR=-0.578
+[appliedSteerDeg] FL=33.7°, RL=-13.9°, RR=-46.3°, FR=70.5°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.020, RL=-0.049, RR=-0.007, FR=0.106
+[appliedSpeed] FL=-0.713, RL=-0.609, RR=-0.223, FR=-0.432
+[appliedSteerDeg] FL=32.5°, RL=-9.3°, RR=-26.4°, FR=62.5°
+[wheelSpeeds] FL=-0.114, RL=0.040, RR=-0.036, FR=-0.038
+[appliedSpeed] FL=0.249, RL=0.471, RR=0.506, FR=0.311
+[appliedSteerDeg] FL=89.8°, RL=89.9°, RR=68.4°, FR=53.2°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.150, RL=0.038, RR=0.014, FR=-0.093
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[appliedSpeed] FL=-0.285, RL=-0.324, RR=-0.310, FR=-0.269
+[appliedSteerDeg] FL=-60.6°, RL=-64.3°, RR=-70.4°, FR=-67.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.049, RL=0.078, RR=0.054, FR=0.019
+[appliedSpeed] FL=0.278, RL=0.023, RR=-0.204, FR=-0.344
+[appliedSteerDeg] FL=87.5°, RL=57.6°, RR=-5.4°, FR=-53.8°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.136, RL=-0.065, RR=-0.064, FR=0.066
+[appliedSpeed] FL=0.263, RL=0.279, RR=0.273, FR=0.256
+[appliedSteerDeg] FL=-60.9°, RL=-62.6°, RR=-65.4°, FR=-63.8°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.075, RL=0.095, RR=0.126, FR=-0.075
+[appliedSpeed] FL=0.217, RL=0.201, RR=0.118, FR=0.143
+[appliedSteerDeg] FL=22.5°, RL=-5.0°, RR=-8.5°, FR=35.5°
+[wheelSpeeds] FL=-0.029, RL=0.087, RR=0.106, FR=0.024
+[appliedSpeed] FL=-0.686, RL=-0.671, RR=-0.486, FR=-0.506
+[appliedSteerDeg] FL=13.2°, RL=-5.8°, RR=-8.0°, FR=18.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.045, RL=0.078, RR=0.026, FR=-0.072
+[appliedSpeed] FL=-0.365, RL=-0.345, RR=-0.323, FR=-0.344
+[appliedSteerDeg] FL=38.7°, RL=34.5°, RR=37.3°, FR=41.6°
+[wheelSpeeds] FL=-0.142, RL=-0.067, RR=-0.033, FR=-0.081
+[appliedSpeed] FL=0.378, RL=0.248, RR=0.590, FR=0.655
+[appliedSteerDeg] FL=-55.3°, RL=29.7°, RR=12.0°, FR=-28.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.064, RL=-0.078, RR=-0.067, FR=0.029
+[appliedSpeed] FL=0.510, RL=0.507, RR=0.461, FR=0.463
+[appliedSteerDeg] FL=5.3°, RL=-1.0°, RR=-1.1°, FR=5.8°
+[wheelSpeeds] FL=0.132, RL=0.123, RR=0.152, FR=-0.077
+[appliedSpeed] FL=0.692, RL=0.562, RR=0.337, FR=0.525
+[appliedSteerDeg] FL=38.1°, RL=14.5°, RR=24.8°, FR=54.4°
+[wheelSpeeds] FL=0.017, RL=0.132, RR=0.037, FR=0.243
+[appliedSpeed] FL=0.354, RL=0.256, RR=-0.148, FR=-0.286
+[appliedSteerDeg] FL=49.8°, RL=-26.7°, RR=51.2°, FR=-71.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.092, RL=0.068, RR=0.244, FR=0.221
+[appliedSpeed] FL=-0.611, RL=-0.430, RR=0.238, FR=0.495
+[appliedSteerDeg] FL=50.3°, RL=-25.0°, RR=49.8°, FR=-71.9°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.268, RL=0.205, RR=0.133, FR=0.030
+[appliedSpeed] FL=-0.417, RL=-0.477, RR=-0.403, FR=-0.330
+[appliedSteerDeg] FL=-23.9°, RL=-36.9°, RR=-45.3°, FR=-30.8°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.065, RL=0.000, RR=0.107, FR=0.049
+[appliedSpeed] FL=-0.171, RL=-0.129, RR=-0.281, FR=-0.302
+[appliedSteerDeg] FL=-49.1°, RL=29.7°, RR=13.2°, FR=-25.3°
+[wheelSpeeds] FL=0.130, RL=-0.035, RR=0.055, FR=0.058
+[appliedSpeed] FL=0.306, RL=0.070, RR=0.318, FR=0.435
+[appliedSteerDeg] FL=-76.8°, RL=0.0°, RR=0.0°, FR=-43.1°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.102, RL=-0.085, RR=-0.080, FR=0.118
+[appliedSpeed] FL=0.000, RL=0.000, RR=0.000, FR=0.000
+[appliedSteerDeg] FL=0.0°, RL=0.0°, RR=0.0°, FR=0.0°
+[wheelSpeeds] FL=-0.021, RL=0.141, RR=-0.012, FR=0.076
+[appliedSpeed] FL=-0.531, RL=-0.581, RR=-0.469, FR=-0.406
+[appliedSteerDeg] FL=-11.2°, RL=-26.2°, RR=-33.1°, FR=-14.7°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.000, RL=0.000, RR=0.000, FR=0.000
+[appliedSpeed] FL=-0.374, RL=-0.322, RR=-0.151, FR=-0.243
+[appliedSteerDeg] FL=30.7°, RL=-2.5°, RR=-5.4°, FR=51.7°
+[wheelSpeeds] FL=0.050, RL=0.021, RR=-0.108, FR=-0.119
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[appliedSpeed] FL=0.122, RL=0.407, RR=-0.434, FR=-0.194
+[appliedSteerDeg] FL=-4.5°, RL=-72.6°, RR=63.5°, FR=2.9°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.069, RL=-0.085, RR=-0.055, FR=-0.002
+[appliedSpeed] FL=-0.153, RL=-0.135, RR=-0.110, FR=-0.132
+[appliedSteerDeg] FL=38.0°, RL=26.7°, RR=33.2°, FR=45.5°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.140, RL=-0.181, RR=-0.206, FR=-0.246
+[appliedSpeed] FL=0.546, RL=0.479, RR=0.523, FR=0.584
+[appliedSteerDeg] FL=-57.8°, RL=-52.6°, RR=-46.7°, FR=-52.2°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.111, RL=-0.190, RR=-0.178, FR=-0.126
+[appliedSpeed] FL=-0.093, RL=-0.690, RR=0.835, FR=0.479
+[appliedSteerDeg] FL=-71.5°, RL=-87.5°, RR=55.6°, FR=10.6°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.042, RL=-0.010, RR=-0.153, FR=0.029
+[appliedSpeed] FL=0.690, RL=0.902, RR=1.013, FR=0.830
+[appliedSteerDeg] FL=53.5°, RL=62.9°, RR=52.4°, FR=41.9°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.080, RL=-0.167, RR=0.176, FR=0.081
+[appliedSpeed] FL=-0.738, RL=-0.429, RR=-0.276, FR=-0.661
+[appliedSteerDeg] FL=63.6°, RL=40.0°, RR=88.6°, FR=89.4°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.038, RL=0.104, RR=0.157, FR=-0.024
+[appliedSpeed] FL=-1.102, RL=-0.878, RR=-0.565, FR=-0.874
+[appliedSteerDeg] FL=42.1°, RL=21.2°, RR=34.2°, FR=57.7°
+[wheelSpeeds] FL=-0.179, RL=0.021, RR=0.047, FR=-0.058
+[appliedSpeed] FL=0.426, RL=0.696, RR=0.873, FR=0.678
+[appliedSteerDeg] FL=38.1°, RL=61.2°, RR=44.3°, FR=22.9°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.092, RL=-0.069, RR=-0.231, FR=-0.102
+[appliedSpeed] FL=0.597, RL=0.549, RR=0.582, FR=0.628
+[appliedSteerDeg] FL=-54.5°, RL=-50.8°, RR=-47.0°, FR=-50.7°
+[wheelSpeeds] FL=-0.137, RL=-0.144, RR=-0.123, FR=0.055
+[appliedSpeed] FL=0.616, RL=0.309, RR=0.519, FR=0.745
+[appliedSteerDeg] FL=-73.8°, RL=-56.2°, RR=-29.6°, FR=-52.7°
+[wheelSpeeds] FL=-0.060, RL=-0.077, RR=0.111, FR=0.059
+[appliedSpeed] FL=-0.201, RL=-0.063, RR=0.122, FR=0.226
+[appliedSteerDeg] FL=87.0°, RL=80.3°, RR=-30.6°, FR=-62.4°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.103, RL=0.060, RR=-0.067, FR=0.087
+[appliedSpeed] FL=-1.035, RL=-0.899, RR=-0.481, FR=-0.703
+[appliedSteerDeg] FL=29.7°, RL=0.8°, RR=1.4°, FR=46.9°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.091, RL=0.126, RR=-0.024, FR=0.036
+[appliedSpeed] FL=0.366, RL=0.500, RR=0.409, FR=0.225
+[appliedSteerDeg] FL=-27.7°, RL=-49.7°, RR=-68.8°, FR=-49.0°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.176, RL=0.061, RR=-0.113, FR=-0.047
+[appliedSpeed] FL=-0.143, RL=-0.496, RR=0.538, FR=0.253
+[appliedSteerDeg] FL=-0.1°, RL=-73.3°, RR=62.0°, FR=0.0°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.060, RL=0.081, RR=-0.015, FR=0.180
+[appliedSpeed] FL=-0.139, RL=-0.161, RR=-0.145, FR=-0.120
+[appliedSteerDeg] FL=-39.8°, RL=-48.3°, RR=-56.0°, FR=-47.7°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.004, RL=-0.107, RR=0.092, FR=0.177
+[appliedSpeed] FL=0.543, RL=0.390, RR=0.092, FR=0.389
+[appliedSteerDeg] FL=44.2°, RL=2.9°, RR=12.3°, FR=76.6°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=-0.029, RL=-0.068, RR=-0.050, FR=0.091
+[appliedSpeed] FL=-0.450, RL=-0.857, RR=0.893, FR=0.516
+[appliedSteerDeg] FL=-80.1°, RL=-84.8°, RR=72.8°, FR=59.3°
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[wheelSpeeds] FL=0.090, RL=0.219, RR=0.015, FR=0.146
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+Episode Ended: magnetic signal lost. frontMax=0.3995, rearMax=6.2133, threshold=0.4000
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+[ApplyPIDControl] Direction reversed! Reset all PID integrators.
+Unable to save timers to file D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/FXin_251218/XYF_Car_Test_Data\ML-Agents\Timers\Car_251209_timers.json
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
