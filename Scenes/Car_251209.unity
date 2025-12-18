@@ -431,7 +431,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 2f3d20b88f8767d40a784d0cc76ce29b, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: f76a216a185343d40bc8b87d9224225d, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_251217
@@ -485,14 +485,15 @@ MonoBehaviour:
   maxLateralSpeed: 1
   maxOmegaDeg: 90
   maxField: 8
-  w_align: 1.2
-  w_forwardField: 0.8
-  w_track: 1
+  w_centerStrength: 5
+  w_symmetry: 3
+  w_forward: 2
   w_stability: 0.5
-  w_bodyAlign: 0.6
-  w_heading: 0.2
-  w_turning: 0.8
-  minSpeedReward: 0.2
+  symmetryThreshold: 0.1
+  centerMinThreshold: 0.3
+  backwardPenaltyMultiplier: 10
+  minSpeedThreshold: 0.15
+  curveSpeedBonus: 1.5
   maxEpisodeTime: 100
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
