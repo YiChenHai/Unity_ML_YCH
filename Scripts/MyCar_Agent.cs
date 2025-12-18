@@ -16,18 +16,19 @@ public class MyCarAgent : Agent
     [Header("Control limits (body frame)")]
     public float maxForwardSpeed = 0.6f;     // vx m/s
     public float maxLateralSpeed = 0.3f;     // vy m/s
-    public float maxOmegaDeg = 60f;          // deg/s
+    public float maxOmegaDeg = 120f;          // deg/s
 
     [Header("Normalization")]
-    public float maxField = 0.02f;
+    public float maxField = 8f;
 
     [Header("Reward Weights")]
     public float w_align = 0.5f;         // 对齐磁场方向权重（降低，避免原地对齐）
     public float w_forwardField = 2.0f;  // 沿磁场方向前进权重（提高，强制前进）
     public float w_track = 1.0f;         // 磁强差奖励权重（前后传感器）
-    public float w_stability = 0.5f;     // 抑制角速度/抖动权重
+    public float w_stability = 0.2f;     // 抑制角速度/抖动权重（降低，允许转向）
     public float w_bodyAlign = 0.6f;     // 车身姿态对齐权重（前后磁场一致性）
     public float w_heading = 0.2f;       // 朝向变化惩罚权重
+    public float w_turning = 0.8f;       // 转向引导权重（新增）
     public float minSpeedReward = 0.2f;  // 最低速度要求（m/s），低于此速度会被惩罚
 
     [Header("Episode")]
@@ -39,6 +40,9 @@ public class MyCarAgent : Agent
     public Quaternion startRot = Quaternion.Euler(0f, 0f, 0f);
 
     private Vector3 lastForward;
+    private float lastTotalStrength = 0f;
+    private float cumulativeForwardDistance = 0f;
+    private Vector3 lastPosition;
 
     public override void Initialize()
     {
@@ -62,6 +66,9 @@ public class MyCarAgent : Agent
 
         episodeTimer = 0f;
         lastForward = transform.forward;
+        lastTotalStrength = 0f;
+        cumulativeForwardDistance = 0f;
+        lastPosition = transform.position;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -138,86 +145,101 @@ public class MyCarAgent : Agent
     {
         if (tape == null || sensors == null || sensors.Length < 6 || rb == null) return 0f;
 
-        // 1) 用前3个传感器计算磁场方向（导航用）
-        Vector3 frontField = Vector3.zero;
-        for (int i = 0; i < 3; i++)
+        // 获取6个传感器的标量强度
+        // 0:前左 1:前中 2:前右 3:后左 4:后中 5:后右
+        float[] strength = new float[6];
+        for (int i = 0; i < 6; i++)
         {
             Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            frontField += mag;
+            strength[i] = mag.magnitude;
         }
-        frontField /= 3f;
-        Vector3 fieldDir = new Vector3(frontField.x, 0f, frontField.z);
-        if (fieldDir.sqrMagnitude < 1e-8f) return 0f;
-        fieldDir.Normalize();
 
-        // 2) 车头与磁场方向对齐奖励（只有在移动时才给对齐奖励）
-        float align = Vector3.Dot(transform.forward, fieldDir); // [-1,1]
+        // 计算各区域平均强度
+        float frontAvg = (strength[0] + strength[1] + strength[2]) / 3f;
+        float rearAvg = (strength[3] + strength[4] + strength[5]) / 3f;
+        float leftAvg = (strength[0] + strength[3]) / 2f;
+        float rightAvg = (strength[2] + strength[5]) / 2f;
+        float centerAvg = (strength[1] + strength[4]) / 2f;
+        float totalStrength = (frontAvg + rearAvg) / 2f;
+
+        // ============ 奖励分量 ============
+
+        // 1) 前后强度差 - 鼓励车头指向磁带方向
+        float r_frontRear = Mathf.Clamp((frontAvg - rearAvg) / Mathf.Max(1e-6f, maxField), -1f, 1f);
+
+        // 2) 左右对称性 - 鼓励车身居中
+        float lateralImbalance = Mathf.Abs(leftAvg - rightAvg) / Mathf.Max(1e-6f, maxField);
+        float r_centered = 1f - Mathf.Clamp01(lateralImbalance);
+
+        // 3) 整体强度 - 保持在磁带上
+        float r_onTrack = Mathf.Clamp01(totalStrength / Mathf.Max(1e-6f, maxField));
+
+        // 4) 强度增长率 - 奖励接近磁带
+        float strengthChange = totalStrength - lastTotalStrength;
+        float r_approaching = Mathf.Clamp(strengthChange / Mathf.Max(1e-6f, maxField * Time.fixedDeltaTime), -1f, 1f);
+        lastTotalStrength = totalStrength;
+
+        // 5) 前向速度 - 鼓励沿车头方向移动
+        float forwardSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
+        float r_forwardSpeed = Mathf.Clamp(forwardSpeed / Mathf.Max(0.001f, maxForwardSpeed), -2f, 1f);
+        // 倒退惩罚加倍
+
+        // 6) 总速度 - 基础移动鼓励
         float currentSpeed = rb.linearVelocity.magnitude;
-        // 对齐奖励乘以速度系数，静止时不给对齐奖励
-        float speedFactor = Mathf.Clamp01(currentSpeed / Mathf.Max(0.001f, minSpeedReward));
-        float r_align = Mathf.Max(0f, align) * speedFactor; // [0,1]
+        float r_speed = Mathf.Clamp01(currentSpeed / Mathf.Max(0.001f, maxForwardSpeed));
 
-        // 3) 沿磁场方向的前向速度奖励（允许负值，反向移动会被惩罚）
-        float velAlong = Vector3.Dot(rb.linearVelocity, fieldDir); // m/s
-        float r_forwardField = velAlong / Mathf.Max(0.001f, maxForwardSpeed); // 可为负值 [-1,1]
+        // 7) 累计前进距离（沿车头方向）
+        Vector3 displacement = transform.position - lastPosition;
+        float forwardDisplacement = Vector3.Dot(displacement, transform.forward);
+        cumulativeForwardDistance += forwardDisplacement;
+        lastPosition = transform.position;
+        float r_progress = forwardDisplacement / Mathf.Max(0.001f, maxForwardSpeed * Time.fixedDeltaTime);
+
+        // 8) 稳定性 - 抑制过度抖动
+        float yawRate = Mathf.Abs(rb.angularVelocity.y);
+        float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
+        float r_stability = 1f - Mathf.Clamp01(yawRate / Mathf.Max(1e-6f, maxOmegaRad));
+
+        // 9) 转向引导 - 根据左右传感器差异指示转向
+        // 左侧强度 > 右侧 → 应该右转（正角速度）
+        // 右侧强度 > 左侧 → 应该左转（负角速度）
+        float lateralGradient = (rightAvg - leftAvg) / Mathf.Max(1e-6f, maxField); // [-1,1]
+        float desiredOmegaSign = Mathf.Sign(lateralGradient); // 期望的旋转方向
+        float actualOmegaSign = Mathf.Sign(rb.angularVelocity.y);
         
-        // 额外：速度过低惩罚（鼓励保持一定速度）
+        float r_turning = 0f;
+        if (Mathf.Abs(lateralGradient) > 0.1f) // 只在明显偏离时引导转向
+        {
+            // 如果转向方向正确，给奖励
+            if (desiredOmegaSign == actualOmegaSign)
+            {
+                r_turning = Mathf.Abs(lateralGradient) * Mathf.Clamp01(Mathf.Abs(yawRate) / maxOmegaRad);
+            }
+            else
+            {
+                // 转向方向错误，轻微惩罚
+                r_turning = -0.3f * Mathf.Abs(lateralGradient);
+            }
+        }
+
+        // 10) 低速惩罚
         float r_minSpeed = 0f;
         if (currentSpeed < minSpeedReward)
         {
-            r_minSpeed = -0.5f * (1f - currentSpeed / minSpeedReward); // [-0.5, 0]
+            r_minSpeed = -1.0f * (1f - currentSpeed / Mathf.Max(0.001f, minSpeedReward));
         }
 
-        // 4) 磁强差（前后）归一化，鼓励车头靠近磁源
-        float frontAvg = 0f, rearAvg = 0f;
-        for (int i = 0; i < sensors.Length; i++)
-        {
-            Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            if (i < 3) frontAvg += mag.magnitude;
-            else rearAvg += mag.magnitude;
-        }
-        frontAvg /= 3f; rearAvg /= 3f;
-        float r_track_norm = Mathf.Clamp01((frontAvg - rearAvg) / Mathf.Max(1e-6f, maxField));
-
-        // 5) 稳定性：惩罚角速度过大并考虑朝向突变（均为归一化）
-        float yawRate = rb.angularVelocity.y; // rad/s
-        float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
-        float r_stability_rate = 1f - Mathf.Clamp01(Mathf.Abs(yawRate) / Mathf.Max(1e-6f, maxOmegaRad));
-
-        float headingChangeDeg = Mathf.Abs(Vector3.SignedAngle(lastForward, transform.forward, Vector3.up));
-        float r_stability_heading = 1f - Mathf.Clamp01(headingChangeDeg / 60f); // 60deg门限
-
-        float r_stability = Mathf.Clamp01((r_stability_rate + r_stability_heading) * 0.5f);
-
-        // 6) 车身姿态对齐（用后3个传感器校验）
-        Vector3 rearField = Vector3.zero;
-        for (int i = 3; i < 6; i++)
-        {
-            Vector3 mag = tape.GetMagneticField(sensors[i].position);
-            rearField += mag;
-        }
-        rearField /= 3f;
-        Vector3 rearFieldDir = new Vector3(rearField.x, 0f, rearField.z);
-        
-        // 车身方向应与前后磁场方向一致（如果后传感器也能检测到有效磁场）
-        float r_bodyAlign = 0f;
-        if (rearFieldDir.sqrMagnitude > 1e-8f)
-        {
-            rearFieldDir.Normalize();
-            // 前后磁场方向应该一致，说明车身沿磁带
-            float frontRearConsistency = Vector3.Dot(fieldDir, rearFieldDir); // [-1,1]
-            r_bodyAlign = Mathf.Clamp01(frontRearConsistency); // [0,1]
-        }
-
-        // 7) 最终组合
+        // ============ 权重组合 ============
         float reward = 
-            w_align * r_align +
-            w_forwardField * r_forwardField +
-            w_track * r_track_norm +
-            w_stability * r_stability +
-            w_bodyAlign * r_bodyAlign +
-            w_heading * (1f - Mathf.Clamp01(headingChangeDeg / 180f)) +
-            r_minSpeed; // 低速惩罚
+            w_forwardField * r_forwardSpeed +     // 2.0 前向速度最重要
+            w_track * r_frontRear +                // 1.0 前后梯度
+            w_turning * r_turning +                // 0.8 转向引导（新增）
+            w_bodyAlign * r_centered +             // 0.6 左右居中
+            w_align * r_onTrack +                  // 0.5 保持在磁带上
+            0.3f * r_progress +                    // 0.3 累计前进
+            w_stability * r_stability +            // 0.2 稳定性（降权）
+            0.2f * r_approaching +                 // 0.2 接近磁带
+            r_minSpeed;                            // 低速惩罚
 
         return reward;
     }

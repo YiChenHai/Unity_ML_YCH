@@ -45,7 +45,7 @@ behaviors:
     self_play: null
     behavioral_cloning: null
 env_settings:
-  env_path: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/XYF_Car_Test.exe
+  env_path: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/BL_251217/XYF_Car_Test.exe
   env_args: null
   base_port: 5005
   num_envs: 9
@@ -66,11 +66,11 @@ engine_settings:
   no_graphics_monitor: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: MyCarAgent_251217
+  run_id: MyCarAgent_251217_BL
   initialize_from: null
   load_model: false
-  resume: true
-  force: false
+  resume: false
+  force: true
   train_model: false
   inference: false
   results_dir: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results
