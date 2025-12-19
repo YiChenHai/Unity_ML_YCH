@@ -18,23 +18,23 @@ public class MyCar_Motion : MonoBehaviour
     public float wheelBase = 0.76f;   // 轴距 L
     public float trackWidth = 0.47f;  // 轮距 W
 
-    [Header("Control inputs (body frame)")]
-    public float vx_input = 0f;
-    public float vy_input = 0f;
-    public float omega_input = 0f;
+    [Header("Control inputs (body frame - Unity标准: X=横向右, Z=前进)")]
+    public float vz_input = 0f;  // 前进速度 (Unity Z轴)
+    public float vx_input = 0f;  // 横向速度 (Unity X轴)
+    public float omega_input = 0f;  // 自转角速度
 
     [Header("Manual inputs (Inspector)")]
-    [Tooltip("前进速度，单位 m/s")]
+    [Tooltip("前进速度（Unity Z轴），单位 m/s")]
+    public float manualVz = 0f;
+    [Tooltip("横向速度（Unity X轴，右为正），单位 m/s")]
     public float manualVx = 0f;
-    [Tooltip("横向速度（右为正），单位 m/s")]
-    public float manualVy = 0f;
     [Tooltip("自转角速度，单位 rad/s")]
     public float manualOmega = 0f;
 
     [Header("Kinematic scaling & deadzone")]
-    public float inputScaleVx = 1f;
-    public float inputScaleVy = 1f;
-    public float inputScaleOmega = 1f;
+    public float inputScaleVz = 1f;  // 前进速度缩放
+    public float inputScaleVx = 1f;  // 横向速度缩放
+    public float inputScaleOmega = 1f;  // 角速度缩放
     public float deadzone = 0.01f;
 
     [Header("Wheel / Drive")]
@@ -128,21 +128,21 @@ public class MyCar_Motion : MonoBehaviour
 
     void FixedUpdate()
     {
-        float vx, vy, omega;
+        float vz, vx, omega;  // Unity标准：vz=前进，vx=横向
         if (controlSource == ControlSource.Agent)
         {
+            vz = vz_input * inputScaleVz;
             vx = vx_input * inputScaleVx;
-            vy = vy_input * inputScaleVy;
             omega = -omega_input * inputScaleOmega;
         }
         else
         {
+            vz = manualVz * inputScaleVz;
             vx = manualVx * inputScaleVx;
-            vy = manualVy * inputScaleVy;
             omega = -manualOmega * inputScaleOmega;
         }
 
-        ComputeKinematics(vx, vy, omega);
+        ComputeKinematics(vz, vx, omega);
         MapAndNormalize();
         ApplyPIDControl();
     }
@@ -152,16 +152,16 @@ public class MyCar_Motion : MonoBehaviour
         UpdateVisualWheels();
     }
 
-    public void SetControl(float vx, float vy, float omega)
+    public void SetControl(float vz, float vx, float omega)
     {
-        vx_input = vx;
-        vy_input = vy;
-        omega_input = omega;
+        vz_input = vz;  // 前进速度 (Unity Z轴)
+        vx_input = vx;  // 横向速度 (Unity X轴)
+        omega_input = omega;  // 自转角速度
     }
 
-    void ComputeKinematics(float vx, float vy, float omega)
+    void ComputeKinematics(float vz, float vx, float omega)
     {
-        if (Mathf.Abs(vx) < deadzone && Mathf.Abs(vy) < deadzone && Mathf.Abs(omega) < deadzone)
+        if (Mathf.Abs(vz) < deadzone && Mathf.Abs(vx) < deadzone && Mathf.Abs(omega) < deadzone)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -181,13 +181,13 @@ public class MyCar_Motion : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             float vx_rot = -omega * wheelPos[i].y;
-            float vy_rot =  omega * wheelPos[i].x;
+            float vz_rot =  omega * wheelPos[i].x;
 
             float vx_total = vx + vx_rot;
-            float vy_total = vy + vy_rot;
+            float vz_total = vz + vz_rot;
 
-            kinSteer[i] = Mathf.Atan2(vy_total, vx_total);
-            kinSpeed[i] = Mathf.Sqrt(vx_total * vx_total + vy_total * vy_total);
+            kinSteer[i] = Mathf.Atan2(vx_total, vz_total);  // Unity: atan2(X, Z)
+            kinSpeed[i] = Mathf.Sqrt(vx_total * vx_total + vz_total * vz_total);
         }
 
         for (int i = 0; i < 4; i++)

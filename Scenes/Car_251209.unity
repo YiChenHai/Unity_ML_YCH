@@ -368,14 +368,14 @@ MonoBehaviour:
   - {fileID: 2022725750}
   wheelBase: 0.6
   trackWidth: 0.5
+  vz_input: 0
   vx_input: 0
-  vy_input: 0
   omega_input: 0
+  manualVz: 0
   manualVx: 0
-  manualVy: 0
   manualOmega: 0
+  inputScaleVz: 1
   inputScaleVx: 1
-  inputScaleVy: 1
   inputScaleOmega: 1
   deadzone: 0.1
   maxWheelLinearSpeed: 4
@@ -431,7 +431,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: f76a216a185343d40bc8b87d9224225d, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: d79cdc99436cf1f4bbc961d5bdb79a87, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_251217
@@ -485,16 +485,12 @@ MonoBehaviour:
   maxLateralSpeed: 1
   maxOmegaDeg: 90
   maxField: 8
-  w_centerStrength: 5
-  w_symmetry: 3
-  w_forward: 2
-  w_stability: 0.5
-  symmetryThreshold: 0.1
-  centerMinThreshold: 0.3
+  w_alignment: 1
+  w_forward: 1
   backwardPenaltyMultiplier: 10
-  minSpeedThreshold: 0.15
-  curveSpeedBonus: 1.5
-  maxEpisodeTime: 100
+  motionThreshold: 0.15
+  omegaWeight: 0.05
+  maxEpisodeTime: 20
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &751401902
