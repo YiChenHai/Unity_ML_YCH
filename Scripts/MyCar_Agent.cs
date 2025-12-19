@@ -24,12 +24,14 @@ public class MyCarAgent : Agent
 
     [Header("Reward Weights - 极简设计")]
     public float w_alignment = 1.0f;        // 对齐（对称性）
-    public float w_forward = 1.0f;          // 前进速度
+    public float w_forward = 2.0f;          // 前进速度（提高权重，鼓励冒险前进）
     
     [Header("Penalty Settings")]
     public float backwardPenaltyMultiplier = 10.0f;  // 后退惩罚倍数（严格禁止倒车）
-    public float motionThreshold = 0.15f;            // 整体运动阈值（|vx|+|vz|+|omega|×权重）
-    public float omegaWeight = 0.05f;                // 角速度在运动判断中的权重
+    public float translationThreshold = 0.2f;        // 平移运动阈值（加权后的平移强度）
+    public float lateralWeight = 0.3f;               // 横向速度在平移判定中的权重（降低以防抖动exploit）
+    public float rotationThreshold = 0.3f;           // 转向运动阈值（平移不足时，转向可补偿）
+    public float minForwardForRotation = 0.08f;      // 旋转补偿的最低前进速度（防止原地划桨）
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
@@ -102,24 +104,24 @@ public class MyCarAgent : Agent
 
         // 读取传感器数据（只读取一次）
         float[] sensorValues = new float[6];
-        float frontMax = 0f, rearMax = 0f;
         for (int i = 0; i < sensors.Length; i++)
         {
             if (sensors[i] != null && tape != null)
             {
                 Vector3 mag = tape.GetMagneticField(sensors[i].position);
                 sensorValues[i] = mag.magnitude;
-                if (i < 3) frontMax = Mathf.Max(frontMax, sensorValues[i]);
-                else rearMax = Mathf.Max(rearMax, sensorValues[i]);
             }
         }
         
-        // 终止条件：前后都丢失信号才终止（允许弯道时一端偏离）
+        // 终止条件：前中或后中丢失信号就终止（防止横移，允许弯道转向）
         float lostThreshold = maxField * 0.05f;
-        if (frontMax < lostThreshold && rearMax < lostThreshold)
+        float frontCenter = sensorValues[1];  // 前中
+        float rearCenter = sensorValues[4];   // 后中
+        
+        if (frontCenter < lostThreshold || rearCenter < lostThreshold)
         {
             AddReward(-1f);
-            Debug.Log($"Episode Ended: magnetic signal lost. frontMax={frontMax:F4}, rearMax={rearMax:F4}, threshold={lostThreshold:F4}");
+            Debug.Log($"Episode Ended: center sensor lost. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}, threshold={lostThreshold:F4}");
             EndEpisode();
             return;
         }
@@ -162,31 +164,47 @@ public class MyCarAgent : Agent
         float lateralSpeed = localVel.x;  // 横向
         float angularSpeed = rb.angularVelocity.y; // 自转（世界坐标系）
         
-        // 计算整体运动强度：|vx| + |vz| + |omega| × 权重
-        float motionMagnitude = Mathf.Abs(lateralSpeed) + Mathf.Abs(forwardSpeed) + 
-                                Mathf.Abs(angularSpeed * Mathf.Rad2Deg) * omegaWeight;
+        // 分别计算平移运动和旋转运动（归一化后统一量纲）
+        float vx_normalized = Mathf.Abs(lateralSpeed) / maxLateralSpeed;    // [0, 1]
+        float vz_normalized = Mathf.Abs(forwardSpeed) / maxForwardSpeed;    // [0, 1]
+        float omega_normalized = Mathf.Abs(angularSpeed * Mathf.Rad2Deg) / maxOmegaDeg;  // [0, 1]
+        
+        // 平移强度（加权：前进优先，横向次要，防止抖动exploit）
+        float translationMagnitude = vz_normalized + vx_normalized * lateralWeight;
+        // 旋转强度（辅助调整姿态）
+        float rotationMagnitude = omega_normalized;
         
         float r_forward;
-        if (forwardSpeed < -0.05f)
+        // 动态阈值（相对于maxForwardSpeed）
+        float backwardThreshold = -0.05f * (maxForwardSpeed / 0.6f);  // 按比例缩放
+        float minForwardScaled = minForwardForRotation * (maxForwardSpeed / 0.6f);  // 按比例缩放
+        
+        if (forwardSpeed < backwardThreshold)
         {
             // 严格惩罚：后退（倒车）
             r_forward = (forwardSpeed / maxForwardSpeed) * backwardPenaltyMultiplier;
         }
-        else if (motionMagnitude < motionThreshold)
+        else if (translationMagnitude >= translationThreshold)
         {
-            // 严格惩罚：原地不动/原地摆动（前后摆动但位移很小）
-            r_forward = -0.5f;
+            // 优先判断：平移强度足够 → 正常运动，奖励前进
+            r_forward = Mathf.Clamp01(forwardSpeed / maxForwardSpeed);
+        }
+        else if (rotationMagnitude >= rotationThreshold && forwardSpeed >= minForwardScaled)
+        {
+            // 次级判断：平移不足但转向强度够 + 有基本前进速度 → 认定为姿态调整中
+            // 防止原地划桨exploit，必须配合真实前进
+            r_forward = 0f;
         }
         else
         {
-            // 正常运动：奖励前进速度
-            r_forward = Mathf.Clamp01(forwardSpeed / maxForwardSpeed);
+            // 完全静止或原地划桨：平移不足、转向不足、或前进速度太低 → 严厉惩罚
+            r_forward = -2.0f;
         }
 
         // ========== 组合奖励（极简） ==========
         float reward = w_alignment * r_alignment + w_forward * r_forward;
 
-        // 归一化
+        // 归一化并限制范围（防止极端值）
         return Mathf.Clamp(reward / (w_alignment + w_forward), -2f, 1f);
     }
 
