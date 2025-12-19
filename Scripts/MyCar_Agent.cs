@@ -114,9 +114,9 @@ public class MyCarAgent : Agent
             }
         }
         
-        // 终止条件：检查前后磁场是否丢失
+        // 终止条件：前后都丢失信号才终止（允许弯道时一端偏离）
         float lostThreshold = maxField * 0.05f;
-        if (frontMax < lostThreshold || rearMax < lostThreshold)
+        if (frontMax < lostThreshold && rearMax < lostThreshold)
         {
             AddReward(-1f);
             Debug.Log($"Episode Ended: magnetic signal lost. frontMax={frontMax:F4}, rearMax={rearMax:F4}, threshold={lostThreshold:F4}");
@@ -140,19 +140,21 @@ public class MyCarAgent : Agent
     {
         if (rb == null || s == null || s.Length < 6) return 0f;
 
-        // ========== 1. 对齐（前后都对称） ==========
+        // ========== 1. 对齐（前后都对称 + 中心强度） ==========
         // 分别检查前排和后排的对称性
         float frontSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[0] - s[2]) / maxField);  // 前左 vs 前右
         float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);   // 后左 vs 后右
         
         // 只有前后都对称时才给高分（取最小值）
-        // 任何一端不对称都会拉低分数
         float symmetryScore = Mathf.Min(frontSymmetry, rearSymmetry);
         
-        // 用中心强度加权：只有在磁条上时对称才有意义
+        // 中心传感器强度（独立目标）
         float centerAvg = (s[1] + s[4]) / 2f; // 前中 + 后中
         float centerStrength = Mathf.Clamp01(centerAvg / maxField);
-        float r_alignment = symmetryScore * centerStrength;
+        
+        // 对齐 = 对称性 + 中心强度（两个独立目标，不相乘）
+        // 这样即使偏离中心，对称性仍然有奖励，鼓励车调整回来        
+        float r_alignment = (symmetryScore + centerStrength) / 2f;
 
         // ========== 2. 运动奖励（禁止原地对齐、禁止后退） ==========
         Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
