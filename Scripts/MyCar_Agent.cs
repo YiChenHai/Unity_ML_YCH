@@ -35,6 +35,7 @@ public class MyCarAgent : Agent
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
+    public float startupGracePeriod = 1.0f;  // 启动保护期（秒），期间不检测静止
     private float episodeTimer = 0f;
 
     [Header("Start pose")]
@@ -140,15 +141,15 @@ public class MyCarAgent : Agent
             return;
         }
         
-        // 静止检测（归一化后的平移强度）
+        // 静止检测（归一化后的平移强度）- 启动保护期后才检测
         float vz_norm = Mathf.Abs(localVel.z) / maxForwardSpeed;
         float vx_norm = Mathf.Abs(localVel.x) / maxLateralSpeed;
         float translationMag = vz_norm + vx_norm * lateralWeight;
         
-        if (translationMag < staticThreshold)  // 低于静止阈值立即终止
+        if (episodeTimer > startupGracePeriod && translationMag < staticThreshold)  // 启动保护期后才检测静止
         {
             AddReward(-1f);
-            Debug.Log($"Episode Ended: nearly static. translationMag={translationMag:F3}");
+            Debug.Log($"Episode Ended: nearly static. translationMag={translationMag:F3}, episodeTimer={episodeTimer:F2}");
             EndEpisode();
             return;
         }
