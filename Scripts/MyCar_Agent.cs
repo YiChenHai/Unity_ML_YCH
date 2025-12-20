@@ -15,8 +15,8 @@ public class MyCarAgent : Agent
     public MyCar_Motion myCarMotion;
 
     [Header("Control limits (body frame - Unity标准)")]
-    public float maxForwardSpeed = 0.6f;     // vz (前进速度) m/s
-    public float maxLateralSpeed = 0.3f;     // vx (横向速度) m/s
+    public float maxForwardSpeed = 1f;     // vz (前进速度) m/s
+    public float maxLateralSpeed = 0.5f;     // vx (横向速度) m/s
     public float maxOmegaDeg = 120f;          // omega (自转角速度) deg/s
 
     [Header("Normalization")]
@@ -26,9 +26,9 @@ public class MyCarAgent : Agent
     public float w_alignment = 1.0f;        // 对齐（对称性）
     public float w_forward = 2.0f;          // 前进速度（提高权重，鼓励冒险前进）
     
-    [Header("Penalty Settings")]
-    public float backwardPenaltyMultiplier = 10.0f;  // 后退惩罚倍数（严格禁止倒车）
-    public float translationThreshold = 0.2f;        // 平移运动阈值（加权后的平移强度）
+    [Header("Motion Thresholds")]
+    public float staticThreshold = 0.05f;            // 静止检测阈值（低于此值视为静止并终止Episode）
+    public float forwardRewardThreshold = 0.1f;     // 前进奖励阈值（高于此值才给予前进奖励）
     public float lateralWeight = 0.3f;               // 横向速度在平移判定中的权重（降低以防抖动exploit）
     public float rotationThreshold = 0.3f;           // 转向运动阈值（平移不足时，转向可补偿）
     public float minForwardForRotation = 0.08f;      // 旋转补偿的最低前进速度（防止原地划桨）
@@ -102,6 +102,10 @@ public class MyCarAgent : Agent
         // 下发给 MyCar_Motion 去控制车辆运动
         if (myCarMotion != null) myCarMotion.SetControl(vz, vx, omega);
 
+        // 读取当前运动状态（统一使用，避免重复计算）
+        Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
+        float backwardThreshold = -0.05f;  // 绝对阈值：任何后退超过0.05m/s就终止
+
         // 读取传感器数据（只读取一次）
         float[] sensorValues = new float[6];
         for (int i = 0; i < sensors.Length; i++)
@@ -122,6 +126,29 @@ public class MyCarAgent : Agent
         {
             AddReward(-1f);
             Debug.Log($"Episode Ended: center sensor lost. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}, threshold={lostThreshold:F4}");
+            EndEpisode();
+            return;
+        }
+
+        // 检查运动状态，防止静止和后退
+        // 后退立即终止
+        if (localVel.z < backwardThreshold)
+        {
+            AddReward(-2f);
+            Debug.Log($"Episode Ended: backward motion. vz={localVel.z:F3}");
+            EndEpisode();
+            return;
+        }
+        
+        // 静止检测（归一化后的平移强度）
+        float vz_norm = Mathf.Abs(localVel.z) / maxForwardSpeed;
+        float vx_norm = Mathf.Abs(localVel.x) / maxLateralSpeed;
+        float translationMag = vz_norm + vx_norm * lateralWeight;
+        
+        if (translationMag < staticThreshold)  // 低于静止阈值立即终止
+        {
+            AddReward(-1f);
+            Debug.Log($"Episode Ended: nearly static. translationMag={translationMag:F3}");
             EndEpisode();
             return;
         }
@@ -174,31 +201,23 @@ public class MyCarAgent : Agent
         // 旋转强度（辅助调整姿态）
         float rotationMagnitude = omega_normalized;
         
+        // 前进奖励：纯正向激励（负值惩罚已通过Episode终止实现）
         float r_forward;
-        // 动态阈值（相对于maxForwardSpeed）
-        float backwardThreshold = -0.05f * (maxForwardSpeed / 0.6f);  // 按比例缩放
-        float minForwardScaled = minForwardForRotation * (maxForwardSpeed / 0.6f);  // 按比例缩放
         
-        if (forwardSpeed < backwardThreshold)
+        if (translationMagnitude >= forwardRewardThreshold && forwardSpeed > 0f)
         {
-            // 严格惩罚：后退（倒车）
-            r_forward = (forwardSpeed / maxForwardSpeed) * backwardPenaltyMultiplier;
-        }
-        else if (translationMagnitude >= translationThreshold)
-        {
-            // 优先判断：平移强度足够 → 正常运动，奖励前进
+            // 平移强度足够且前进 → 按速度给予奖励（确保只奖励正向运动）
             r_forward = Mathf.Clamp01(forwardSpeed / maxForwardSpeed);
         }
-        else if (rotationMagnitude >= rotationThreshold && forwardSpeed >= minForwardScaled)
+        else if (rotationMagnitude >= rotationThreshold && forwardSpeed >= minForwardForRotation)
         {
-            // 次级判断：平移不足但转向强度够 + 有基本前进速度 → 认定为姿态调整中
-            // 防止原地划桨exploit，必须配合真实前进
-            r_forward = 0f;
+            // 转向调整中 → 给予小额奖励鼓励调整
+            r_forward = 0.2f;
         }
         else
         {
-            // 完全静止或原地划桨：平移不足、转向不足、或前进速度太低 → 严厉惩罚
-            r_forward = -2.0f;
+            // 运动不足 → 不给奖励（但不惩罚，因为会被Episode终止）
+            r_forward = 0f;
         }
 
         // ========== 组合奖励（极简） ==========
