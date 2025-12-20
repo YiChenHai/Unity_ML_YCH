@@ -17,7 +17,7 @@ public class MyCarAgent : Agent
     [Header("Control limits (body frame - Unity标准)")]
     public float maxForwardSpeed = 1f;     // vz (前进速度) m/s
     public float maxLateralSpeed = 0.5f;     // vx (横向速度) m/s
-    public float maxOmegaDeg = 120f;          // omega (自转角速度) deg/s
+    public float maxOmegaDeg = 180f;          // omega (自转角速度) deg/s
 
     [Header("Normalization")]
     public float maxField = 8f;              // 磁场最大值
@@ -31,7 +31,7 @@ public class MyCarAgent : Agent
     public float forwardRewardThreshold = 0.1f;     // 前进奖励阈值（高于此值才给予前进奖励）
     public float lateralWeight = 0.3f;               // 横向速度在平移判定中的权重（降低以防抖动exploit）
     public float rotationThreshold = 0.3f;           // 转向运动阈值（平移不足时，转向可补偿）
-    public float minForwardForRotation = 0.08f;      // 旋转补偿的最低前进速度（防止原地划桨）
+    public float minForwardForRotation = 0.03f;      // 旋转补偿的最低前进速度（降低以允许慢速转弯）
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
@@ -205,6 +205,11 @@ public class MyCarAgent : Agent
         // 前进奖励：纯正向激励（负值惩罚已通过Episode终止实现）
         float r_forward;
         
+        // 检测是否需要转向（左右不对称）
+        float asymmetry = Mathf.Abs(s[0] - s[2]) + Mathf.Abs(s[3] - s[5]);  // 前后不对称之和
+        float asymmetryNormalized = Mathf.Clamp01(asymmetry / (2f * maxField));
+        bool needTurning = asymmetryNormalized > 0.15f;  // 不对称超过15%认为需要转向
+        
         if (translationMagnitude >= forwardRewardThreshold && forwardSpeed > 0f)
         {
             // 平移强度足够且前进 → 按速度给予奖励（确保只奖励正向运动）
@@ -212,8 +217,17 @@ public class MyCarAgent : Agent
         }
         else if (rotationMagnitude >= rotationThreshold && forwardSpeed >= minForwardForRotation)
         {
-            // 转向调整中 → 给予小额奖励鼓励调整
-            r_forward = 0.2f;
+            // 转向调整中 → 根据是否需要转向给予不同奖励
+            if (needTurning)
+            { 
+                // 需要转向时给予高额奖励（鼓励减速转弯）
+                r_forward = 0.6f + Mathf.Clamp01(forwardSpeed / maxForwardSpeed) * 0.2f;  // 0.6-0.8
+            }
+            else
+            {
+                // 不需要转向时给予基础奖励（正常姿态调整）
+                r_forward = 0.3f;
+            }
         }
         else
         {
