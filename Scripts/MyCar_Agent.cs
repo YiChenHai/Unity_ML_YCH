@@ -118,15 +118,15 @@ public class MyCarAgent : Agent
             }
         }
         
-        // 终止条件：前中或后中丢失信号就终止（防止横移，允许弯道转向）
-        float lostThreshold = maxField * 0.05f;
+        // 终止条件：中心传感器低于4.5视为脱轨（安全约束）
+        float derailThreshold = 2f;  // 脱轨阈值（绝对值）
         float frontCenter = sensorValues[1];  // 前中
         float rearCenter = sensorValues[4];   // 后中
         
-        if (frontCenter < lostThreshold || rearCenter < lostThreshold)
+        if (frontCenter < derailThreshold || rearCenter < derailThreshold)
         {
             AddReward(-1f);
-            Debug.Log($"Episode Ended: center sensor lost. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}, threshold={lostThreshold:F4}");
+            Debug.Log($"Episode Ended: derailment. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}, threshold={derailThreshold:F4}");
             EndEpisode();
             return;
         }
@@ -170,21 +170,14 @@ public class MyCarAgent : Agent
     {
         if (rb == null || s == null || s.Length < 6) return 0f;
 
-        // ========== 1. 对齐（前后都对称 + 中心强度） ==========
+        // ========== 1. 对齐（只考虑左右对称性） ==========
         // 分别检查前排和后排的对称性
         float frontSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[0] - s[2]) / maxField);  // 前左 vs 前右
         float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);   // 后左 vs 后右
         
         // 只有前后都对称时才给高分（取最小值）
-        float symmetryScore = Mathf.Min(frontSymmetry, rearSymmetry);
-        
-        // 中心传感器强度（独立目标）
-        float centerAvg = (s[1] + s[4]) / 2f; // 前中 + 后中
-        float centerStrength = Mathf.Clamp01(centerAvg / maxField);
-        
-        // 对齐 = 对称性 + 中心强度（两个独立目标，不相乘）
-        // 这样即使偏离中心，对称性仍然有奖励，鼓励车调整回来        
-        float r_alignment = (symmetryScore + centerStrength) / 2f;
+        float r_alignment = Mathf.Min(frontSymmetry, rearSymmetry);
+        // 注意：中心传感器强度已用于脱轨判断，不再计入奖励
 
         // ========== 2. 运动奖励（禁止原地对齐、禁止后退） ==========
         Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
@@ -205,9 +198,9 @@ public class MyCarAgent : Agent
         // 前进奖励：纯正向激励（负值惩罚已通过Episode终止实现）
         float r_forward;
         
-        // 检测是否需要转向（左右不对称）
-        float asymmetry = Mathf.Abs(s[0] - s[2]) + Mathf.Abs(s[3] - s[5]);  // 前后不对称之和
-        float asymmetryNormalized = Mathf.Clamp01(asymmetry / (2f * maxField));
+        // 检测是否需要转向（只看前排传感器的不对称）
+        float frontAsymmetry = Mathf.Abs(s[0] - s[2]);  // 前左 vs 前右
+        float asymmetryNormalized = Mathf.Clamp01(frontAsymmetry / maxField);
         bool needTurning = asymmetryNormalized > 0.15f;  // 不对称超过15%认为需要转向
         
         if (translationMagnitude >= forwardRewardThreshold && forwardSpeed > 0f)
