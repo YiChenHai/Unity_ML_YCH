@@ -242,8 +242,8 @@ public class MyCar_Motion : MonoBehaviour
         // 调试打印：映射后的结果
         if (enableDebugLog && Time.frameCount % 30 == 0)
         {
-            Debug.Log($"[appliedSpeed] FL={appliedSpeed[0]:F3}, RL={appliedSpeed[1]:F3}, RR={appliedSpeed[2]:F3}, FR={appliedSpeed[3]:F3}");
-            Debug.Log($"[appliedSteerDeg] FL={appliedSteerDeg[0]:F1}°, RL={appliedSteerDeg[1]:F1}°, RR={appliedSteerDeg[2]:F1}°, FR={appliedSteerDeg[3]:F1}°");
+           // Debug.Log($"[appliedSpeed] FL={appliedSpeed[0]:F3}, RL={appliedSpeed[1]:F3}, RR={appliedSpeed[2]:F3}, FR={appliedSpeed[3]:F3}");
+            //Debug.Log($"[appliedSteerDeg] FL={appliedSteerDeg[0]:F1}°, RL={appliedSteerDeg[1]:F1}°, RR={appliedSteerDeg[2]:F1}°, FR={appliedSteerDeg[3]:F1}°");
         }
     }
 
@@ -276,7 +276,7 @@ public class MyCar_Motion : MonoBehaviour
             }
             if (enableDebugLog)
             {
-                Debug.Log("[ApplyPIDControl] Direction reversed! Reset all PID integrators.");
+               // Debug.Log("[ApplyPIDControl] Direction reversed! Reset all PID integrators.");
             }
         }
 
@@ -363,7 +363,7 @@ public class MyCar_Motion : MonoBehaviour
         // 调试打印：实际轮速
         if (enableDebugLog && Time.frameCount % 30 == 0)
         {
-            Debug.Log($"[wheelSpeeds] FL={wheelSpeeds[0]:F3}, RL={wheelSpeeds[1]:F3}, RR={wheelSpeeds[2]:F3}, FR={wheelSpeeds[3]:F3}");
+          //  Debug.Log($"[wheelSpeeds] FL={wheelSpeeds[0]:F3}, RL={wheelSpeeds[1]:F3}, RR={wheelSpeeds[2]:F3}, FR={wheelSpeeds[3]:F3}");
         }
     }
 
