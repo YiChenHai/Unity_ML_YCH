@@ -48,7 +48,7 @@ public class MyCarAgent : Agent
         if (rb == null) rb = GetComponent<Rigidbody>();
     }
 
-    public override void OnEpisodeBegin()
+    public override void OnEpisodeBegin() 
     {
         if (rb != null)
         {
@@ -213,8 +213,8 @@ public class MyCarAgent : Agent
             // 转向调整中 → 根据是否需要转向给予不同奖励
             if (needTurning)
             { 
-                // 需要转向时给予高额奖励（鼓励减速转弯）
-                r_forward = 0.6f + Mathf.Clamp01(forwardSpeed / maxForwardSpeed) * 0.2f;  // 0.6-0.8
+                // 需要转向时给予高额奖励，且奖励与角速度成正比（鼓励快速转向）
+                r_forward = 0.5f + omega_normalized * 0.4f;  // 0.5-0.9，角速度越大奖励越高
             }
             else
             {
