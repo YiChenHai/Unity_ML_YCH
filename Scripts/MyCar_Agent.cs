@@ -17,7 +17,7 @@ public class MyCarAgent : Agent
     [Header("Control limits (body frame - Unity标准)")]
     public float maxForwardSpeed = 1f;     // vz (前进速度) m/s
     public float maxLateralSpeed = 0.5f;     // vx (横向速度) m/s
-    public float maxOmegaDeg = 180f;          // omega (自转角速度) deg/s
+    public float maxOmegaDeg = 240f;          // omega (自转角速度) deg/s
 
     [Header("Normalization")]
     public float maxField = 8f;              // 磁场最大值
@@ -197,11 +197,11 @@ public class MyCarAgent : Agent
         
         // 前进奖励：纯正向激励（负值惩罚已通过Episode终止实现）
         float r_forward;
-        
+         
         // 检测是否需要转向（只看前排传感器的不对称）
         float frontAsymmetry = Mathf.Abs(s[0] - s[2]);  // 前左 vs 前右
         float asymmetryNormalized = Mathf.Clamp01(frontAsymmetry / maxField);
-        bool needTurning = asymmetryNormalized > 0.15f;  // 不对称超过15%认为需要转向
+        bool needTurning = asymmetryNormalized > 0.12f;  // 不对称超过10%就认为需要转向（更早触发）
         
         if (translationMagnitude >= forwardRewardThreshold && forwardSpeed > 0f)
         {
@@ -213,9 +213,9 @@ public class MyCarAgent : Agent
             // 转向调整中 → 根据是否需要转向给予不同奖励
             if (needTurning)
             { 
-                // 需要转向时给予高额奖励，且奖励与角速度成正比（鼓励快速转向）
-                r_forward = 0.5f + omega_normalized * 0.4f;  // 0.5-0.9，角速度越大奖励越高
-            }
+                // 需要转向时给予极高奖励，且奖励与角速度成正比（强烈鼓励快速转向）
+                r_forward = 0.6f + omega_normalized * 0.4f;  
+            } 
             else
             {
                 // 不需要转向时给予基础奖励（正常姿态调整）
