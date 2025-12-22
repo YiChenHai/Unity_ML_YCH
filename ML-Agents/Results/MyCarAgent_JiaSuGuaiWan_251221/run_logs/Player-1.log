@@ -1,0 +1,111 @@
+Mono path[0] = 'D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/JiaSuGuaiWan_251221/XYF_Car_Test_Data/Managed'
+Mono config path = 'D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/JiaSuGuaiWan_251221/MonoBleedingEdge/etc'
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.0.62f1 (f99f05b3e950)
+[Subsystems] Discovering subsystems at path D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/JiaSuGuaiWan_251221/XYF_Car_Test_Data/UnitySubsystems
+Forcing GfxDevice: Null
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+NullGfxDevice:
+    Version:  NULL 1.0 [1.0]
+    Renderer: Null Device
+    Vendor:   Unity Technologies
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.229 seconds
+- Finished resetting the current domain, in  0.005 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Microsoft Media Foundation video decoding to texture disabled: graphics device is Null, only Direct3D 11 and Direct3D 12 (only on desktop) are supported for hardware-accelerated video decoding.
+UnloadTime: 0.695000 ms
+Registered Communicator in Agent.
+Episode Ended: derailment. frontCenter=1.8470, rearCenter=6.8201, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.042, episodeTimer=12.42
+Episode Ended: derailment. frontCenter=1.9667, rearCenter=6.5944, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.045, episodeTimer=12.78
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=12.40
+Episode Ended: derailment. frontCenter=1.9896, rearCenter=6.5179, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9304, rearCenter=6.2266, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9914, rearCenter=6.5028, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9584, rearCenter=6.5629, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9367, rearCenter=6.4982, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8607, rearCenter=6.3205, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.040, episodeTimer=12.34
+Episode Ended: nearly static. translationMag=0.050, episodeTimer=12.50
+Episode Ended: derailment. frontCenter=1.9040, rearCenter=6.4255, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9098, rearCenter=6.5503, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.042, episodeTimer=12.42
+Episode Ended: derailment. frontCenter=1.8392, rearCenter=6.7060, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8929, rearCenter=6.7250, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9196, rearCenter=6.5817, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9031, rearCenter=6.7758, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9158, rearCenter=6.7075, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.024, episodeTimer=12.20
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=12.66
+Episode Ended: derailment. frontCenter=1.9522, rearCenter=6.6757, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9561, rearCenter=6.4578, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=1.48
+Episode Ended: derailment. frontCenter=1.9806, rearCenter=6.7805, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.047, episodeTimer=12.46
+Episode Ended: derailment. frontCenter=1.9019, rearCenter=6.4757, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9788, rearCenter=6.6615, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9990, rearCenter=6.6687, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9652, rearCenter=6.6320, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8916, rearCenter=6.7535, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9621, rearCenter=6.6347, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.046, episodeTimer=10.74
+Episode Ended: derailment. frontCenter=1.9403, rearCenter=6.5788, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9025, rearCenter=6.5450, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9479, rearCenter=6.7485, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.046, episodeTimer=11.10
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=6.70
+Episode Ended: derailment. frontCenter=1.9765, rearCenter=6.5276, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9600, rearCenter=6.7436, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=12.84
+Episode Ended: derailment. frontCenter=1.8633, rearCenter=5.8859, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.041, episodeTimer=12.80
+Episode Ended: derailment. frontCenter=1.9085, rearCenter=6.7818, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=12.48
+Episode Ended: derailment. frontCenter=1.9486, rearCenter=6.7989, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8249, rearCenter=6.6610, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.043, episodeTimer=12.16
+Episode Ended: nearly static. translationMag=0.043, episodeTimer=12.14
+Episode Ended: derailment. frontCenter=1.9240, rearCenter=6.6113, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.045, episodeTimer=12.22
+Episode Ended: nearly static. translationMag=0.047, episodeTimer=11.52
+Episode Ended: nearly static. translationMag=0.040, episodeTimer=12.70
+Episode Ended: derailment. frontCenter=1.9579, rearCenter=6.5441, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9813, rearCenter=6.0089, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.047, episodeTimer=11.96
+Episode Ended: derailment. frontCenter=1.9756, rearCenter=6.7979, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.046, episodeTimer=12.36
+Episode Ended: derailment. frontCenter=1.9080, rearCenter=6.7538, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9409, rearCenter=6.6809, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9888, rearCenter=6.5479, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.037, episodeTimer=12.70
+Episode Ended: derailment. frontCenter=1.9607, rearCenter=6.8192, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9953, rearCenter=6.5755, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9143, rearCenter=6.2581, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9598, rearCenter=6.9929, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8525, rearCenter=6.6902, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9453, rearCenter=6.6691, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9676, rearCenter=6.6937, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.8589, rearCenter=6.3541, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9329, rearCenter=6.6851, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.047, episodeTimer=11.94
+Episode Ended: derailment. frontCenter=1.9668, rearCenter=6.6228, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9827, rearCenter=6.7690, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.041, episodeTimer=12.62
+Episode Ended: nearly static. translationMag=0.029, episodeTimer=12.20
+Episode Ended: derailment. frontCenter=1.9913, rearCenter=6.6617, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9382, rearCenter=6.8663, threshold=2.0000
+Unable to save timers to file D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/JiaSuGuaiWan_251221/XYF_Car_Test_Data\ML-Agents\Timers\Car_251209_timers.json
+[Physics::Module] Cleanup current backned.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
