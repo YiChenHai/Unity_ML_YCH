@@ -121,3 +121,8 @@ Episode Ended: derailment. frontCenter=4.7864, rearCenter=1.9453, threshold=2.00
 Episode Ended: derailment. frontCenter=3.2477, rearCenter=1.9710, threshold=2.0000
 Episode Ended: derailment. frontCenter=2.2568, rearCenter=1.9148, threshold=2.0000
 Episode Ended: nearly static. translationMag=0.049, episodeTimer=11.74
+Episode Ended: nearly static. translationMag=0.044, episodeTimer=10.78
+Episode Ended: derailment. frontCenter=4.3111, rearCenter=1.8937, threshold=2.0000
+Episode Ended: derailment. frontCenter=2.5447, rearCenter=1.9331, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.048, episodeTimer=10.98
+Episode Ended: derailment. frontCenter=1.9347, rearCenter=4.3362, threshold=2.0000
