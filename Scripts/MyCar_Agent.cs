@@ -17,21 +17,21 @@ public class MyCarAgent : Agent
     [Header("Control limits (body frame - Unity标准)")]
     public float maxForwardSpeed = 1f;     // vz (前进速度) m/s
     public float maxLateralSpeed = 0.5f;     // vx (横向速度) m/s
-    public float maxOmegaDeg = 180f;          // omega (自转角速度) deg/s
+    public float maxOmegaDeg = 240f;          // omega (自转角速度) deg/s
 
     [Header("Normalization")]
     public float maxField = 8f;              // 磁场最大值
 
     [Header("Reward Weights - 极简设计")]
-    public float w_alignment = 1.0f;        // 对齐（对称性）
+    public float w_alignment = 2.0f;        // 对齐（对称性）- 提高权重确保转弯时姿态控制
     public float w_forward = 2.0f;          // 前进速度（提高权重，鼓励冒险前进）
     
     [Header("Motion Thresholds")]
-    public float staticThreshold = 0.05f;            // 静止检测阈值（低于此值视为静止并终止Episode）
+    public float staticThreshold = 0.02f;            // 静止检测阈值（低于此值视为静止并终止Episode）
     public float forwardRewardThreshold = 0.1f;     // 前进奖励阈值（高于此值才给予前进奖励）
     public float lateralWeight = 0.3f;               // 横向速度在平移判定中的权重（降低以防抖动exploit）
     public float rotationThreshold = 0.3f;           // 转向运动阈值（平移不足时，转向可补偿）
-    public float minForwardForRotation = 0.03f;      // 旋转补偿的最低前进速度（降低以允许慢速转弯）
+    public float minForwardForRotation = 0.03f;      // 旋转补偿的最低前进速度（必须 > staticThreshold）
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
@@ -176,6 +176,7 @@ public class MyCarAgent : Agent
         float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);   // 后左 vs 后右
         
         // 只有前后都对称时才给高分（取最小值）
+        
         float r_alignment = Mathf.Min(frontSymmetry, rearSymmetry);
         // 注意：中心传感器强度已用于脱轨判断，不再计入奖励
 
