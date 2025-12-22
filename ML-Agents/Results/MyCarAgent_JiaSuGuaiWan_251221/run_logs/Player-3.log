@@ -103,3 +103,9 @@ Input System module state changed to: Shutdown.
 enter=1.9567, threshold=2.0000
 Episode Ended: derailment. frontCenter=1.9813, rearCenter=5.5301, threshold=2.0000
 Episode Ended: derailment. frontCenter=1.9869, rearCenter=3.2660, threshold=2.0000
+Episode Ended: derailment. frontCenter=2.4453, rearCenter=1.9990, threshold=2.0000
+Episode Ended: derailment. frontCenter=2.5148, rearCenter=1.9916, threshold=2.0000
+Episode Ended: derailment. frontCenter=3.7950, rearCenter=1.9447, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9822, rearCenter=5.2579, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9985, rearCenter=5.1466, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.041, episodeTimer=13.32
