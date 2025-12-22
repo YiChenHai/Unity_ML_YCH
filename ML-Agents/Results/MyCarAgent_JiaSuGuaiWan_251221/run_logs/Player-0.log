@@ -90,19 +90,17 @@ Episode Ended: derailment. frontCenter=1.9709, rearCenter=6.5289, threshold=2.00
 Episode Ended: nearly static. translationMag=0.044, episodeTimer=12.68
 Episode Ended: derailment. frontCenter=3.6028, rearCenter=1.9667, threshold=2.0000
 Episode Ended: nearly static. translationMag=0.030, episodeTimer=12.42
-4, threshold=2.0000
-Episode Ended: derailment. frontCenter=1.9565, rearCenter=6.6235, threshold=2.0000
-Episode Ended: derailment. frontCenter=1.9542, rearCenter=6.3830, threshold=2.0000
-Episode Ended: derailment. frontCenter=1.9701, rearCenter=6.7264, threshold=2.0000
-Episode Ended: nearly static. translationMag=0.044, episodeTimer=12.06
-Episode Ended: nearly static. translationMag=0.042, episodeTimer=12.44
-Episode Ended: derailment. frontCenter=1.9865, rearCenter=6.4952, threshold=2.0000
-Episode Ended: derailment. frontCenter=1.9406, rearCenter=6.5691, threshold=2.0000
-Episode Ended: derailment. frontCenter=1.8953, rearCenter=6.5781, threshold=2.0000
-Episode Ended: nearly static. translationMag=0.046, episodeTimer=11.64
-Episode Ended: nearly static. translationMag=0.039, episodeTimer=2.54
-[Physics::Module] Cleanup current backned.
-[Physics::Module] Id: 0xf2b8ea05
-Input System module state changed to: ShutdownInProgress.
-Input System polling thread exited.
-Input System module state changed to: Shutdown.
+Episode Ended: nearly static. translationMag=0.048, episodeTimer=13.78
+Episode Ended: derailment. frontCenter=1.9707, rearCenter=3.1013, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.041, episodeTimer=12.46
+Episode Ended: derailment. frontCenter=1.9483, rearCenter=5.4169, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.043, episodeTimer=11.72
+Episode Ended: derailment. frontCenter=1.9893, rearCenter=6.5337, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.034, episodeTimer=11.48
+Episode Ended: derailment. frontCenter=1.9935, rearCenter=6.7381, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.050, episodeTimer=14.00
+Episode Ended: derailment. frontCenter=4.4337, rearCenter=1.9814, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.050, episodeTimer=13.24
+Episode Ended: derailment. frontCenter=1.9133, rearCenter=4.0983, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.045, episodeTimer=13.58
+Episode Ended: derailment. frontCenter=2.3057, rearCenter=1.9160, threshold=2.0000

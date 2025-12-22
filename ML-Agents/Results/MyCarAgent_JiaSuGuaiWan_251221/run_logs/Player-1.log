@@ -103,9 +103,17 @@ Episode Ended: nearly static. translationMag=0.041, episodeTimer=12.62
 Episode Ended: nearly static. translationMag=0.029, episodeTimer=12.20
 Episode Ended: derailment. frontCenter=1.9913, rearCenter=6.6617, threshold=2.0000
 Episode Ended: derailment. frontCenter=1.9382, rearCenter=6.8663, threshold=2.0000
-Unable to save timers to file D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/JiaSuGuaiWan_251221/XYF_Car_Test_Data\ML-Agents\Timers\Car_251209_timers.json
-[Physics::Module] Cleanup current backned.
-[Physics::Module] Id: 0xf2b8ea05
-Input System module state changed to: ShutdownInProgress.
-Input System polling thread exited.
-Input System module state changed to: Shutdown.
+Unable to save timers to file D:/XiaoYiFei/Project/Unity/XYF_CarEpisode Ended: derailment. frontCenter=1.8969, rearCenter=5.2706, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=13.44
+Episode Ended: derailment. frontCenter=3.4525, rearCenter=1.8966, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9694, rearCenter=5.0255, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.041, episodeTimer=11.48
+Episode Ended: derailment. frontCenter=3.3650, rearCenter=1.9943, threshold=2.0000
+Episode Ended: derailment. frontCenter=1.9872, rearCenter=6.7189, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.042, episodeTimer=12.70
+Episode Ended: nearly static. translationMag=0.044, episodeTimer=12.84
+Episode Ended: derailment. frontCenter=1.9979, rearCenter=5.3685, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.048, episodeTimer=13.64
+Episode Ended: derailment. frontCenter=3.5196, rearCenter=1.9942, threshold=2.0000
+Episode Ended: nearly static. translationMag=0.049, episodeTimer=12.86
+Episode Ended: derailment. frontCenter=3.0863, rearCenter=1.9835, threshold=2.0000
