@@ -1,0 +1,65 @@
+{
+    "MyCarAgent_251217": {
+        "checkpoints": [
+            {
+                "steps": 3499949,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-3499949.onnx",
+                "reward": 3.3675170640150704,
+                "creation_time": 1766407069.6561892,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-3499949.pt"
+                ]
+            },
+            {
+                "steps": 3999884,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-3999884.onnx",
+                "reward": 3.479569261724299,
+                "creation_time": 1766408843.3121324,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-3999884.pt"
+                ]
+            },
+            {
+                "steps": 4499993,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-4499993.onnx",
+                "reward": 3.31366187731425,
+                "creation_time": 1766410617.5505753,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-4499993.pt"
+                ]
+            },
+            {
+                "steps": 4999913,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-4999913.onnx",
+                "reward": 3.4376488592889576,
+                "creation_time": 1766412390.5428967,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-4999913.pt"
+                ]
+            },
+            {
+                "steps": 5000169,
+                "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-5000169.onnx",
+                "reward": 3.4376488592889576,
+                "creation_time": 1766412390.6349738,
+                "auxillary_file_paths": [
+                    "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-5000169.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5000169,
+            "file_path": "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217.onnx",
+            "reward": 3.4376488592889576,
+            "creation_time": 1766412390.6349738,
+            "auxillary_file_paths": [
+                "D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results\\MyCarAgent_duiqijiaqiang_251222\\MyCarAgent_251217\\MyCarAgent_251217-5000169.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.2.1+cu121"
+    }
+}

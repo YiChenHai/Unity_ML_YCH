@@ -15,27 +15,18 @@ public class MyCarAgent : Agent
     public MyCar_Motion myCarMotion;
 
     [Header("Control limits (body frame - Unity标准)")]
-    public float maxForwardSpeed = 1f;     // vz (前进速度) m/s
-    public float maxLateralSpeed = 0.5f;     // vx (横向速度) m/s
-    public float maxOmegaDeg = 240f;          // omega (自转角速度) deg/s
+    public float constantForwardSpeed = 0.5f;  // vz 固定前进速度 m/s
+    public float maxLateralSpeed = 0.5f;       // vx (横向速度) m/s
+    public float maxOmegaDeg = 240f;           // omega (自转角速度) deg/s
 
     [Header("Normalization")]
-    public float maxField = 8f;              // 磁场最大值
+    public float maxField = 8f;                // 磁场最大值
 
-    [Header("Reward Weights - 极简设计")]
-    public float w_alignment = 2.0f;        // 对齐（对称性）- 提高权重确保转弯时姿态控制
-    public float w_forward = 2.0f;          // 前进速度（提高权重，鼓励冒险前进）
-    
-    [Header("Motion Thresholds")]
-    public float staticThreshold = 0.02f;            // 静止检测阈值（低于此值视为静止并终止Episode）
-    public float forwardRewardThreshold = 0.1f;     // 前进奖励阈值（高于此值才给予前进奖励）
-    public float lateralWeight = 0.3f;               // 横向速度在平移判定中的权重（降低以防抖动exploit）
-    public float rotationThreshold = 0.3f;           // 转向运动阈值（平移不足时，转向可补偿）
-    public float minForwardForRotation = 0.03f;      // 旋转补偿的最低前进速度（必须 > staticThreshold）
+    [Header("Termination")]
+    public float derailThreshold = 2f;         // 脱轨阈值（中心传感器低于此值终止）
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
-    public float startupGracePeriod = 1.0f;  // 启动保护期（秒），期间不检测静止
     private float episodeTimer = 0f;
 
     [Header("Start pose")]
@@ -58,8 +49,8 @@ public class MyCarAgent : Agent
         transform.position = startPos;
         transform.rotation = startRot;
 
-        // 清除 myCarMotion 的输入
-        if (myCarMotion != null) myCarMotion.SetControl(0f, 0f, 0f);
+        // 设置固定前进速度，清除其他输入
+        if (myCarMotion != null) myCarMotion.SetControl(constantForwardSpeed, 0f, 0f);
 
         episodeTimer = 0f;
     }
@@ -77,37 +68,31 @@ public class MyCarAgent : Agent
             else sensor.AddObservation(0f);
         }
 
-        // 7-9: 当前运动状态（车身坐标系）- 这是AI做决策的关键反馈
+        // 7-8: 当前运动状态（车身坐标系）- AI决策反馈
         Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
         float angularVel = rb != null ? rb.angularVelocity.y : 0f;
         
         sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));   // 7: 横向速度 (Unity X轴)
-        sensor.AddObservation(localVel.z / Mathf.Max(0.001f, maxForwardSpeed));   // 8: 前进速度 (Unity Z轴)
         
         float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
-        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));    // 9: 角速度 omega
+        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));    // 8: 角速度 omega
     }
 
     public override void OnActionReceived(ActionBuffers actions)
-    {
-        // 连续动作：0=vz比例(前进), 1=vx比例(横向), 2=omega比例(自转)
-        float a_vz = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
-        float a_vx = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
-        float a_w  = Mathf.Clamp(actions.ContinuousActions[2], -1f, 1f);
+    { 
+        // 连续动作：0=vx比例(横向), 1=omega比例(自转)
+        float a_vx = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
+        float a_w  = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
 
-        // 映射到车身坐标系的真实控制量（Unity标准：Z=前进，X=横向）
-        float vz = a_vz * maxForwardSpeed;  // 前进速度 (Unity Z轴)
-        float vx = a_vx * maxLateralSpeed;  // 横向速度 (Unity X轴)
-        float omega = a_w * maxOmegaDeg * Mathf.Deg2Rad; // 自转角速度 rad/s
+        // 映射到真实控制量（vz固定，只控制vx和omega）
+        float vz = constantForwardSpeed;                        // 固定前进速度
+        float vx = a_vx * maxLateralSpeed;                     // 横向速度
+        float omega = a_w * maxOmegaDeg * Mathf.Deg2Rad;       // 自转角速度 rad/s
 
-        // 下发给 MyCar_Motion 去控制车辆运动
+        // 下发给 MyCar_Motion 控制车辆
         if (myCarMotion != null) myCarMotion.SetControl(vz, vx, omega);
 
-        // 读取当前运动状态（统一使用，避免重复计算）
-        Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
-        float backwardThreshold = -0.05f;  // 绝对阈值：任何后退超过0.05m/s就终止
-
-        // 读取传感器数据（只读取一次）
+        // 读取传感器数据
         float[] sensorValues = new float[6];
         for (int i = 0; i < sensors.Length; i++)
         {
@@ -118,132 +103,51 @@ public class MyCarAgent : Agent
             }
         }
         
-        // 终止条件：中心传感器低于4.5视为脱轨（安全约束）
-        float derailThreshold = 2f;  // 脱轨阈值（绝对值）
+        // ========== 终止条件1：脱轨检测 ==========
         float frontCenter = sensorValues[1];  // 前中
         float rearCenter = sensorValues[4];   // 后中
         
         if (frontCenter < derailThreshold || rearCenter < derailThreshold)
         {
-            AddReward(-1f);
-            Debug.Log($"Episode Ended: derailment. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}, threshold={derailThreshold:F4}");
+            AddReward(-5f);
+            Debug.Log($"Episode Ended: derailment. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}");
             EndEpisode();
             return;
         }
 
-        // 检查运动状态，防止静止和后退
-        // 后退立即终止
-        if (localVel.z < backwardThreshold)
-        {
-            AddReward(-2f);
-            Debug.Log($"Episode Ended: backward motion. vz={localVel.z:F3}");
-            EndEpisode();
-            return;
-        }
-        
-        // 静止检测（归一化后的平移强度）- 启动保护期后才检测
-        float vz_norm = Mathf.Abs(localVel.z) / maxForwardSpeed;
-        float vx_norm = Mathf.Abs(localVel.x) / maxLateralSpeed;
-        float translationMag = vz_norm + vx_norm * lateralWeight;
-        
-        if (episodeTimer > startupGracePeriod && translationMag < staticThreshold)  // 启动保护期后才检测静止
-        {
-            AddReward(-1f);
-            Debug.Log($"Episode Ended: nearly static. translationMag={translationMag:F3}, episodeTimer={episodeTimer:F2}");
-            EndEpisode();
-            return;
-        }
-
-        // 计算奖励并加入
+        // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
 
+        // ========== 终止条件2：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {
-            Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s, maxEpisodeTime={maxEpisodeTime:F2}s");
+            Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s");
             EndEpisode();
         } 
     }
 
     float CalculateReward(float[] s)
     {
-        if (rb == null || s == null || s.Length < 6) return 0f;
+        if (s == null || s.Length < 6) return 0f;
 
-        // ========== 1. 对齐（只考虑左右对称性） ==========
-        // 分别检查前排和后排的对称性
-        float frontSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[0] - s[2]) / maxField);  // 前左 vs 前右
-        float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);   // 后左 vs 后右
+        // ========== 对齐奖励：前后左右对称性 ==========
+        // 前排对称：前左 vs 前右
+        float frontSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[0] - s[2]) / maxField);
+        // 后排对称：后左 vs 后右
+        float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);
         
-        // 只有前后都对称时才给高分（取最小值）
-        
-        float r_alignment = Mathf.Min(frontSymmetry, rearSymmetry);
-        // 注意：中心传感器强度已用于脱轨判断，不再计入奖励
+        // 只有前后都对称时才给高分（取最小值，确保整车对齐）
+        float alignment = Mathf.Min(frontSymmetry, rearSymmetry);
 
-        // ========== 2. 运动奖励（禁止原地对齐、禁止后退） ==========
-        Vector3 localVel = transform.InverseTransformDirection(rb.linearVelocity);
-        float forwardSpeed = localVel.z;  // 前进方向
-        float lateralSpeed = localVel.x;  // 横向
-        float angularSpeed = rb.angularVelocity.y; // 自转（世界坐标系）
-        
-        // 分别计算平移运动和旋转运动（归一化后统一量纲）
-        float vx_normalized = Mathf.Abs(lateralSpeed) / maxLateralSpeed;    // [0, 1]
-        float vz_normalized = Mathf.Abs(forwardSpeed) / maxForwardSpeed;    // [0, 1]
-        float omega_normalized = Mathf.Abs(angularSpeed * Mathf.Rad2Deg) / maxOmegaDeg;  // [0, 1]
-        
-        // 平移强度（加权：前进优先，横向次要，防止抖动exploit）
-        float translationMagnitude = vz_normalized + vx_normalized * lateralWeight;
-        // 旋转强度（辅助调整姿态）
-        float rotationMagnitude = omega_normalized;
-        
-        // 前进奖励：纯正向激励（负值惩罚已通过Episode终止实现）
-        float r_forward;
-        
-        // 检测是否需要转向（只看前排传感器的不对称）
-        float frontAsymmetry = Mathf.Abs(s[0] - s[2]);  // 前左 vs 前右
-        float asymmetryNormalized = Mathf.Clamp01(frontAsymmetry / maxField);
-        bool needTurning = asymmetryNormalized > 0.15f;  // 不对称超过15%认为需要转向
-        
-        if (translationMagnitude >= forwardRewardThreshold && forwardSpeed > 0f)
-        {
-            // 平移强度足够且前进 → 按速度给予奖励（确保只奖励正向运动）
-            r_forward = Mathf.Clamp01(forwardSpeed / maxForwardSpeed);
-        }
-        else if (rotationMagnitude >= rotationThreshold && forwardSpeed >= minForwardForRotation)
-        {
-            // 转向调整中 → 根据是否需要转向给予不同奖励
-            if (needTurning)
-            { 
-                // 需要转向时给予高额奖励，且奖励与角速度成正比（鼓励快速转向）
-                r_forward = 0.5f + omega_normalized * 0.4f;  // 0.5-0.9，角速度越大奖励越高
-            }
-            else
-            {
-                // 不需要转向时给予基础奖励（正常姿态调整）
-                r_forward = 0.3f;
-            }
-        }
-        else
-        {
-            // 运动不足 → 不给奖励（但不惩罚，因为会被Episode终止）
-            r_forward = 0f;
-        }
-
-        // ========== 组合奖励（极简） ==========
-        float reward = w_alignment * r_alignment + w_forward * r_forward;
-
-        // 归一化并限制范围（防止极端值）
-        return Mathf.Clamp(reward / (w_alignment + w_forward), -2f, 1f);
+        // 返回对齐奖励 [0, 1]
+        return alignment;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        var cont = actionsOut.ContinuousActions;
-        cont[0] = Input.GetAxis("Vertical");   // vz (前进)
-        cont[1] = Input.GetAxis("Horizontal"); // vx (横向)
-        cont[2] = 0f;
-        if (Input.GetKey(KeyCode.Q)) cont[2] = -1f;
-        if (Input.GetKey(KeyCode.E)) cont[2] = 1f;
+        // 不需要手动控制
     }
 
     private static Texture2D _bgTexture; // 静态背景纹理，避免每帧创建

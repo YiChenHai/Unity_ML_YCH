@@ -1,5 +1,5 @@
 behaviors:
-  MyCarAgent_251217:
+  MyCarAgent_cVz_251222:
     trainer_type: ppo
     hyperparameters:
       batch_size: 1024

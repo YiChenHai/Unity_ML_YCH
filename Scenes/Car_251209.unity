@@ -422,19 +422,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 9
+    VectorObservationSize: 8
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 3
+      m_NumContinuousActions: 2
       BranchSizes: 
-    VectorActionSize: 03000000
+    VectorActionSize: 02000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MyCarAgent_251217
+  m_BehaviorName: MyCarAgent_cVz_251222
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -481,19 +481,12 @@ MonoBehaviour:
   - {fileID: 1240964160}
   rb: {fileID: 714007403}
   myCarMotion: {fileID: 714007404}
-  maxForwardSpeed: 1
+  constantForwardSpeed: 0.5
   maxLateralSpeed: 1
   maxOmegaDeg: 90
   maxField: 8
-  w_alignment: 1
-  w_forward: 1
-  staticThreshold: 0.05
-  forwardRewardThreshold: 0.1
-  lateralWeight: 0.3
-  rotationThreshold: 0.3
-  minForwardForRotation: 0.08
+  derailThreshold: 2
   maxEpisodeTime: 20
-  startupGracePeriod: 1
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &751401902
