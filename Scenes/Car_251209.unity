@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c667595f282c2d84c9483eace042e852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlSource: 0
+  controlSource: 1
   wheelColliders:
   - {fileID: 751401904}
   - {fileID: 897324996}
@@ -373,7 +373,7 @@ MonoBehaviour:
   omega_input: 0
   manualVz: 0
   manualVx: 0
-  manualOmega: 0
+  manualOmega: -1
   inputScaleVz: 1
   inputScaleVx: 1
   inputScaleOmega: 1
@@ -394,8 +394,6 @@ MonoBehaviour:
   steer_Kd: 1
   steer_integratorLimit: 30
   maxSteerRateDeg: 180
-  steerOutputMinDeg: -180
-  steerOutputMaxDeg: 180
   steerDeadbandDeg: 0.5
   forceWheelZto90: 1
   enableDebugLog: 1
@@ -431,7 +429,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 21eb088831425b54c8cad615a5e1a035, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_cVz_251222
@@ -462,7 +460,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714007401}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbc67329c47f10249bab340ecada9975, type: 3}
   m_Name: 
