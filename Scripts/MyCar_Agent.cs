@@ -141,8 +141,32 @@ public class MyCarAgent : Agent
         // 只有前后都对称时才给高分（取最小值，确保整车对齐）
         float alignment = Mathf.Min(frontSymmetry, rearSymmetry);
 
-        // 返回对齐奖励 [0, 1]
-        return alignment;
+        // ========== 前进速度因子：分段式速度奖励（转弯宽容） ==========
+        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
+        float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 实际前进速度
+        
+        float speedThreshold = constantForwardSpeed * 0.6f;  // 60%阈值
+        float speedRatio;
+        
+        if (forwardSpeed >= speedThreshold)
+        {
+            // 速度足够（≥60%目标），给予全额奖励
+            speedRatio = 1.0f;
+        }
+        else if (forwardSpeed >= 0.05f)
+        {
+            // 速度介于5cm/s和60%阈值之间，线性衰减
+            speedRatio = forwardSpeed / speedThreshold;
+        }
+        else
+        {
+            // 几乎停止（<5cm/s），无奖励
+            speedRatio = 0f;
+        }
+        
+        // 最终奖励 = 对齐分数 × 前进因子
+        // 转弯时只要保持≥60%目标速度，就不会损失奖励
+        return alignment * speedRatio;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
