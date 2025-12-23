@@ -35,7 +35,7 @@ public class MyCar_Motion : MonoBehaviour
     public float inputScaleVz = 1f;  // 前进速度缩放
     public float inputScaleVx = 1f;  // 横向速度缩放
     public float inputScaleOmega = 1f;  // 角速度缩放
-    public float deadzone = 0.01f;
+    public float deadzone = 0.02f;
 
     [Header("Wheel / Drive")]
     public float maxWheelLinearSpeed = 4.0f;
@@ -50,7 +50,7 @@ public class MyCar_Motion : MonoBehaviour
     public float speed_integratorLimit = 20f;
     public float speed_outputMin = -200f;
     public float speed_outputMax = 200f;
-    public float speedDeadband = 0.02f;
+    public float speedDeadband = 0.01f;
 
     [Header("Steer PID (per wheel)")]
     public float steer_Kp = 40f;  // 增大比例增益，大误差时响应更快
@@ -58,7 +58,7 @@ public class MyCar_Motion : MonoBehaviour
     public float steer_Kd = 5f;   // 增大微分增益，减少超调
     public float steer_integratorLimit = 10f;
     public float maxSteerRateDeg = 360f;  // 最大转向角速度（度/秒）
-    public float steerDeadbandDeg = 0.5f;
+    public float steerDeadbandDeg = 0.2f;
 
     [Header("Visual options")]
     public bool forceWheelZto90 = true;
@@ -355,12 +355,15 @@ public class MyCar_Motion : MonoBehaviour
             }
             else if (Mathf.Abs(speedError) < speedDeadband)
             {
-                // 情况2：误差在死区内 → 停止加扭矩，但不加制动（让自然摩擦维持）
-                speedPIDs[j].ResetIntegrator();
+                // 情况2：误差在死区内 → 使用低增益PID维持速度（抵消摩擦力）
+                // 不重置积分器，使用降低的P增益来平滑维持
+                float maintainTorque = speedError * (speed_Kp * 0.3f);  // 使用30%的P增益
+                maintainTorque = Mathf.Clamp(maintainTorque, -maxMotorTorque * 0.2f, maxMotorTorque * 0.2f);  // 限制在20%扭矩范围
+                
                 if (wc != null)
                 {
-                    wc.motorTorque = 0f;      // 停止加扭矩
-                    wc.brakeTorque = 0f;      // 不加制动，避免顿挫！
+                    wc.brakeTorque = 0f;
+                    wc.motorTorque = maintainTorque;  // 施加维持扭矩
                 }
             }
             else

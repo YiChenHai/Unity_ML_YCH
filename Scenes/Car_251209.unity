@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 714007407}
   - component: {fileID: 714007404}
   - component: {fileID: 714007408}
+  - component: {fileID: 714007409}
   m_Layer: 0
   m_Name: MyCar_Agent
   m_TagString: Untagged
@@ -373,7 +374,7 @@ MonoBehaviour:
   omega_input: 0
   manualVz: 0
   manualVx: 0
-  manualOmega: -1
+  manualOmega: 0
   inputScaleVz: 1
   inputScaleVx: 1
   inputScaleOmega: 1
@@ -388,13 +389,13 @@ MonoBehaviour:
   speed_integratorLimit: 50
   speed_outputMin: -200
   speed_outputMax: 200
-  speedDeadband: 0.02
+  speedDeadband: 0.01
   steer_Kp: 30
   steer_Ki: 0
   steer_Kd: 1
   steer_integratorLimit: 30
   maxSteerRateDeg: 180
-  steerDeadbandDeg: 0.5
+  steerDeadbandDeg: 0.2
   forceWheelZto90: 1
   enableDebugLog: 1
   steerAngles:
@@ -432,7 +433,7 @@ MonoBehaviour:
   m_Model: {fileID: 5022602860645237092, guid: 21eb088831425b54c8cad615a5e1a035, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: MyCarAgent_cVz_251222
+  m_BehaviorName: MyCarAgent_cVzMo_251223
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -487,6 +488,31 @@ MonoBehaviour:
   maxEpisodeTime: 20
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &714007409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714007401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4ad112514b76e4392e06856c20feb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCarMotion: {fileID: 714007404}
+  rb: {fileID: 714007403}
+  tape: {fileID: 1462255779}
+  sensors:
+  - {fileID: 1179175742}
+  - {fileID: 1988725124}
+  - {fileID: 1410473136}
+  - {fileID: 1848363869}
+  - {fileID: 1550834400}
+  - {fileID: 1240964160}
+  showDebugInfo: 1
+  displayPosition: {x: 10, y: 10}
+  displaySize: {x: 480, y: 450}
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0
