@@ -482,7 +482,7 @@ MonoBehaviour:
   myCarMotion: {fileID: 714007404}
   constantForwardSpeed: 0.2
   maxLateralSpeed: 0.8
-  maxOmegaDeg: 270
+  maxOmegaDeg: 260
   maxField: 8
   derailThreshold: 2
   maxEpisodeTime: 30

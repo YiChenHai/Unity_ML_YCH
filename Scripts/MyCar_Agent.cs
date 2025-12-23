@@ -115,12 +115,13 @@ public class MyCarAgent : Agent
             return;
         }
 
-        // ========== 终止条件2：速度过低检测 ==========
-        float actualSpeed = rb != null ? rb.linearVelocity.magnitude : 0f;
-        if (actualSpeed < 0.1f)
+        // ========== 终止条件2：前进速度过低检测 ==========
+        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
+        float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 前进方向速度分量
+        if (forwardSpeed < 0.1f)
         {
             AddReward(-3f);
-            Debug.Log($"Episode Ended: speed too low. actualSpeed={actualSpeed:F4} m/s");
+            Debug.Log($"Episode Ended: forward speed too low. forwardSpeed={forwardSpeed:F4} m/s");
             EndEpisode();
             return;
         }
