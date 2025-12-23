@@ -45,7 +45,7 @@ behaviors:
     self_play: null
     behavioral_cloning: null
 env_settings:
-  env_path: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/cVzMoStop_251223/XYF_Car_Test.exe
+  env_path: D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/cVzMoStop1s_251223/XYF_Car_Test.exe
   env_args: null
   base_port: 5005
   num_envs: 4

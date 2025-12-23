@@ -27,7 +27,7 @@ public class MyCarAgent : Agent
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
-    public float speedCheckProtectionTime = 1.0f;  // 开始后保护时间（秒），期间不检测低速
+    public float speedCheckProtectionTime = 2.0f;  // 开始后保护时间（秒），期间不检测低速
     private float episodeTimer = 0f;
 
     [Header("Start pose")]
