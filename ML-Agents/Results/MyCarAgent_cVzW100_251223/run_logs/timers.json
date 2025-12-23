@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1766494665",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\IFR_25\\.conda\\envs\\IFR_mlagents\\Scripts\\mlagents-learn ML-Agents/Config/MyCarAgent_251217_UTF8.yaml --run-id=MyCarAgent_cVzW100_251223 --force --results-dir D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Assets/ML-Agents/Results --time-scale=20 --num-envs=4 --env=D:/XiaoYiFei/Project/Unity/XYF_Car_Test/Output/cVzW100_251223/XYF_Car_Test.exe --width=640 --height=480",
+        "mlagents_version": "1.1.0",
+        "mlagents_envs_version": "1.1.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.1+cu121",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1766494681"
+    },
+    "total": 15.684853500002646,
+    "count": 1,
+    "self": 0.3435219999955734,
+    "children": {
+        "run_training.setup": {
+            "total": 0.35087270000076387,
+            "count": 1,
+            "self": 0.35087270000076387
+        },
+        "TrainerController.start_learning": {
+            "total": 14.990458800006309,
+            "count": 1,
+            "self": 0.0005623000033665448,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 14.989871800004039,
+                    "count": 1,
+                    "self": 14.989871800004039
+                },
+                "trainer_threads": {
+                    "total": 1.3999961083754897e-06,
+                    "count": 1,
+                    "self": 1.3999961083754897e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 2.3300002794712782e-05,
+                    "count": 1,
+                    "self": 2.3300002794712782e-05
+                }
+            }
+        }
+    }
+}
