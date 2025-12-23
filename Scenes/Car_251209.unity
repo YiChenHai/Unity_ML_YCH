@@ -480,12 +480,12 @@ MonoBehaviour:
   - {fileID: 1240964160}
   rb: {fileID: 714007403}
   myCarMotion: {fileID: 714007404}
-  constantForwardSpeed: 0.5
-  maxLateralSpeed: 1
-  maxOmegaDeg: 90
+  constantForwardSpeed: 0.2
+  maxLateralSpeed: 0.8
+  maxOmegaDeg: 270
   maxField: 8
   derailThreshold: 2
-  maxEpisodeTime: 20
+  maxEpisodeTime: 30
   startPos: {x: 0, y: 0.2, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &714007409
@@ -512,7 +512,7 @@ MonoBehaviour:
   - {fileID: 1240964160}
   showDebugInfo: 1
   displayPosition: {x: 10, y: 10}
-  displaySize: {x: 480, y: 450}
+  displaySize: {x: 480, y: 550}
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0

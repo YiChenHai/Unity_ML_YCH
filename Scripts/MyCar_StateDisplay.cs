@@ -7,6 +7,7 @@ public class MyCar_StateDisplay : MonoBehaviour
 {
     [Header("References")]
     public MyCar_Motion myCarMotion;
+    public MyCarAgent myCarAgent;
     public Rigidbody rb;
     public MagneticTape tape;
     [Tooltip("传感器顺序: [0]=前左, [1]=前中, [2]=前右, [3]=后左, [4]=后中, [5]=后右")]
@@ -24,6 +25,9 @@ public class MyCar_StateDisplay : MonoBehaviour
         // 自动查找组件（如果未手动绑定）
         if (myCarMotion == null)
             myCarMotion = GetComponent<MyCar_Motion>();
+        
+        if (myCarAgent == null)
+            myCarAgent = GetComponent<MyCarAgent>();
         
         if (rb == null)
             rb = GetComponent<Rigidbody>();
@@ -111,6 +115,13 @@ public class MyCar_StateDisplay : MonoBehaviour
         GUILayout.Label("═══ Control Input ═══", GUILayout.Width(displaySize.x - 20));
         GUILayout.Label($"Vz(前进): {myCarMotion.vz_input:F3} m/s | Vx(横向): {myCarMotion.vx_input:F3} m/s | Omega: {myCarMotion.omega_input:F3} rad/s", 
             GUILayout.Width(displaySize.x - 20));
+        
+        // 显示Agent的速度限制
+        if (myCarAgent != null)
+        {
+            GUILayout.Label($"Agent Limits: ConstVz={myCarAgent.constantForwardSpeed:F2}m/s | MaxVx={myCarAgent.maxLateralSpeed:F2}m/s | MaxOmega={myCarAgent.maxOmegaDeg:F0}°/s", 
+                GUILayout.Width(displaySize.x - 20));
+        }
 
         GUILayout.Space(10);
 
