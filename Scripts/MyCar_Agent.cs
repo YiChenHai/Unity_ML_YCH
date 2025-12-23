@@ -27,7 +27,6 @@ public class MyCarAgent : Agent
 
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
-    public float speedCheckProtectionTime = 2.0f;  // 开始后保护时间（秒），期间不检测低速
     private float episodeTimer = 0f;
 
     [Header("Start pose")]
@@ -116,22 +115,11 @@ public class MyCarAgent : Agent
             return;
         }
 
-        // ========== 终止条件2：前进速度过低检测（带保护时间）==========
-        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
-        float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 前进方向速度分量
-        if (episodeTimer > speedCheckProtectionTime && forwardSpeed < 0.1f)
-        {
-            AddReward(-3f);
-            Debug.Log($"Episode Ended: forward speed too low. forwardSpeed={forwardSpeed:F4} m/s (time={episodeTimer:F2}s)");
-            EndEpisode();
-            return;
-        }
-
         // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
 
-        // ========== 终止条件3：超时 ==========
+        // ========== 终止条件2：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {

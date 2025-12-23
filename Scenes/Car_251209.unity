@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c667595f282c2d84c9483eace042e852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controlSource: 1
+  controlSource: 0
   wheelColliders:
   - {fileID: 751401904}
   - {fileID: 897324996}
@@ -481,12 +481,11 @@ MonoBehaviour:
   rb: {fileID: 714007403}
   myCarMotion: {fileID: 714007404}
   constantForwardSpeed: 0.2
-  maxLateralSpeed: 0.8
-  maxOmegaDeg: 100
+  maxLateralSpeed: 0.4
+  maxOmegaDeg: 80
   maxField: 8
   derailThreshold: 2
   maxEpisodeTime: 30
-  speedCheckProtectionTime: 2
   startPos: {x: 0, y: 0.15, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &714007409
