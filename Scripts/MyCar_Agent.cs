@@ -15,8 +15,8 @@ public class MyCarAgent : Agent
     public MyCar_Motion myCarMotion;
 
     [Header("Control limits (body frame - Unity标准)")]
-    public float constantForwardSpeed = 0.5f;  // vz 固定前进速度 m/s
-    public float maxLateralSpeed = 0.5f;       // vx (横向速度) m/s
+    public float constantForwardSpeed = 0.2f;  // vz 固定前进速度 m/s
+    public float maxLateralSpeed = 0.8f;       // vx (横向速度) m/s
     public float maxOmegaDeg = 240f;           // omega (自转角速度) deg/s
 
     [Header("Normalization")]
