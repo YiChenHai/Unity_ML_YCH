@@ -115,11 +115,21 @@ public class MyCarAgent : Agent
             return;
         }
 
+        // ========== 终止条件2：速度过低检测 ==========
+        float actualSpeed = rb != null ? rb.linearVelocity.magnitude : 0f;
+        if (actualSpeed < 0.1f)
+        {
+            AddReward(-3f);
+            Debug.Log($"Episode Ended: speed too low. actualSpeed={actualSpeed:F4} m/s");
+            EndEpisode();
+            return;
+        }
+
         // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
 
-        // ========== 终止条件2：超时 ==========
+        // ========== 终止条件3：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {
