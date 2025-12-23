@@ -136,7 +136,7 @@ public class MyCarAgent : Agent
         {
             Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s");
             EndEpisode();
-        } 
+        }  
     }
 
     float CalculateReward(float[] s)
