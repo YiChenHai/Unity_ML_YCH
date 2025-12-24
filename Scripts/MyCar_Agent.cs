@@ -15,9 +15,9 @@ public class MyCarAgent : Agent
     public MyCar_Motion myCarMotion;
 
     [Header("Control limits (body frame - Unity标准)")]
-    public float constantForwardSpeed = 0.25f;  // vz 固定前进速度 m/s
-    public float maxLateralSpeed = 0.2f;       // vx (横向速度) m/s
-    public float maxOmegaDeg = 45f;            // omega (自转角速度) deg/s - 防止轮子翻转
+    public float constantForwardSpeed = 0.2f;  // vz 固定前进速度 m/s
+    public float maxLateralSpeed = 0.8f;       // vx (横向速度) m/s
+    public float maxOmegaDeg = 45f;            // omega (自转角速度) deg/s - 安全范围避免翻转
 
     [Header("Normalization")]
     public float maxField = 8f;                // 磁场最大值
@@ -115,11 +115,20 @@ public class MyCarAgent : Agent
             return;
         }
 
+        // ========== 终止条件2：轮子翻转检测 ==========
+        if (myCarMotion != null && myCarMotion.flipOccurred)
+        {
+            AddReward(-2f);
+            Debug.Log($"Episode Ended: wheel flip occurred (angle > ±90°)");
+            EndEpisode();
+            return;
+        }
+
         // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
 
-        // ========== 终止条件2：超时 ==========
+        // ========== 终止条件3：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {

@@ -82,6 +82,7 @@ public class MyCar_Motion : MonoBehaviour
 
     [HideInInspector] public float[] steerAngles = new float[4];
     [HideInInspector] public float[] wheelSpeeds = new float[4];
+    [HideInInspector] public bool flipOccurred = false;  // 本帧是否发生翻转
 
     void Awake()
     {
@@ -161,6 +162,9 @@ public class MyCar_Motion : MonoBehaviour
     /// </summary>
     void ComputeKinematics(float vz, float vx, float omega)
     {
+        // 重置翻转标志
+        flipOccurred = false;
+        
         // 死区处理：所有输入接近零时，停止所有轮子
         if (Mathf.Abs(vz) < deadzone && Mathf.Abs(vx) < deadzone && Mathf.Abs(omega) < deadzone)
         {
@@ -203,11 +207,15 @@ public class MyCar_Motion : MonoBehaviour
             float angleDeg = kinSteer[i] * Mathf.Rad2Deg;
             if (angleDeg > 90f)
             {
+                flipOccurred = true;  // 标记发生翻转
+                Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° > 90°, flipped to {angleDeg - 180f:F1}°, speed reversed");
                 kinSteer[i] = (angleDeg - 180f) * Mathf.Deg2Rad;
                 kinSpeed[i] = -kinSpeed[i];  // 速度反向
             }
             else if (angleDeg < -90f)
             {
+                flipOccurred = true;  // 标记发生翻转
+                Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° < -90°, flipped to {angleDeg + 180f:F1}°, speed reversed");
                 kinSteer[i] = (angleDeg + 180f) * Mathf.Deg2Rad;
                 kinSpeed[i] = -kinSpeed[i];  // 速度反向
             }

@@ -430,7 +430,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: 9f7131c412e3e9841a306ce2551e1b12, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_cVzMo_251223
@@ -480,9 +480,9 @@ MonoBehaviour:
   - {fileID: 1240964160}
   rb: {fileID: 714007403}
   myCarMotion: {fileID: 714007404}
-  constantForwardSpeed: 0.25
-  maxLateralSpeed: 0.2
-  maxOmegaDeg: 45
+  constantForwardSpeed: 0.2
+  maxLateralSpeed: 0.8
+  maxOmegaDeg: 80
   maxField: 8
   derailThreshold: 1.5
   maxEpisodeTime: 40
@@ -513,7 +513,7 @@ MonoBehaviour:
   - {fileID: 1240964160}
   showDebugInfo: 1
   displayPosition: {x: 10, y: 10}
-  displaySize: {x: 480, y: 550}
+  displaySize: {x: 500, y: 550}
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0
