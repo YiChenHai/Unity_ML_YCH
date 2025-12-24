@@ -397,7 +397,7 @@ MonoBehaviour:
   maxSteerRateDeg: 180
   steerDeadbandDeg: 0.2
   forceWheelZto90: 1
-  enableDebugLog: 1
+  enableDebugLog: 0
   steerAngles:
   - 0
   - 0
@@ -480,12 +480,12 @@ MonoBehaviour:
   - {fileID: 1240964160}
   rb: {fileID: 714007403}
   myCarMotion: {fileID: 714007404}
-  constantForwardSpeed: 0.2
-  maxLateralSpeed: 0.4
-  maxOmegaDeg: 80
+  constantForwardSpeed: 0.25
+  maxLateralSpeed: 0.2
+  maxOmegaDeg: 45
   maxField: 8
-  derailThreshold: 2
-  maxEpisodeTime: 30
+  derailThreshold: 1.5
+  maxEpisodeTime: 40
   startPos: {x: 0, y: 0.15, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &714007409
