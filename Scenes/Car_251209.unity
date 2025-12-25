@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 8
+    VectorObservationSize: 12
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -487,6 +487,12 @@ MonoBehaviour:
   maxField: 8
   derailThreshold: 1.5
   maxEpisodeTime: 40
+  turnEnterThreshold: 0.3
+  turnExitThreshold: 0.18
+  rearConfirmThreshold: 0.12
+  rearConfirmWindow: 0.5
+  turnExitGraceTime: 0.4
+  diffSmoothing: 0.1
   startPos: {x: 0, y: 0.15, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &714007409

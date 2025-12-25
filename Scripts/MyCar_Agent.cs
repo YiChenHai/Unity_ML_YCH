@@ -94,7 +94,7 @@ public class MyCarAgent : Agent
             else sensor.AddObservation(0f);
         }
 
-        // 7-8: 当前运动状态（车身坐标系）- AI决策反馈
+        // 7-9: 当前运动状态（车身坐标系）- AI决策反馈
         Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
         float angularVel = rb != null ? rb.angularVelocity.y : 0f;
         
@@ -105,9 +105,9 @@ public class MyCarAgent : Agent
         sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));        // 9: 角速度 omega
 
         // 10-12: 转弯判定信号（使用动作阶段更新后的平滑值 + 状态标志）
-        sensor.AddObservation(frontDiffSmoothed);          // 10
-        sensor.AddObservation(rearDiffSmoothed);           // 11
-        sensor.AddObservation(inTurnMode ? 1f : 0f);       // 12
+        sensor.AddObservation(frontDiffSmoothed);          // 10: 前排左右差平滑值
+        sensor.AddObservation(rearDiffSmoothed);           // 11: 后排左右差平滑值
+        sensor.AddObservation(inTurnMode ? 1f : 0f);       // 12: 转弯模式标志
     }
 
     public override void OnActionReceived(ActionBuffers actions)
