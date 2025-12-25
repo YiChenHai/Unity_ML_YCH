@@ -17,7 +17,7 @@ public class MyCarAgent : Agent
     [Header("Control limits (body frame - Unity标准)")]
     public float constantForwardSpeed = 0.2f;  // vz 固定前进速度 m/s
     public float maxLateralSpeed = 0.8f;       // vx (横向速度) m/s
-    public float maxOmegaDeg = 45f;            // omega (自转角速度) deg/s - 安全范围避免翻转
+    public float maxOmegaDeg = 100f;           // omega (自转角速度) deg/s
 
     [Header("Normalization")]
     public float maxField = 8f;                // 磁场最大值
@@ -28,6 +28,27 @@ public class MyCarAgent : Agent
     [Header("Episode")]
     public float maxEpisodeTime = 20f;
     private float episodeTimer = 0f;
+
+    [Header("Turn detection (front/rear diff)")]
+    [Tooltip("进入转弯的前排左右差阈值 (归一化差，0~1)")]
+    public float turnEnterThreshold = 0.3f;
+    [Tooltip("退出转弯的前/后排左右差阈值 (滞回，0~1)")]
+    public float turnExitThreshold = 0.18f;
+    [Tooltip("后排确认弯道的阈值 (低一些以适应延迟感知)")]
+    public float rearConfirmThreshold = 0.12f;
+    [Tooltip("后排需要达到确认阈值的时间窗口 (秒)")]
+    public float rearConfirmWindow = 0.5f;
+    [Tooltip("退出转弯前需要连续保持低差值的时间 (秒)")]
+    public float turnExitGraceTime = 0.4f;
+    [Tooltip("左右差值的平滑时间常数(秒)，越小响应越快")]
+    public float diffSmoothing = 0.1f;
+
+    // 运行时状态
+    private float frontDiffSmoothed = 0f;
+    private float rearDiffSmoothed = 0f;
+    private bool inTurnMode = false;
+    private float rearConfirmTimer = 0f;
+    private float turnExitTimer = 0f;
 
     [Header("Start pose")]
     public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
@@ -43,7 +64,7 @@ public class MyCarAgent : Agent
     {
         if (rb != null)
         {
-            rb.linearVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
         transform.position = startPos;
@@ -53,6 +74,11 @@ public class MyCarAgent : Agent
         if (myCarMotion != null) myCarMotion.SetControl(constantForwardSpeed, 0f, 0f);
 
         episodeTimer = 0f;
+        frontDiffSmoothed = 0f;
+        rearDiffSmoothed = 0f;
+        inTurnMode = false;
+        rearConfirmTimer = 0f;
+        turnExitTimer = 0f;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -69,13 +95,19 @@ public class MyCarAgent : Agent
         }
 
         // 7-8: 当前运动状态（车身坐标系）- AI决策反馈
-        Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
+        Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.velocity : Vector3.zero);
         float angularVel = rb != null ? rb.angularVelocity.y : 0f;
         
-        sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));   // 7: 横向速度 (Unity X轴)
+        sensor.AddObservation(localVel.z / Mathf.Max(0.001f, constantForwardSpeed));  // 7: 前进速度 (Unity Z轴)
+        sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));       // 8: 横向速度 (Unity X轴)
         
         float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
-        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));    // 8: 角速度 omega
+        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));        // 9: 角速度 omega
+
+        // 10-12: 转弯判定信号（使用动作阶段更新后的平滑值 + 状态标志）
+        sensor.AddObservation(frontDiffSmoothed);          // 10
+        sensor.AddObservation(rearDiffSmoothed);           // 11
+        sensor.AddObservation(inTurnMode ? 1f : 0f);       // 12
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -102,6 +134,11 @@ public class MyCarAgent : Agent
                 sensorValues[i] = mag.magnitude;
             }
         }
+
+        // 转弯判定：前排用于启动，后排用于确认/退出，带滞回和平滑
+        float frontDiffNow = ComputeNormalizedDiff(sensorValues[0], sensorValues[2]);
+        float rearDiffNow = ComputeNormalizedDiff(sensorValues[3], sensorValues[5]);
+        UpdateTurnDetection(frontDiffNow, rearDiffNow, Time.fixedDeltaTime);
         
         // ========== 终止条件1：脱轨检测 ==========
         float frontCenter = sensorValues[1];  // 前中
@@ -115,20 +152,11 @@ public class MyCarAgent : Agent
             return;
         }
 
-        // ========== 终止条件2：轮子翻转检测 ==========
-        if (myCarMotion != null && myCarMotion.flipOccurred)
-        {
-            AddReward(-2f);
-            Debug.Log($"Episode Ended: wheel flip occurred (angle > ±90°)");
-            EndEpisode();
-            return;
-        }
-
         // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
 
-        // ========== 终止条件3：超时 ==========
+        // ========== 终止条件2：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)
         {
@@ -151,20 +179,21 @@ public class MyCarAgent : Agent
         float alignment = Mathf.Min(frontSymmetry, rearSymmetry);
 
         // ========== 前进速度因子：分段式速度奖励（转弯宽容） ==========
-        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
+        Vector3 vel = rb != null ? rb.velocity : Vector3.zero;
         float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 实际前进速度
         
-        float speedThreshold = constantForwardSpeed * 0.6f;  // 60%阈值
+        // 直线时要求更高速度，转弯时放宽一点
+        float speedThreshold = inTurnMode ? constantForwardSpeed * 0.45f : constantForwardSpeed * 0.6f;
         float speedRatio;
         
         if (forwardSpeed >= speedThreshold)
         {
-            // 速度足够（≥60%目标），给予全额奖励
+            // 速度达到阈值（直线约60%，转弯约45%目标），给予全额奖励
             speedRatio = 1.0f;
         }
         else if (forwardSpeed >= 0.05f)
         {
-            // 速度介于5cm/s和60%阈值之间，线性衰减
+            // 速度介于5cm/s和阈值之间，线性衰减
             speedRatio = forwardSpeed / speedThreshold;
         }
         else
@@ -176,6 +205,72 @@ public class MyCarAgent : Agent
         // 最终奖励 = 对齐分数 × 前进因子
         // 转弯时只要保持≥60%目标速度，就不会损失奖励
         return alignment * speedRatio;
+    }
+
+    // 归一化左右差：|L-R| / max(|L|+|R|, eps)，范围 0~1
+    float ComputeNormalizedDiff(float left, float right)
+    {
+        float denom = Mathf.Max(Mathf.Abs(left) + Mathf.Abs(right), 1e-4f);
+        return Mathf.Clamp01(Mathf.Abs(left - right) / denom);
+    }
+
+    // 转弯模式判定：前排触发，后排确认/退出，带时间滞回与平滑
+    void UpdateTurnDetection(float frontDiff, float rearDiff, float dt)
+    {
+        // 指数平滑：alpha 基于时间常数和 dt，避免步长变化导致响应不一致
+        float alpha = 1f - Mathf.Exp(-dt / Mathf.Max(1e-4f, diffSmoothing));
+        frontDiffSmoothed = Mathf.Lerp(frontDiffSmoothed, frontDiff, alpha);
+        rearDiffSmoothed = Mathf.Lerp(rearDiffSmoothed, rearDiff, alpha);
+
+        // 进入：前排超过进入阈值
+        if (!inTurnMode && frontDiffSmoothed >= turnEnterThreshold)
+        {
+            inTurnMode = true;
+            rearConfirmTimer = 0f;
+            turnExitTimer = 0f;
+        }
+
+        if (inTurnMode)
+        {
+            // 后排确认：在窗口内累积时间，只要确认过就认为弯在持续
+            if (rearDiffSmoothed >= rearConfirmThreshold)
+            {
+                rearConfirmTimer = Mathf.Min(rearConfirmTimer + dt, rearConfirmWindow);
+            }
+            else
+            {
+                // 若后排长时间低于阈值，计时器缓慢衰减，避免瞬时掉落就退出
+                rearConfirmTimer = Mathf.Max(0f, rearConfirmTimer - dt * 0.5f);
+            }
+
+            // 退出条件：前后差都低于退出阈值，且维持一定时间
+            bool frontLow = frontDiffSmoothed <= turnExitThreshold;
+            bool rearLow = rearDiffSmoothed <= turnExitThreshold;
+
+            if (frontLow && rearLow)
+            {
+                turnExitTimer += dt;
+            }
+            else
+            {
+                turnExitTimer = 0f;
+            }
+
+            // 防误判：如果后排一直未确认且前排显著回落，也允许退出
+            bool noRearConfirm = rearConfirmTimer < 0.05f;
+            bool frontBackToStraight = frontDiffSmoothed < turnEnterThreshold * 0.6f;
+            if (noRearConfirm && frontBackToStraight)
+            {
+                turnExitTimer += dt;
+            }
+
+            if (turnExitTimer >= turnExitGraceTime)
+            {
+                inTurnMode = false;
+                rearConfirmTimer = 0f;
+                turnExitTimer = 0f;
+            }
+        }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
