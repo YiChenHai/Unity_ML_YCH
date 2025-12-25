@@ -64,7 +64,7 @@ public class MyCarAgent : Agent
     {
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
         transform.position = startPos;
@@ -95,7 +95,7 @@ public class MyCarAgent : Agent
         }
 
         // 7-8: 当前运动状态（车身坐标系）- AI决策反馈
-        Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.velocity : Vector3.zero);
+        Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
         float angularVel = rb != null ? rb.angularVelocity.y : 0f;
         
         sensor.AddObservation(localVel.z / Mathf.Max(0.001f, constantForwardSpeed));  // 7: 前进速度 (Unity Z轴)
@@ -179,7 +179,7 @@ public class MyCarAgent : Agent
         float alignment = Mathf.Min(frontSymmetry, rearSymmetry);
 
         // ========== 前进速度因子：分段式速度奖励（转弯宽容） ==========
-        Vector3 vel = rb != null ? rb.velocity : Vector3.zero;
+        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
         float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 实际前进速度
         
         // 直线时要求更高速度，转弯时放宽一点
