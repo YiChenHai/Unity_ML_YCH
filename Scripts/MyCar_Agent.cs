@@ -49,6 +49,20 @@ public class MyCarAgent : Agent
     private bool inTurnMode = false;
     private float rearConfirmTimer = 0f;
     private float turnExitTimer = 0f;
+    
+    // 动作平滑
+    private float lastActionVx = 0f;
+    private float lastActionOmega = 0f;
+    
+    [Header("Stability & Smoothing")]
+    [Tooltip("动作平滑惩罚系数，越大越惩罚抖动")]
+    public float actionSmoothingPenalty = 0.1f;
+    [Tooltip("直线稳定奖励系数")]
+    public float straightStabilityBonus = 0.2f;
+    [Tooltip("直线模式下认为对齐的阈值（对称性）")]
+    public float alignedThreshold = 0.9f;
+    [Tooltip("直线稳定的动作死区（绝对值），低于此值认为接近零")]
+    public float straightDeadzone = 0.1f;
 
     [Header("Start pose")]
     public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
@@ -79,6 +93,8 @@ public class MyCarAgent : Agent
         inTurnMode = false;
         rearConfirmTimer = 0f;
         turnExitTimer = 0f;
+        lastActionVx = 0f;
+        lastActionOmega = 0f;
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -155,6 +171,34 @@ public class MyCarAgent : Agent
         // ========== 计算对齐奖励 ==========
         float reward = CalculateReward(sensorValues);
         AddReward(reward * Time.fixedDeltaTime);
+        
+        // ========== 动作平滑惩罚 ==========
+        float actionChange = Mathf.Abs(a_vx - lastActionVx) + Mathf.Abs(a_w - lastActionOmega);
+        AddReward(-actionSmoothingPenalty * actionChange * Time.fixedDeltaTime);
+        
+        // ========== 直线稳定奖励 ==========
+        if (!inTurnMode)
+        {
+            // 计算当前对齐度
+            float frontSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValues[0] - sensorValues[2]) / maxField);
+            float rearSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValues[3] - sensorValues[5]) / maxField);
+            float alignment = Mathf.Min(frontSym, rearSym);
+            
+            // 如果对齐度高且动作接近零（在死区内），给稳定奖励
+            if (alignment >= alignedThreshold)
+            {
+                bool vxInDeadzone = Mathf.Abs(a_vx) <= straightDeadzone;
+                bool omegaInDeadzone = Mathf.Abs(a_w) <= straightDeadzone;
+                
+                if (vxInDeadzone && omegaInDeadzone)
+                {
+                    AddReward(straightStabilityBonus * Time.fixedDeltaTime);
+                }
+            }
+        }
+        
+        lastActionVx = a_vx;
+        lastActionOmega = a_w;
 
         // ========== 终止条件2：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
