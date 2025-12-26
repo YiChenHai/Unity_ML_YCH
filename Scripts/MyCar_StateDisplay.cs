@@ -167,6 +167,31 @@ public class MyCar_StateDisplay : MonoBehaviour
         {
             GUILayout.Label("未配置磁带或传感器", GUILayout.Width(displaySize.x - 20));
         }
+        
+        GUILayout.Space(10);
+        
+        // ========== 转弯判定状态 ==========
+        GUILayout.Label("═══ Turn Detection ═══", GUILayout.Width(displaySize.x - 20));
+        
+        if (myCarAgent != null)
+        {
+            GUIStyle turnModeStyle = new GUIStyle(GUI.skin.label)
+            {
+                normal = { textColor = myCarAgent.IsInTurnMode ? Color.red : Color.cyan },
+                fontSize = 13,
+                fontStyle = FontStyle.Bold
+            };
+            
+            string modeText = myCarAgent.IsInTurnMode ? "转弯模式 (TURNING)" : "直线模式 (STRAIGHT)";
+            GUILayout.Label($"当前状态: {modeText}", turnModeStyle, GUILayout.Width(displaySize.x - 20));
+            
+            GUILayout.Label($"前排差值平滑: {myCarAgent.FrontDiffSmoothed:F3} | 后排差值平滑: {myCarAgent.RearDiffSmoothed:F3}", 
+                GUILayout.Width(displaySize.x - 20));
+        }
+        else
+        {
+            GUILayout.Label("未配置Agent", GUILayout.Width(displaySize.x - 20));
+        }
 
         GUILayout.EndArea();
     }

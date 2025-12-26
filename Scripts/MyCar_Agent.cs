@@ -50,6 +50,11 @@ public class MyCarAgent : Agent
     private float rearConfirmTimer = 0f;
     private float turnExitTimer = 0f;
     
+    // 公共访问器
+    public bool IsInTurnMode => inTurnMode;
+    public float FrontDiffSmoothed => frontDiffSmoothed;
+    public float RearDiffSmoothed => rearDiffSmoothed;
+    
     // 动作平滑
     private float lastActionVx = 0f;
     private float lastActionOmega = 0f;
@@ -58,11 +63,17 @@ public class MyCarAgent : Agent
     [Tooltip("动作平滑惩罚系数，越大越惩罚抖动")]
     public float actionSmoothingPenalty = 0.1f;
     [Tooltip("直线稳定奖励系数")]
-    public float straightStabilityBonus = 0.2f;
+    public float straightStabilityBonus = 0.5f;
     [Tooltip("直线模式下认为对齐的阈值（对称性）")]
     public float alignedThreshold = 0.9f;
     [Tooltip("直线稳定的动作死区（绝对值），低于此值认为接近零")]
-    public float straightDeadzone = 0.1f;
+    public float straightDeadzone = 0.15f;
+    [Tooltip("对齐时的动作幅度惩罚系数，越大越鼓励静止")]
+    public float alignedActionPenalty = 0.3f;
+    [Tooltip("是否启用软死区（对齐时直接抑制小动作）")]
+    public bool useSoftDeadzone = true;
+    [Tooltip("软死区阈值，对齐且动作小于此值时强制清零")]
+    public float softDeadzoneThreshold = 0.10f;
 
     [Header("Start pose")]
     public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
@@ -131,6 +142,29 @@ public class MyCarAgent : Agent
         // 连续动作：0=vx比例(横向), 1=omega比例(自转)
         float a_vx = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
         float a_w  = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
+        
+        // 软死区：对齐时抑制小动作，强制车辆保持稳定
+        if (useSoftDeadzone && !inTurnMode)
+        {
+            float[] sensorValuesTemp = new float[6];
+            for (int i = 0; i < sensors.Length; i++)
+            {
+                if (sensors[i] != null && tape != null)
+                {
+                    sensorValuesTemp[i] = tape.GetMagneticField(sensors[i].position).magnitude;
+                }
+            }
+            
+            float frontSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValuesTemp[0] - sensorValuesTemp[2]) / maxField);
+            float rearSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValuesTemp[3] - sensorValuesTemp[5]) / maxField);
+            float currentAlignment = Mathf.Min(frontSym, rearSym);
+            
+            if (currentAlignment >= alignedThreshold)
+            {
+                if (Mathf.Abs(a_vx) < softDeadzoneThreshold) a_vx = 0f;
+                if (Mathf.Abs(a_w) < softDeadzoneThreshold) a_w = 0f;
+            }
+        }
 
         // 映射到真实控制量（vz固定，只控制vx和omega）
         float vz = constantForwardSpeed;                        // 固定前进速度
@@ -176,7 +210,7 @@ public class MyCarAgent : Agent
         float actionChange = Mathf.Abs(a_vx - lastActionVx) + Mathf.Abs(a_w - lastActionOmega);
         AddReward(-actionSmoothingPenalty * actionChange * Time.fixedDeltaTime);
         
-        // ========== 直线稳定奖励 ==========
+        // ========== 直线稳定奖励 + 对齐动作惩罚 ==========
         if (!inTurnMode)
         {
             // 计算当前对齐度
@@ -184,9 +218,13 @@ public class MyCarAgent : Agent
             float rearSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValues[3] - sensorValues[5]) / maxField);
             float alignment = Mathf.Min(frontSym, rearSym);
             
-            // 如果对齐度高且动作接近零（在死区内），给稳定奖励
+            // 对齐度高时，惩罚动作幅度（鼓励静止）
             if (alignment >= alignedThreshold)
             {
+                float actionMagnitude = Mathf.Abs(a_vx) + Mathf.Abs(a_w);
+                AddReward(-alignedActionPenalty * actionMagnitude * Time.fixedDeltaTime);
+                
+                // 动作在死区内给额外稳定奖励
                 bool vxInDeadzone = Mathf.Abs(a_vx) <= straightDeadzone;
                 bool omegaInDeadzone = Mathf.Abs(a_w) <= straightDeadzone;
                 
