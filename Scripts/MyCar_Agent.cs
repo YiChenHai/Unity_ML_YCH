@@ -54,8 +54,10 @@ public class MyCarAgent : Agent
     public bool IsInTurnMode => inTurnMode;
     public float FrontDiffSmoothed => frontDiffSmoothed;
     public float RearDiffSmoothed => rearDiffSmoothed;
+    public float LastActionVx { get; private set; }
+    public float LastActionOmega { get; private set; }
     
-    // 动作平滑
+    // 动作平滑（内部使用）
     private float lastActionVx = 0f;
     private float lastActionOmega = 0f;
     
@@ -237,7 +239,9 @@ public class MyCarAgent : Agent
         
         lastActionVx = a_vx;
         lastActionOmega = a_w;
-
+        LastActionVx = a_vx;
+        LastActionOmega = a_w;
+ 
         // ========== 终止条件2：超时 ==========
         episodeTimer += Time.fixedDeltaTime;
         if (episodeTimer >= maxEpisodeTime)

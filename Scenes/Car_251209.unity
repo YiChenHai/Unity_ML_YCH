@@ -292,6 +292,7 @@ GameObject:
   - component: {fileID: 714007404}
   - component: {fileID: 714007408}
   - component: {fileID: 714007409}
+  - component: {fileID: 714007410}
   m_Layer: 0
   m_Name: MyCar_Agent
   m_TagString: Untagged
@@ -431,7 +432,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
+  m_Model: {fileID: 5022602860645237092, guid: e74ea5a485012ec439c4e12925516a9f, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_cVzMo_251223
@@ -486,7 +487,7 @@ MonoBehaviour:
   maxOmegaDeg: 80
   maxField: 8
   derailThreshold: 1.5
-  maxEpisodeTime: 40
+  maxEpisodeTime: 1000000
   turnEnterThreshold: 0.3
   turnExitThreshold: 0.18
   rearConfirmThreshold: 0.12
@@ -495,9 +496,9 @@ MonoBehaviour:
   diffSmoothing: 0.1
   actionSmoothingPenalty: 0.1
   straightStabilityBonus: 0.2
-  alignedThreshold: 0.9
-  straightDeadzone: 0.1
-  alignedActionPenalty: 0.3
+  alignedThreshold: 0.8
+  straightDeadzone: 0.15
+  alignedActionPenalty: 0.35
   useSoftDeadzone: 1
   softDeadzoneThreshold: 0.1
   startPos: {x: 0, y: 0.15, z: 1}
@@ -528,6 +529,32 @@ MonoBehaviour:
   showDebugInfo: 1
   displayPosition: {x: 10, y: 10}
   displaySize: {x: 500, y: 550}
+--- !u!114 &714007410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714007401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe696e5466e25c4781241d855b4406e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 714007408}
+  tape: {fileID: 1462255779}
+  sensors:
+  - {fileID: 1179175742}
+  - {fileID: 1988725124}
+  - {fileID: 1410473136}
+  - {fileID: 1848363869}
+  - {fileID: 1550834400}
+  - {fileID: 1240964160}
+  rb: {fileID: 714007403}
+  enableCollection: 1
+  dataFilePath: ../TrainingData/magnetic_tracking_data.csv
+  sampleInterval: 1
+  maxRecords: 1000000
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0
