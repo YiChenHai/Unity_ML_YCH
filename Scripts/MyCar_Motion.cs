@@ -208,14 +208,16 @@ public class MyCar_Motion : MonoBehaviour
             if (angleDeg > 90f)
             {
                 flipOccurred = true;  // 标记发生翻转
-                Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° > 90°, flipped to {angleDeg - 180f:F1}°, speed reversed");
+                if (enableDebugLog)
+                    Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° > 90°, flipped to {angleDeg - 180f:F1}°, speed reversed");
                 kinSteer[i] = (angleDeg - 180f) * Mathf.Deg2Rad;
                 kinSpeed[i] = -kinSpeed[i];  // 速度反向
             }
             else if (angleDeg < -90f)
             {
                 flipOccurred = true;  // 标记发生翻转
-                Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° < -90°, flipped to {angleDeg + 180f:F1}°, speed reversed");
+                if (enableDebugLog)
+                    Debug.Log($"[Flip] Wheel {i}: angle {angleDeg:F1}° < -90°, flipped to {angleDeg + 180f:F1}°, speed reversed");
                 kinSteer[i] = (angleDeg + 180f) * Mathf.Deg2Rad;
                 kinSpeed[i] = -kinSpeed[i];  // 速度反向
             }

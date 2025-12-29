@@ -432,7 +432,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: e74ea5a485012ec439c4e12925516a9f, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: d088a9aaf4f2a8c42b55f481f5e9b636, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_cVzMo_251223
@@ -487,12 +487,12 @@ MonoBehaviour:
   maxOmegaDeg: 80
   maxField: 8
   derailThreshold: 1.5
-  maxEpisodeTime: 1000000
-  turnEnterThreshold: 0.3
-  turnExitThreshold: 0.18
-  rearConfirmThreshold: 0.12
-  rearConfirmWindow: 0.5
-  turnExitGraceTime: 0.4
+  maxEpisodeTime: 40
+  turnEnterThreshold: 0.4
+  turnExitThreshold: 0.2
+  rearConfirmThreshold: 0.15
+  rearConfirmWindow: 0.4
+  turnExitGraceTime: 0.3
   diffSmoothing: 0.1
   actionSmoothingPenalty: 0.1
   straightStabilityBonus: 0.2

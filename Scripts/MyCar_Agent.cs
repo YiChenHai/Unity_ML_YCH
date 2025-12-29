@@ -13,7 +13,7 @@ public class MyCarAgent : Agent
     public Transform[] sensors = new Transform[6];
     public Rigidbody rb;
     public MyCar_Motion myCarMotion;
-
+ 
     [Header("Control limits (body frame - Unity标准)")]
     public float constantForwardSpeed = 0.2f;  // vz 固定前进速度 m/s
     public float maxLateralSpeed = 0.8f;       // vx (横向速度) m/s
@@ -26,16 +26,16 @@ public class MyCarAgent : Agent
     public float derailThreshold = 2f;         // 脱轨阈值（中心传感器低于此值终止）
 
     [Header("Episode")]
-    public float maxEpisodeTime = 20f;
+    public float maxEpisodeTime = 20f;  
     private float episodeTimer = 0f;
 
     [Header("Turn detection (front/rear diff)")]
     [Tooltip("进入转弯的前排左右差阈值 (归一化差，0~1)")]
-    public float turnEnterThreshold = 0.3f;
+    public float turnEnterThreshold = 0.4f;
     [Tooltip("退出转弯的前/后排左右差阈值 (滞回，0~1)")]
-    public float turnExitThreshold = 0.18f;
+    public float turnExitThreshold = 0.2f;
     [Tooltip("后排确认弯道的阈值 (低一些以适应延迟感知)")]
-    public float rearConfirmThreshold = 0.12f;
+    public float rearConfirmThreshold = 0.15f;
     [Tooltip("后排需要达到确认阈值的时间窗口 (秒)")]
     public float rearConfirmWindow = 0.5f;
     [Tooltip("退出转弯前需要连续保持低差值的时间 (秒)")]
@@ -67,7 +67,7 @@ public class MyCarAgent : Agent
     [Tooltip("直线稳定奖励系数")]
     public float straightStabilityBonus = 0.5f;
     [Tooltip("直线模式下认为对齐的阈值（对称性）")]
-    public float alignedThreshold = 0.9f;
+    public float alignedThreshold = 0.8f; 
     [Tooltip("直线稳定的动作死区（绝对值），低于此值认为接近零")]
     public float straightDeadzone = 0.15f;
     [Tooltip("对齐时的动作幅度惩罚系数，越大越鼓励静止")]
@@ -350,8 +350,29 @@ public class MyCarAgent : Agent
                 turnExitTimer += dt;
             }
 
+            // 打印当前状态和未退出原因
+            if (turnExitTimer < turnExitGraceTime)
+            {
+                string reason = "";
+                if (!(frontLow && rearLow))
+                {
+                    if (!frontLow) reason += $"frontDiffSmoothed={frontDiffSmoothed:F3} > turnExitThreshold={turnExitThreshold:F3}; ";
+                    if (!rearLow) reason += $"rearDiffSmoothed={rearDiffSmoothed:F3} > turnExitThreshold={turnExitThreshold:F3}; ";
+                }
+                if (frontLow && rearLow && turnExitTimer < turnExitGraceTime)
+                {
+                    reason += $"turnExitTimer={turnExitTimer:F3} < turnExitGraceTime={turnExitGraceTime:F3}; ";
+                }
+                if (noRearConfirm && !frontBackToStraight)
+                {
+                    reason += $"noRearConfirm(rearConfirmTimer={rearConfirmTimer:F3})且frontDiffSmoothed未显著回落; ";
+                }
+                Debug.Log($"[转弯模式] 未退出，原因: {reason}");
+            }
+
             if (turnExitTimer >= turnExitGraceTime)
             {
+                Debug.Log($"[转弯模式] 满足退出条件，退出转弯模式。");
                 inTurnMode = false;
                 rearConfirmTimer = 0f;
                 turnExitTimer = 0f;
