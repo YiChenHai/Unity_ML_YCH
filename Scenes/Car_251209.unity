@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 714007408}
   - component: {fileID: 714007409}
   - component: {fileID: 714007410}
+  - component: {fileID: 714007411}
   m_Layer: 0
   m_Name: MyCar_Agent
   m_TagString: Untagged
@@ -463,7 +464,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714007401}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dbc67329c47f10249bab340ecada9975, type: 3}
   m_Name: 
@@ -525,7 +526,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714007401}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e4ad112514b76e4392e06856c20feb8, type: 3}
   m_Name: 
@@ -551,7 +552,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714007401}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfe696e5466e25c4781241d855b4406e, type: 3}
   m_Name: 
@@ -570,6 +571,55 @@ MonoBehaviour:
   dataFilePath: ../TrainingData/magnetic_tracking_data.csv
   sampleInterval: 1
   maxRecords: 1000000
+--- !u!114 &714007411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714007401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c76ff6033922a649a014de956132c2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  tape: {fileID: 1462255779}
+  sensors:
+  - {fileID: 1179175742}
+  - {fileID: 1988725124}
+  - {fileID: 1410473136}
+  - {fileID: 1848363869}
+  - {fileID: 1550834400}
+  - {fileID: 1240964160}
+  rb: {fileID: 714007403}
+  myCarMotion: {fileID: 714007404}
+  vzConst: 0.2
+  vxMax: 0.8
+  omegaMaxDeg: 100
+  fieldMax: 8
+  maxEpisodeTime: 40
+  timeoutPenalty: 0
+  centerOfflineThresholdNorm: 0.2
+  actionDeadzone: 0.03
+  actionFilterTau: 0.08
+  maxActionRateVx: 8
+  maxActionRateOmega: 10
+  wOnTrack: 1
+  wAlign: 1.2
+  wHeading: 0.6
+  wForwardSpeed: 0.2
+  wLatVel: 0.4
+  wYawRate: 0.4
+  wActionMag: 0.12
+  wActionRate: 0.1
+  startPos: {x: 1, y: 0.25, z: -1.233}
+  startEuler: {x: 0, y: 0, z: 0}
+  enableDebugLog: 0
+  debugLogEveryNFrames: 30
 --- !u!1 &751401902
 GameObject:
   m_ObjectHideFlags: 0
