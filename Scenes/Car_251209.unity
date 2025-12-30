@@ -432,7 +432,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: d088a9aaf4f2a8c42b55f481f5e9b636, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: c548e4c5f9c66ae428b0da80abf55a60, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 0
   m_BehaviorName: MyCarAgent_cVzMo_251223
@@ -486,23 +486,38 @@ MonoBehaviour:
   maxLateralSpeed: 0.8
   maxOmegaDeg: 80
   maxField: 8
-  derailThreshold: 1.5
   maxEpisodeTime: 40
-  turnEnterThreshold: 0.4
-  turnExitThreshold: 0.2
-  rearConfirmThreshold: 0.15
-  rearConfirmWindow: 0.4
-  turnExitGraceTime: 0.3
-  diffSmoothing: 0.1
-  actionSmoothingPenalty: 0.1
-  straightStabilityBonus: 0.2
-  alignedThreshold: 0.8
-  straightDeadzone: 0.15
-  alignedActionPenalty: 0.35
-  useSoftDeadzone: 1
-  softDeadzoneThreshold: 0.1
+  derailThreshold: 1.5
+  lrAbsDiffGood: 0.06
+  lrAbsDiffBad: 0.22
+  lrMinSumNormForTrust: 0.2
+  actionDeadzone: 0.03
+  actionFilterTau: 0.05
+  maxActionRateVx: 8
+  maxActionRateOmega: 10
+  useStraightHold: 1
+  straightHoldStartQ: 0.75
+  straightHoldFullQ: 0.9
+  straightHoldStrength: 0.9
+  wTrackQuality: 1.5
+  wForward: 0.3
+  wLatVelStraight: 0.6
+  wLatVelTurn: 0.2
+  wYawRateStraight: 0.6
+  wYawRateTurn: 0.25
+  wSteerAbsStraight: 0.8
+  wSteerAbsTurn: 0.2
+  wSteerRateStraight: 0.6
+  wSteerRateTurn: 0.2
+  wActionMagStraight: 0.5
+  wActionMagTurn: 0.12
+  wActionRateStraight: 0.35
+  wActionRateTurn: 0.12
+  wFlipPenalty: 0.3
   startPos: {x: 0, y: 0.15, z: 1}
   startRot: {x: 0, y: 0, z: 0, w: 1}
+  enableDebugLog: 0
+  debugLogEveryNFrames: 10
 --- !u!114 &714007409
 MonoBehaviour:
   m_ObjectHideFlags: 0

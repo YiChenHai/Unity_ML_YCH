@@ -171,26 +171,34 @@ public class MyCar_StateDisplay : MonoBehaviour
         GUILayout.Space(10);
         
         // ========== 转弯判定状态 ==========
-        GUILayout.Label("═══ Turn Detection ═══", GUILayout.Width(displaySize.x - 20));
-        
-        if (myCarAgent != null)
+        GUILayout.Label("═══ Tracking (Alignment/Online) ═══", GUILayout.Width(displaySize.x - 20));
+
+        if (myCarAgent != null && tape != null && sensors != null && sensors.Length == 6)
         {
-            GUIStyle turnModeStyle = new GUIStyle(GUI.skin.label)
+            ComputeTrackingScores(myCarAgent, tape, sensors, out float alignment, out float centerNorm, out float trackQuality);
+
+            // 估算 straightness/hold（用于显示；训练里hold在Agent内部计算）
+            float straightness = SmoothStep01(Smooth01((trackQuality - myCarAgent.straightHoldStartQ) / Mathf.Max(1e-4f, 1f - myCarAgent.straightHoldStartQ)));
+            float tHold = Smooth01((trackQuality - myCarAgent.straightHoldStartQ) / Mathf.Max(1e-4f, myCarAgent.straightHoldFullQ - myCarAgent.straightHoldStartQ));
+            float hold = (myCarAgent.useStraightHold ? myCarAgent.straightHoldStrength * SmoothStep01(tHold) : 0f);
+
+            bool highQuality = trackQuality >= myCarAgent.straightHoldStartQ;
+            GUIStyle qualityStyle = new GUIStyle(GUI.skin.label)
             {
-                normal = { textColor = myCarAgent.IsInTurnMode ? Color.red : Color.cyan },
+                normal = { textColor = highQuality ? Color.cyan : Color.yellow },
                 fontSize = 13,
                 fontStyle = FontStyle.Bold
             };
-            
-            string modeText = myCarAgent.IsInTurnMode ? "转弯模式 (TURNING)" : "直线模式 (STRAIGHT)";
-            GUILayout.Label($"当前状态: {modeText}", turnModeStyle, GUILayout.Width(displaySize.x - 20));
-            
-            GUILayout.Label($"前排差值平滑: {myCarAgent.FrontDiffSmoothed:F3} | 后排差值平滑: {myCarAgent.RearDiffSmoothed:F3}", 
-                GUILayout.Width(displaySize.x - 20));
+
+            string qualityText = highQuality ? "高质量跟踪 (HIGH-Q)" : "低质量/入弯/修正 (LOW-Q)";
+            GUILayout.Label($"当前状态: {qualityText}", qualityStyle, GUILayout.Width(displaySize.x - 20));
+            GUILayout.Label($"alignment={alignment:F3} | centerNorm={centerNorm:F3} | trackQuality={trackQuality:F3}", GUILayout.Width(displaySize.x - 20));
+            GUILayout.Label($"straightness≈{straightness:F2} | hold≈{hold:F2}", GUILayout.Width(displaySize.x - 20));
+            GUILayout.Label($"Agent Action (filtered): vx={myCarAgent.LastActionVx:F2}, omega={myCarAgent.LastActionOmega:F2}", GUILayout.Width(displaySize.x - 20));
         }
         else
         {
-            GUILayout.Label("未配置Agent", GUILayout.Width(displaySize.x - 20));
+            GUILayout.Label("未配置Agent/磁带/传感器", GUILayout.Width(displaySize.x - 20));
         }
 
         GUILayout.EndArea();
@@ -204,5 +212,51 @@ public class MyCar_StateDisplay : MonoBehaviour
             Destroy(_bgTexture);
             _bgTexture = null;
         }
+    }
+
+    private static void ComputeTrackingScores(MyCarAgent agent, MagneticTape tape, Transform[] sensors,
+        out float alignment, out float centerNorm, out float trackQuality)
+    {
+        float[] s = new float[6];
+        for (int i = 0; i < 6; i++)
+        {
+            if (i < sensors.Length && sensors[i] != null && tape != null)
+            {
+                s[i] = tape.GetMagneticField(sensors[i].position).magnitude;
+            }
+        }
+
+        float invMax = 1f / Mathf.Max(1e-4f, agent.maxField);
+
+        float frontAbsDiffNorm = Mathf.Abs(s[0] - s[2]) * invMax;
+        float rearAbsDiffNorm = Mathf.Abs(s[3] - s[5]) * invMax;
+
+        float frontAlign = ScoreSmall(frontAbsDiffNorm, agent.lrAbsDiffGood, agent.lrAbsDiffBad);
+        float rearAlign = ScoreSmall(rearAbsDiffNorm, agent.lrAbsDiffGood, agent.lrAbsDiffBad);
+        float rawAlign = Mathf.Min(frontAlign, rearAlign);
+
+        float frontSumNorm = (Mathf.Abs(s[0]) + Mathf.Abs(s[2])) * (0.5f * invMax);
+        float rearSumNorm = (Mathf.Abs(s[3]) + Mathf.Abs(s[5])) * (0.5f * invMax);
+        float lrSumNorm = Mathf.Min(frontSumNorm, rearSumNorm);
+        float trust = SmoothStep01(Smooth01((lrSumNorm - agent.lrMinSumNormForTrust) / Mathf.Max(1e-4f, 1f - agent.lrMinSumNormForTrust)));
+
+        alignment = rawAlign * trust;
+        centerNorm = Mathf.Clamp01(Mathf.Min(s[1], s[4]) * invMax);
+        trackQuality = alignment * centerNorm;
+    }
+
+    private static float ScoreSmall(float x, float good, float bad)
+    {
+        if (bad <= good) return x <= good ? 1f : 0f;
+        float t = Mathf.InverseLerp(good, bad, x);
+        return 1f - Mathf.Clamp01(t);
+    }
+
+    private static float Smooth01(float x) => Mathf.Clamp01(x);
+
+    private static float SmoothStep01(float x)
+    {
+        x = Mathf.Clamp01(x);
+        return x * x * (3f - 2f * x);
     }
 }

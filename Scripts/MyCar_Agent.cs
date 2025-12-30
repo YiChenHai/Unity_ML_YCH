@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
@@ -9,77 +7,108 @@ public class MyCarAgent : Agent
 {
     [Header("Refs")]
     public MagneticTape tape;
+
     [Tooltip("传感器顺序: [0]=前左, [1]=前中, [2]=前右, [3]=后左, [4]=后中, [5]=后右")]
     public Transform[] sensors = new Transform[6];
+
     public Rigidbody rb;
     public MyCar_Motion myCarMotion;
- 
-    [Header("Control limits (body frame - Unity标准)")]
-    public float constantForwardSpeed = 0.2f;  // vz 固定前进速度 m/s
-    public float maxLateralSpeed = 0.8f;       // vx (横向速度) m/s
-    public float maxOmegaDeg = 100f;           // omega (自转角速度) deg/s
+
+    [Header("Control (body frame: X=右, Z=前)")]
+    [Tooltip("直线要求：仅Vz=0.2 m/s")]
+    public float constantForwardSpeed = 0.2f;
+    public float maxLateralSpeed = 0.8f;
+    public float maxOmegaDeg = 100f;
 
     [Header("Normalization")]
-    public float maxField = 8f;                // 磁场最大值
-
-    [Header("Termination")]
-    public float derailThreshold = 2f;         // 脱轨阈值（中心传感器低于此值终止）
+    public float maxField = 8f;
 
     [Header("Episode")]
-    public float maxEpisodeTime = 20f;  
-    private float episodeTimer = 0f;
+    public float maxEpisodeTime = 20f;
 
-    [Header("Turn detection (front/rear diff)")]
-    [Tooltip("进入转弯的前排左右差阈值 (归一化差，0~1)")]
-    public float turnEnterThreshold = 0.4f;
-    [Tooltip("退出转弯的前/后排左右差阈值 (滞回，0~1)")]
-    public float turnExitThreshold = 0.2f;
-    [Tooltip("后排确认弯道的阈值 (低一些以适应延迟感知)")]
-    public float rearConfirmThreshold = 0.15f;
-    [Tooltip("后排需要达到确认阈值的时间窗口 (秒)")]
-    public float rearConfirmWindow = 0.5f;
-    [Tooltip("退出转弯前需要连续保持低差值的时间 (秒)")]
-    public float turnExitGraceTime = 0.4f;
-    [Tooltip("左右差值的平滑时间常数(秒)，越小响应越快")]
-    public float diffSmoothing = 0.1f;
+    [Header("Termination")]
+    [Tooltip("中心传感器低于该值判定离线/脱轨并终止")]
+    public float derailThreshold = 2f;
 
-    // 运行时状态
-    private float frontDiffSmoothed = 0f;
-    private float rearDiffSmoothed = 0f;
-    private bool inTurnMode = false;
-    private float rearConfirmTimer = 0f;
-    private float turnExitTimer = 0f;
-    
-    // 公共访问器
-    public bool IsInTurnMode => inTurnMode;
-    public float FrontDiffSmoothed => frontDiffSmoothed;
-    public float RearDiffSmoothed => rearDiffSmoothed;
-    public float LastActionVx { get; private set; }
-    public float LastActionOmega { get; private set; }
-    
-    // 动作平滑（内部使用）
-    private float lastActionVx = 0f;
-    private float lastActionOmega = 0f;
-    
-    [Header("Stability & Smoothing")]
-    [Tooltip("动作平滑惩罚系数，越大越惩罚抖动")]
-    public float actionSmoothingPenalty = 0.1f;
-    [Tooltip("直线稳定奖励系数")]
-    public float straightStabilityBonus = 0.5f;
-    [Tooltip("直线模式下认为对齐的阈值（对称性）")]
-    public float alignedThreshold = 0.8f; 
-    [Tooltip("直线稳定的动作死区（绝对值），低于此值认为接近零")]
-    public float straightDeadzone = 0.15f;
-    [Tooltip("对齐时的动作幅度惩罚系数，越大越鼓励静止")]
-    public float alignedActionPenalty = 0.3f;
-    [Tooltip("是否启用软死区（对齐时直接抑制小动作）")]
-    public bool useSoftDeadzone = true;
-    [Tooltip("软死区阈值，对齐且动作小于此值时强制清零")]
-    public float softDeadzoneThreshold = 0.10f;
+    [Header("Tracking score (核心：对齐 + 在线)")]
+    [Tooltip("左右差值(归一化到maxField) <= good 时认为对齐很好")]
+    public float lrAbsDiffGood = 0.06f;
+    [Tooltip("左右差值(归一化到maxField) >= bad 时认为对齐很差")]
+    public float lrAbsDiffBad = 0.22f;
+    [Tooltip("左右两侧信号强度过低时，不信任对齐（用于抑制弱信号放大）")]
+    public float lrMinSumNormForTrust = 0.20f;
+
+    [Header("Action shaping (目标：直线轮子不抖、转弯一气呵成)")]
+    [Tooltip("动作死区（归一化动作绝对值小于该值直接置0）")]
+    public float actionDeadzone = 0.03f;
+    [Tooltip("动作输出一阶低通滤波时间常数(秒)。越小越实时，越大越平滑")]
+    public float actionFilterTau = 0.05f;
+    [Tooltip("动作速率限制：vx动作(归一化)每秒最大变化量")]
+    public float maxActionRateVx = 8f;
+    [Tooltip("动作速率限制：omega动作(归一化)每秒最大变化量")]
+    public float maxActionRateOmega = 10f;
+
+    [Header("Straight hold (连续门控，不区分转弯模式)")]
+    public bool useStraightHold = true;
+    [Tooltip("当trackQuality达到该值开始强制收敛到vx=0、omega=0")]
+    public float straightHoldStartQ = 0.75f;
+    [Tooltip("当trackQuality达到该值时直线保持达到最大强度")]
+    public float straightHoldFullQ = 0.90f;
+    [Range(0f, 1f)]
+    public float straightHoldStrength = 0.95f;
+
+    [Header("Reward weights")]
+    [Tooltip("跟踪质量奖励：trackQuality(对齐×在线)")]
+    public float wTrackQuality = 1.5f;
+    [Tooltip("前进速度奖励：鼓励维持Vz")]
+    public float wForward = 0.3f;
+
+    [Tooltip("侧向速度惩罚（实际localVel.x），直线时更重")]
+    public float wLatVelStraight = 0.70f;
+    public float wLatVelTurn = 0.20f;
+    [Tooltip("角速度惩罚（实际rb.angularVelocity.y），直线时更重")]
+    public float wYawRateStraight = 0.70f;
+    public float wYawRateTurn = 0.25f;
+
+    [Tooltip("轮子转向角幅度惩罚（直线摆轮核心约束）")]
+    public float wSteerAbsStraight = 0.90f;
+    public float wSteerAbsTurn = 0.25f;
+    [Tooltip("轮子转向角变化率惩罚（抑制抖动/来回修正）")]
+    public float wSteerRateStraight = 0.70f;
+    public float wSteerRateTurn = 0.25f;
+
+    [Tooltip("动作幅度惩罚（基于滤波后的动作），直线时更重")]
+    public float wActionMagStraight = 0.55f;
+    public float wActionMagTurn = 0.15f;
+    [Tooltip("动作变化率惩罚（基于滤波后的动作变化），直线时更重")]
+    public float wActionRateStraight = 0.40f;
+    public float wActionRateTurn = 0.15f;
+
+    [Tooltip("出现运动学翻转(Flip)惩罚，避免策略依赖>90°轮角翻转")]
+    public float wFlipPenalty = 0.30f;
 
     [Header("Start pose")]
     public Vector3 startPos = new Vector3(1f, 0.25f, -1.233f);
     public Quaternion startRot = Quaternion.Euler(0f, 0f, 0f);
+
+    [Header("Debug")]
+    public bool enableDebugLog = false;
+    public int debugLogEveryNFrames = 20;
+
+    public float LastActionVx { get; private set; }
+    public float LastActionOmega { get; private set; }
+
+    private readonly float[] sensorRaw = new float[6];
+    private readonly float[] sensorNorm = new float[6];
+
+    private int lastSensorCacheFrame = -1;
+
+    private float episodeTimer;
+    private float filteredActionVx;
+    private float filteredActionOmega;
+    private float lastFilteredActionVx;
+    private float lastFilteredActionOmega;
+    private readonly float[] prevSteerAnglesRad = new float[4];
 
     public override void Initialize()
     {
@@ -87,301 +116,296 @@ public class MyCarAgent : Agent
         if (rb == null) rb = GetComponent<Rigidbody>();
     }
 
-    public override void OnEpisodeBegin() 
+    private void OnValidate()
+    {
+        constantForwardSpeed = Mathf.Max(0f, constantForwardSpeed);
+        maxLateralSpeed = Mathf.Max(1e-4f, maxLateralSpeed);
+        maxOmegaDeg = Mathf.Max(1e-4f, maxOmegaDeg);
+        maxField = Mathf.Max(1e-4f, maxField);
+
+        maxEpisodeTime = Mathf.Max(0.1f, maxEpisodeTime);
+        derailThreshold = Mathf.Max(0f, derailThreshold);
+
+        lrAbsDiffGood = Mathf.Clamp01(lrAbsDiffGood);
+        lrAbsDiffBad = Mathf.Clamp01(lrAbsDiffBad);
+        if (lrAbsDiffBad < lrAbsDiffGood)
+        {
+            float tmp = lrAbsDiffGood;
+            lrAbsDiffGood = lrAbsDiffBad;
+            lrAbsDiffBad = tmp;
+        }
+
+        lrMinSumNormForTrust = Mathf.Clamp01(lrMinSumNormForTrust);
+
+        actionDeadzone = Mathf.Clamp01(actionDeadzone);
+        actionFilterTau = Mathf.Max(1e-4f, actionFilterTau);
+        maxActionRateVx = Mathf.Max(0f, maxActionRateVx);
+        maxActionRateOmega = Mathf.Max(0f, maxActionRateOmega);
+
+        straightHoldStartQ = Mathf.Clamp01(straightHoldStartQ);
+        straightHoldFullQ = Mathf.Clamp01(straightHoldFullQ);
+        if (straightHoldFullQ < straightHoldStartQ)
+        {
+            float tmp = straightHoldStartQ;
+            straightHoldStartQ = straightHoldFullQ;
+            straightHoldFullQ = tmp;
+        }
+
+        straightHoldStrength = Mathf.Clamp01(straightHoldStrength);
+        debugLogEveryNFrames = Mathf.Max(1, debugLogEveryNFrames);
+    }
+
+    public override void OnEpisodeBegin()
     {
         if (rb != null)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
         transform.position = startPos;
         transform.rotation = startRot;
 
-        // 设置固定前进速度，清除其他输入
-        if (myCarMotion != null) myCarMotion.SetControl(constantForwardSpeed, 0f, 0f);
-
         episodeTimer = 0f;
-        frontDiffSmoothed = 0f;
-        rearDiffSmoothed = 0f;
-        inTurnMode = false;
-        rearConfirmTimer = 0f;
-        turnExitTimer = 0f;
-        lastActionVx = 0f;
-        lastActionOmega = 0f;
+        filteredActionVx = 0f;
+        filteredActionOmega = 0f;
+        lastFilteredActionVx = 0f;
+        lastFilteredActionOmega = 0f;
+        LastActionVx = 0f;
+        LastActionOmega = 0f;
+        for (int i = 0; i < prevSteerAnglesRad.Length; i++) prevSteerAnglesRad[i] = 0f;
+
+        if (myCarMotion != null) myCarMotion.SetControl(constantForwardSpeed, 0f, 0f);
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        // 1-6: 六个传感器的归一化强度（环境感知）
-        for (int i = 0; i < sensors.Length; i++)
-        {
-            if (sensors[i] != null && tape != null)
-            {
-                Vector3 mag = tape.GetMagneticField(sensors[i].position);
-                sensor.AddObservation(Mathf.Clamp01(mag.magnitude / Mathf.Max(1e-9f, maxField)));
-            }
-            else sensor.AddObservation(0f);
-        }
+        UpdateSensorCache();
 
-        // 7-9: 当前运动状态（车身坐标系）- AI决策反馈
-        Vector3 localVel = transform.InverseTransformDirection(rb != null ? rb.linearVelocity : Vector3.zero);
-        float angularVel = rb != null ? rb.angularVelocity.y : 0f;
-        
-        sensor.AddObservation(localVel.z / Mathf.Max(0.001f, constantForwardSpeed));  // 7: 前进速度 (Unity Z轴)
-        sensor.AddObservation(localVel.x / Mathf.Max(0.001f, maxLateralSpeed));       // 8: 横向速度 (Unity X轴)
-        
+        // 1-6: 六个传感器归一化强度
+        for (int i = 0; i < sensorNorm.Length; i++) sensor.AddObservation(sensorNorm[i]);
+
+        // 7-9: 运动状态（归一化）
+        Vector3 velWorld = rb != null ? rb.linearVelocity : Vector3.zero;
+        Vector3 localVel = transform.InverseTransformDirection(velWorld);
+        sensor.AddObservation(Mathf.Clamp(localVel.z / Mathf.Max(1e-4f, constantForwardSpeed), -2f, 2f));
+        sensor.AddObservation(Mathf.Clamp(localVel.x / Mathf.Max(1e-4f, maxLateralSpeed), -2f, 2f));
+
         float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
-        sensor.AddObservation(Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f));        // 9: 角速度 omega
+        float yawRate = rb != null ? rb.angularVelocity.y : 0f;
+        sensor.AddObservation(Mathf.Clamp(yawRate / Mathf.Max(1e-4f, maxOmegaRad), -2f, 2f));
 
-        // 10-12: 转弯判定信号（使用动作阶段更新后的平滑值 + 状态标志）
-        sensor.AddObservation(frontDiffSmoothed);          // 10: 前排左右差平滑值
-        sensor.AddObservation(rearDiffSmoothed);           // 11: 后排左右差平滑值
-        sensor.AddObservation(inTurnMode ? 1f : 0f);       // 12: 转弯模式标志
+        // 10-12: 派生跟踪特征（连续，不区分转弯/直线模式）
+        ComputeTrackingScores(out float alignment, out float centerNorm, out float trackQuality);
+        sensor.AddObservation(alignment);
+        sensor.AddObservation(centerNorm);
+        sensor.AddObservation(trackQuality);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
-    { 
-        // 连续动作：0=vx比例(横向), 1=omega比例(自转)
-        float a_vx = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
-        float a_w  = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
-        
-        // 软死区：对齐时抑制小动作，强制车辆保持稳定
-        if (useSoftDeadzone && !inTurnMode)
-        {
-            float[] sensorValuesTemp = new float[6];
-            for (int i = 0; i < sensors.Length; i++)
-            {
-                if (sensors[i] != null && tape != null)
-                {
-                    sensorValuesTemp[i] = tape.GetMagneticField(sensors[i].position).magnitude;
-                }
-            }
-            
-            float frontSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValuesTemp[0] - sensorValuesTemp[2]) / maxField);
-            float rearSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValuesTemp[3] - sensorValuesTemp[5]) / maxField);
-            float currentAlignment = Mathf.Min(frontSym, rearSym);
-            
-            if (currentAlignment >= alignedThreshold)
-            {
-                if (Mathf.Abs(a_vx) < softDeadzoneThreshold) a_vx = 0f;
-                if (Mathf.Abs(a_w) < softDeadzoneThreshold) a_w = 0f;
-            }
-        }
+    {
+        float dt = Time.fixedDeltaTime;
 
-        // 映射到真实控制量（vz固定，只控制vx和omega）
-        float vz = constantForwardSpeed;                        // 固定前进速度
-        float vx = a_vx * maxLateralSpeed;                     // 横向速度
-        float omega = a_w * maxOmegaDeg * Mathf.Deg2Rad;       // 自转角速度 rad/s
+        UpdateSensorCache();
+        ComputeTrackingScores(out float alignment, out float centerNorm, out float trackQuality);
 
-        // 下发给 MyCar_Motion 控制车辆
-        if (myCarMotion != null) myCarMotion.SetControl(vz, vx, omega);
+        float fcRaw = sensorRaw[1];
+        float rcRaw = sensorRaw[4];
 
-        // 读取传感器数据
-        float[] sensorValues = new float[6];
-        for (int i = 0; i < sensors.Length; i++)
-        {
-            if (sensors[i] != null && tape != null)
-            {
-                Vector3 mag = tape.GetMagneticField(sensors[i].position);
-                sensorValues[i] = mag.magnitude;
-            }
-        }
-
-        // 转弯判定：前排用于启动，后排用于确认/退出，带滞回和平滑
-        float frontDiffNow = ComputeNormalizedDiff(sensorValues[0], sensorValues[2]);
-        float rearDiffNow = ComputeNormalizedDiff(sensorValues[3], sensorValues[5]);
-        UpdateTurnDetection(frontDiffNow, rearDiffNow, Time.fixedDeltaTime);
-        
-        // ========== 终止条件1：脱轨检测 ==========
-        float frontCenter = sensorValues[1];  // 前中
-        float rearCenter = sensorValues[4];   // 后中
-        
-        if (frontCenter < derailThreshold || rearCenter < derailThreshold)
+        // ========== 终止：中心离线 ==========
+        if (fcRaw < derailThreshold || rcRaw < derailThreshold)
         {
             AddReward(-5f);
-            Debug.Log($"Episode Ended: derailment. frontCenter={frontCenter:F4}, rearCenter={rearCenter:F4}");
+            if (enableDebugLog)
+                Debug.Log($"Episode Ended: derailment. fc={fcRaw:F3}, rc={rcRaw:F3}");
             EndEpisode();
             return;
         }
 
-        // ========== 计算对齐奖励 ==========
-        float reward = CalculateReward(sensorValues);
-        AddReward(reward * Time.fixedDeltaTime);
-        
-        // ========== 动作平滑惩罚 ==========
-        float actionChange = Mathf.Abs(a_vx - lastActionVx) + Mathf.Abs(a_w - lastActionOmega);
-        AddReward(-actionSmoothingPenalty * actionChange * Time.fixedDeltaTime);
-        
-        // ========== 直线稳定奖励 + 对齐动作惩罚 ==========
-        if (!inTurnMode)
+        // ========== 输入动作（归一化） ==========
+        float rawVx = Mathf.Clamp(actions.ContinuousActions[0], -1f, 1f);
+        float rawOmega = Mathf.Clamp(actions.ContinuousActions[1], -1f, 1f);
+
+        // 动作死区（直接抑制微小抖动源）
+        if (Mathf.Abs(rawVx) < actionDeadzone) rawVx = 0f;
+        if (Mathf.Abs(rawOmega) < actionDeadzone) rawOmega = 0f;
+
+        // 直线保持（连续门控：trackQuality越高，越逼近vx=0、omega=0）
+        float hold = 0f;
+        if (useStraightHold)
         {
-            // 计算当前对齐度
-            float frontSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValues[0] - sensorValues[2]) / maxField);
-            float rearSym = Mathf.Clamp01(1f - Mathf.Abs(sensorValues[3] - sensorValues[5]) / maxField);
-            float alignment = Mathf.Min(frontSym, rearSym);
-            
-            // 对齐度高时，惩罚动作幅度（鼓励静止）
-            if (alignment >= alignedThreshold)
-            {
-                float actionMagnitude = Mathf.Abs(a_vx) + Mathf.Abs(a_w);
-                AddReward(-alignedActionPenalty * actionMagnitude * Time.fixedDeltaTime);
-                
-                // 动作在死区内给额外稳定奖励
-                bool vxInDeadzone = Mathf.Abs(a_vx) <= straightDeadzone;
-                bool omegaInDeadzone = Mathf.Abs(a_w) <= straightDeadzone;
-                
-                if (vxInDeadzone && omegaInDeadzone)
-                {
-                    AddReward(straightStabilityBonus * Time.fixedDeltaTime);
-                }
-            }
+            float t = Smooth01((trackQuality - straightHoldStartQ) / Mathf.Max(1e-4f, straightHoldFullQ - straightHoldStartQ));
+            hold = straightHoldStrength * SmoothStep01(t);
         }
-        
-        lastActionVx = a_vx;
-        lastActionOmega = a_w;
-        LastActionVx = a_vx;
-        LastActionOmega = a_w;
- 
-        // ========== 终止条件2：超时 ==========
-        episodeTimer += Time.fixedDeltaTime;
+        float cmdVx = rawVx * (1f - hold);
+        float cmdOmega = rawOmega * (1f - hold);
+
+        // 动作滤波（低通）+ 速率限制（抑制高频反复修正）
+        float alpha = 1f - Mathf.Exp(-dt / Mathf.Max(1e-4f, actionFilterTau));
+        float targetVx = Mathf.Lerp(filteredActionVx, cmdVx, alpha);
+        float targetOmega = Mathf.Lerp(filteredActionOmega, cmdOmega, alpha);
+
+        float maxStepVx = Mathf.Max(0f, maxActionRateVx) * dt;
+        float maxStepOmega = Mathf.Max(0f, maxActionRateOmega) * dt;
+        filteredActionVx = Mathf.MoveTowards(filteredActionVx, targetVx, maxStepVx);
+        filteredActionOmega = Mathf.MoveTowards(filteredActionOmega, targetOmega, maxStepOmega);
+
+        // 下发控制：固定Vz，仅输出vx/omega
+        float vz = constantForwardSpeed;
+        float vx = filteredActionVx * maxLateralSpeed;
+        float omega = filteredActionOmega * maxOmegaDeg * Mathf.Deg2Rad;
+        if (myCarMotion != null) myCarMotion.SetControl(vz, vx, omega);
+
+        // ========== 奖励/惩罚 ==========
+        Vector3 velWorld = rb != null ? rb.linearVelocity : Vector3.zero;
+        Vector3 localVel = transform.InverseTransformDirection(velWorld);
+        float forwardSpeed = Vector3.Dot(velWorld, transform.forward);
+        float forwardNorm = Mathf.Clamp01(forwardSpeed / Mathf.Max(1e-4f, constantForwardSpeed));
+
+        // 直线性：trackQuality高→更像直线跟踪→更严苛地抑制侧滑/摆头/摆轮
+        float straightness = SmoothStep01(Smooth01((trackQuality - straightHoldStartQ) / Mathf.Max(1e-4f, 1f - straightHoldStartQ)));
+
+        float wLatVel = Mathf.Lerp(wLatVelTurn, wLatVelStraight, straightness);
+        float wYawRate = Mathf.Lerp(wYawRateTurn, wYawRateStraight, straightness);
+        float wSteerAbs = Mathf.Lerp(wSteerAbsTurn, wSteerAbsStraight, straightness);
+        float wSteerRate = Mathf.Lerp(wSteerRateTurn, wSteerRateStraight, straightness);
+        float wActMag = Mathf.Lerp(wActionMagTurn, wActionMagStraight, straightness);
+        float wActRate = Mathf.Lerp(wActionRateTurn, wActionRateStraight, straightness);
+
+        float latVelNorm = Mathf.Clamp(localVel.x / Mathf.Max(1e-4f, maxLateralSpeed), -2f, 2f);
+
+        float maxOmegaRad = maxOmegaDeg * Mathf.Deg2Rad;
+        float yawRate = rb != null ? rb.angularVelocity.y : 0f;
+        float yawRateNorm = Mathf.Clamp(yawRate / Mathf.Max(1e-4f, maxOmegaRad), -2f, 2f);
+
+        float rewardPerSec = 0f;
+        rewardPerSec += wTrackQuality * trackQuality;
+        rewardPerSec += wForward * forwardNorm;
+
+        rewardPerSec -= wLatVel * (latVelNorm * latVelNorm);
+        rewardPerSec -= wYawRate * (yawRateNorm * yawRateNorm);
+
+        // 轮子摆动惩罚：幅度 + 变化率
+        float steerAbsNormAvg = 0f;
+        float steerRateNormAvg = 0f;
+        if (myCarMotion != null && myCarMotion.steerAngles != null && myCarMotion.steerAngles.Length >= 4)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                float steerRad = myCarMotion.steerAngles[i];
+                steerAbsNormAvg += Mathf.Clamp01(Mathf.Abs(steerRad) * Mathf.Rad2Deg / 90f);
+
+                float prevRad = prevSteerAnglesRad[i];
+                float dDeg = Mathf.Abs(Mathf.DeltaAngle(prevRad * Mathf.Rad2Deg, steerRad * Mathf.Rad2Deg));
+                float rateDegPerSec = dDeg / Mathf.Max(1e-4f, dt);
+                steerRateNormAvg += Mathf.Clamp01(rateDegPerSec / 360f);
+
+                prevSteerAnglesRad[i] = steerRad;
+            }
+            steerAbsNormAvg /= 4f;
+            steerRateNormAvg /= 4f;
+        }
+        rewardPerSec -= wSteerAbs * (steerAbsNormAvg * steerAbsNormAvg);
+        rewardPerSec -= wSteerRate * (steerRateNormAvg * steerRateNormAvg);
+
+        // 动作幅度/变化率惩罚（抑制策略用抖动取巧）
+        float actMag = (filteredActionVx * filteredActionVx) + (filteredActionOmega * filteredActionOmega);
+        float dAct = Mathf.Abs(filteredActionVx - lastFilteredActionVx) + Mathf.Abs(filteredActionOmega - lastFilteredActionOmega);
+        rewardPerSec -= wActMag * actMag;
+        rewardPerSec -= wActRate * (dAct * dAct);
+
+        // Flip惩罚
+        if (myCarMotion != null && myCarMotion.flipOccurred) rewardPerSec -= wFlipPenalty;
+
+        AddReward(rewardPerSec * dt);
+
+        lastFilteredActionVx = filteredActionVx;
+        lastFilteredActionOmega = filteredActionOmega;
+        LastActionVx = filteredActionVx;
+        LastActionOmega = filteredActionOmega;
+
+        // Debug（节流）
+        if (enableDebugLog && (debugLogEveryNFrames <= 1 || Time.frameCount % debugLogEveryNFrames == 0))
+        {
+            Debug.Log($"Q={trackQuality:F3} (align={alignment:F3}, center={centerNorm:F3}), hold={hold:F2}, act=({filteredActionVx:F2},{filteredActionOmega:F2}), localVx={localVel.x:F3}, yaw={yawRate:F3}");
+        }
+
+        // 超时
+        episodeTimer += dt;
         if (episodeTimer >= maxEpisodeTime)
         {
-            Debug.Log($"Episode Ended: timeout. episodeTimer={episodeTimer:F2}s");
+            if (enableDebugLog) Debug.Log($"Episode Ended: timeout. t={episodeTimer:F2}s");
             EndEpisode();
-        }  
-    }
-
-    float CalculateReward(float[] s)
-    {
-        if (s == null || s.Length < 6) return 0f;
-
-        // ========== 对齐奖励：前后左右对称性 ==========
-        // 前排对称：前左 vs 前右
-        float frontSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[0] - s[2]) / maxField);
-        // 后排对称：后左 vs 后右
-        float rearSymmetry = Mathf.Clamp01(1f - Mathf.Abs(s[3] - s[5]) / maxField);
-        
-        // 只有前后都对称时才给高分（取最小值，确保整车对齐）
-        float alignment = Mathf.Min(frontSymmetry, rearSymmetry);
-
-        // ========== 前进速度因子：分段式速度奖励（转弯宽容） ==========
-        Vector3 vel = rb != null ? rb.linearVelocity : Vector3.zero;
-        float forwardSpeed = Vector3.Dot(vel, transform.forward);  // 实际前进速度
-        
-        // 直线时要求更高速度，转弯时放宽一点
-        float speedThreshold = inTurnMode ? constantForwardSpeed * 0.45f : constantForwardSpeed * 0.6f;
-        float speedRatio;
-        
-        if (forwardSpeed >= speedThreshold)
-        {
-            // 速度达到阈值（直线约60%，转弯约45%目标），给予全额奖励
-            speedRatio = 1.0f;
-        }
-        else if (forwardSpeed >= 0.05f)
-        {
-            // 速度介于5cm/s和阈值之间，线性衰减
-            speedRatio = forwardSpeed / speedThreshold;
-        }
-        else
-        {
-            // 几乎停止（<5cm/s），无奖励
-            speedRatio = 0f;
-        }
-        
-        // 最终奖励 = 对齐分数 × 前进因子
-        // 转弯时只要保持≥60%目标速度，就不会损失奖励
-        return alignment * speedRatio;
-    }
-
-    // 归一化左右差：|L-R| / max(|L|+|R|, eps)，范围 0~1
-    float ComputeNormalizedDiff(float left, float right)
-    {
-        float denom = Mathf.Max(Mathf.Abs(left) + Mathf.Abs(right), 1e-4f);
-        return Mathf.Clamp01(Mathf.Abs(left - right) / denom);
-    }
-
-    // 转弯模式判定：前排触发，后排确认/退出，带时间滞回与平滑
-    void UpdateTurnDetection(float frontDiff, float rearDiff, float dt)
-    {
-        // 指数平滑：alpha 基于时间常数和 dt，避免步长变化导致响应不一致
-        float alpha = 1f - Mathf.Exp(-dt / Mathf.Max(1e-4f, diffSmoothing));
-        frontDiffSmoothed = Mathf.Lerp(frontDiffSmoothed, frontDiff, alpha);
-        rearDiffSmoothed = Mathf.Lerp(rearDiffSmoothed, rearDiff, alpha);
-
-        // 进入：前排超过进入阈值
-        if (!inTurnMode && frontDiffSmoothed >= turnEnterThreshold)
-        {
-            inTurnMode = true;
-            rearConfirmTimer = 0f;
-            turnExitTimer = 0f;
-        }
-
-        if (inTurnMode)
-        {
-            // 后排确认：在窗口内累积时间，只要确认过就认为弯在持续
-            if (rearDiffSmoothed >= rearConfirmThreshold)
-            {
-                rearConfirmTimer = Mathf.Min(rearConfirmTimer + dt, rearConfirmWindow);
-            }
-            else
-            {
-                // 若后排长时间低于阈值，计时器缓慢衰减，避免瞬时掉落就退出
-                rearConfirmTimer = Mathf.Max(0f, rearConfirmTimer - dt * 0.5f);
-            }
-
-            // 退出条件：前后差都低于退出阈值，且维持一定时间
-            bool frontLow = frontDiffSmoothed <= turnExitThreshold;
-            bool rearLow = rearDiffSmoothed <= turnExitThreshold;
-
-            if (frontLow && rearLow)
-            {
-                turnExitTimer += dt;
-            }
-            else
-            {
-                turnExitTimer = 0f;
-            }
-
-            // 防误判：如果后排一直未确认且前排显著回落，也允许退出
-            bool noRearConfirm = rearConfirmTimer < 0.05f;
-            bool frontBackToStraight = frontDiffSmoothed < turnEnterThreshold * 0.6f;
-            if (noRearConfirm && frontBackToStraight)
-            {
-                turnExitTimer += dt;
-            }
-
-            // 打印当前状态和未退出原因
-            if (turnExitTimer < turnExitGraceTime)
-            {
-                string reason = "";
-                if (!(frontLow && rearLow))
-                {
-                    if (!frontLow) reason += $"frontDiffSmoothed={frontDiffSmoothed:F3} > turnExitThreshold={turnExitThreshold:F3}; ";
-                    if (!rearLow) reason += $"rearDiffSmoothed={rearDiffSmoothed:F3} > turnExitThreshold={turnExitThreshold:F3}; ";
-                }
-                if (frontLow && rearLow && turnExitTimer < turnExitGraceTime)
-                {
-                    reason += $"turnExitTimer={turnExitTimer:F3} < turnExitGraceTime={turnExitGraceTime:F3}; ";
-                }
-                if (noRearConfirm && !frontBackToStraight)
-                {
-                    reason += $"noRearConfirm(rearConfirmTimer={rearConfirmTimer:F3})且frontDiffSmoothed未显著回落; ";
-                }
-                Debug.Log($"[转弯模式] 未退出，原因: {reason}");
-            }
-
-            if (turnExitTimer >= turnExitGraceTime)
-            {
-                Debug.Log($"[转弯模式] 满足退出条件，退出转弯模式。");
-                inTurnMode = false;
-                rearConfirmTimer = 0f;
-                turnExitTimer = 0f;
-            }
         }
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        // 不需要手动控制
+        // 不提供手动控制
+    }
+
+    private void UpdateSensorCache()
+    {
+        // ML-Agents常见调用顺序：CollectObservations 和 OnActionReceived 可能在同一帧连续调用
+        // 这里做一次帧级缓存，避免重复读取磁场（不改变语义）
+        int frame = Time.frameCount;
+        if (frame == lastSensorCacheFrame) return;
+        lastSensorCacheFrame = frame;
+
+        float invMax = 1f / Mathf.Max(1e-4f, maxField);
+        for (int i = 0; i < sensorRaw.Length; i++)
+        {
+            float mag = 0f;
+            if (tape != null && sensors != null && i < sensors.Length && sensors[i] != null)
+            {
+                mag = tape.GetMagneticField(sensors[i].position).magnitude;
+            }
+            sensorRaw[i] = mag;
+            sensorNorm[i] = Mathf.Clamp01(mag * invMax);
+        }
+    }
+
+    private void ComputeTrackingScores(out float alignment, out float centerNorm, out float trackQuality)
+    {
+        float fl = sensorRaw[0];
+        float fc = sensorRaw[1];
+        float fr = sensorRaw[2];
+        float rl = sensorRaw[3];
+        float rc = sensorRaw[4];
+        float rr = sensorRaw[5];
+
+        float invMax = 1f / Mathf.Max(1e-4f, maxField);
+
+        float frontAbsDiffNorm = Mathf.Abs(fl - fr) * invMax;
+        float rearAbsDiffNorm = Mathf.Abs(rl - rr) * invMax;
+
+        float frontAlign = ScoreSmall(frontAbsDiffNorm, lrAbsDiffGood, lrAbsDiffBad);
+        float rearAlign = ScoreSmall(rearAbsDiffNorm, lrAbsDiffGood, lrAbsDiffBad);
+        float rawAlign = Mathf.Min(frontAlign, rearAlign);
+
+        float frontSumNorm = (Mathf.Abs(fl) + Mathf.Abs(fr)) * (0.5f * invMax);
+        float rearSumNorm = (Mathf.Abs(rl) + Mathf.Abs(rr)) * (0.5f * invMax);
+        float lrSumNorm = Mathf.Min(frontSumNorm, rearSumNorm);
+        float trust = SmoothStep01(Smooth01((lrSumNorm - lrMinSumNormForTrust) / Mathf.Max(1e-4f, 1f - lrMinSumNormForTrust)));
+
+        alignment = rawAlign * trust;
+        centerNorm = Mathf.Clamp01(Mathf.Min(fc, rc) * invMax);
+        trackQuality = alignment * centerNorm;
+    }
+
+    private static float ScoreSmall(float x, float good, float bad)
+    {
+        // x<=good => 1; x>=bad => 0
+        if (bad <= good) return x <= good ? 1f : 0f;
+        float t = Mathf.InverseLerp(good, bad, x);
+        return 1f - Mathf.Clamp01(t);
+    }
+
+    private static float Smooth01(float x) => Mathf.Clamp01(x);
+
+    private static float SmoothStep01(float x)
+    {
+        x = Mathf.Clamp01(x);
+        return x * x * (3f - 2f * x);
     }
 }

@@ -78,7 +78,7 @@ public class MyCar_DataCollector : MonoBehaviour
         dataWriter.WriteLine(
             "sens0,sens1,sens2,sens3,sens4,sens5," +
             "vel_z_norm,vel_x_norm,omega_norm," +
-            "front_diff_smooth,rear_diff_smooth,turn_mode," +
+            "alignment,center_norm,track_quality," +
             "action_vx,action_omega"
         );
     }
@@ -129,10 +129,8 @@ public class MyCar_DataCollector : MonoBehaviour
         float maxOmegaRad = agent.maxOmegaDeg * Mathf.Deg2Rad;
         float omega_norm = Mathf.Clamp(angularVel / maxOmegaRad, -1f, 1f);
         
-        // 转弯判定信号
-        float front_diff = agent.FrontDiffSmoothed;
-        float rear_diff = agent.RearDiffSmoothed;
-        float turn_mode = agent.IsInTurnMode ? 1f : 0f;
+        // 跟踪质量（与当前MyCarAgent一致：对齐×在线，且对弱信号做trust抑制）
+        ComputeTrackingScores(agent, tape, sensors, out float alignment, out float centerNorm, out float trackQuality);
         
         // ========== 获取动作输出 ==========
         float action_vx = agent.LastActionVx;
@@ -147,7 +145,7 @@ public class MyCar_DataCollector : MonoBehaviour
             sensorValues[0], sensorValues[1], sensorValues[2],
             sensorValues[3], sensorValues[4], sensorValues[5],
             vel_z_norm, vel_x_norm, omega_norm,
-            front_diff, rear_diff, turn_mode,
+            alignment, centerNorm, trackQuality,
             action_vx, action_omega
         );
         
@@ -218,5 +216,51 @@ public class MyCar_DataCollector : MonoBehaviour
                   $"File: {fullPath}\n" +
                   $"Sample Interval: {sampleInterval}\n" +
                   $"Max Records: {maxRecords}");
+    }
+
+    private static void ComputeTrackingScores(MyCarAgent agent, MagneticTape tape, Transform[] sensors,
+        out float alignment, out float centerNorm, out float trackQuality)
+    {
+        float[] raw = new float[6];
+        for (int i = 0; i < 6; i++)
+        {
+            if (sensors != null && i < sensors.Length && sensors[i] != null && tape != null)
+            {
+                raw[i] = tape.GetMagneticField(sensors[i].position).magnitude;
+            }
+        }
+
+        float invMax = 1f / Mathf.Max(1e-4f, agent.maxField);
+
+        float frontAbsDiffNorm = Mathf.Abs(raw[0] - raw[2]) * invMax;
+        float rearAbsDiffNorm = Mathf.Abs(raw[3] - raw[5]) * invMax;
+
+        float frontAlign = ScoreSmall(frontAbsDiffNorm, agent.lrAbsDiffGood, agent.lrAbsDiffBad);
+        float rearAlign = ScoreSmall(rearAbsDiffNorm, agent.lrAbsDiffGood, agent.lrAbsDiffBad);
+        float rawAlign = Mathf.Min(frontAlign, rearAlign);
+
+        float frontSumNorm = (Mathf.Abs(raw[0]) + Mathf.Abs(raw[2])) * (0.5f * invMax);
+        float rearSumNorm = (Mathf.Abs(raw[3]) + Mathf.Abs(raw[5])) * (0.5f * invMax);
+        float lrSumNorm = Mathf.Min(frontSumNorm, rearSumNorm);
+        float trust = SmoothStep01(Smooth01((lrSumNorm - agent.lrMinSumNormForTrust) / Mathf.Max(1e-4f, 1f - agent.lrMinSumNormForTrust)));
+
+        alignment = rawAlign * trust;
+        centerNorm = Mathf.Clamp01(Mathf.Min(raw[1], raw[4]) * invMax);
+        trackQuality = alignment * centerNorm;
+    }
+
+    private static float ScoreSmall(float x, float good, float bad)
+    {
+        if (bad <= good) return x <= good ? 1f : 0f;
+        float t = Mathf.InverseLerp(good, bad, x);
+        return 1f - Mathf.Clamp01(t);
+    }
+
+    private static float Smooth01(float x) => Mathf.Clamp01(x);
+
+    private static float SmoothStep01(float x)
+    {
+        x = Mathf.Clamp01(x);
+        return x * x * (3f - 2f * x);
     }
 }
